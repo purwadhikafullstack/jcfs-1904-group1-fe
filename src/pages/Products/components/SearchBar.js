@@ -45,9 +45,9 @@ function SearchBar(props) {
       />
       <Button
         variant="contained"
+        color="warning"
         onClick={onSearchMed}
         sx={{
-          background: "#a2a8a7",
           color: "white",
         }}
       >

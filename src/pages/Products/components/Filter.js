@@ -22,9 +22,13 @@ function Filter() {
   }, []);
   const listCategory = () => {
     return categories.map((category) => (
-      <Box paddingLeft="12px" mb="8px" key={category.id}>
+      <Box paddingLeft="12px" mt="8px" key={category.id}>
         <Typography>
-          <Link href={`/products/category/${category.name}`}>
+          <Link
+            color="textPrimary"
+            underline="none"
+            href={`/products/category/${category.name}`}
+          >
             {category.name}
           </Link>
         </Typography>

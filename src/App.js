@@ -1,5 +1,6 @@
 import Products from "./pages/Products";
-import ProductsByCategory from "./pages/Products/productsByCategory";
+import ProductsByCategory from "./pages/Products/ProductsByCategory";
+import ProductDetails from "./pages/Products/ProductDetails";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navigation from "./components/Navigation";
 import "./index.css";
@@ -15,6 +16,7 @@ function App() {
             path="/products/category/:category"
             element={<ProductsByCategory />}
           />
+          <Route path="/products/:id" element={<ProductDetails />} />
         </Routes>
       </Router>
     </div>

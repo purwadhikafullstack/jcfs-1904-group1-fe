@@ -2,7 +2,7 @@ import React from "react";
 import ProductCard from "./components/ProductCard";
 import { useState, useEffect } from "react";
 import axios from "../../utils/axios.js";
-import { Box, Paper } from "@mui/material";
+import { Box, Paper, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import Filter from "./components/Filter";
 import SearchBar from "./components/SearchBar";
@@ -39,20 +39,21 @@ function ProductsByCategory() {
   };
 
   return (
-    <Box display="flex">
+    <Box display="flex" justifyContent="center">
       {/* ProductManager */}
       <Filter />
       <Paper
         elevation={3}
         sx={{
           width: "80%",
-          margin: "0px",
           paddingTop: "25px",
         }}
       >
         {/* SearchBar */}
         <SearchBar handleGetChildData={handleGetChildData} />
-
+        <Box sx={{ margin: "20px 0 0 45px" }}>
+          <Typography variant="h5">{params.category}</Typography>
+        </Box>
         {/* productCard */}
         <Box
           sx={{

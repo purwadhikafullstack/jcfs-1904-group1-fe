@@ -39,9 +39,8 @@ function Filter() {
   return (
     <Box
       sx={{
-        width: "200px",
-        marginTop: "100px",
-        background: "#F8F8F8",
+        mt: "100px",
+        mr: "32px",
       }}
     >
       <h2>Category</h2>

@@ -39,14 +39,13 @@ function Products() {
   };
 
   return (
-    <Box display="flex">
+    <Box display="flex" justifyContent="center">
       {/* ProductManager */}
       <Filter />
       <Paper
         elevation={3}
         sx={{
           width: "80%",
-          margin: "0px",
           paddingTop: "25px",
         }}
       >

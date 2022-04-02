@@ -9,10 +9,14 @@ import Link from "@mui/material/Link";
 
 function ProductCard(props) {
   const { id, name, productPhoto, price, dose } = props.product;
-
+  const formatted = price.toLocaleString();
   return (
-    <Link href={`/product/${id}`} underline="none">
-      <Card sx={{ maxWidth: 180, margin: "12px 0 32px 46px" }}>
+    <Link
+      href={`/products/${id}`}
+      underline="none"
+      sx={{ margin: "12px 0 32px 46px" }}
+    >
+      <Card sx={{ maxWidth: 180 }}>
         <CardActionArea>
           <CardMedia
             component="img"
@@ -35,7 +39,7 @@ function ProductCard(props) {
               component="div"
               textAlign="center"
             >
-              Rp {price}
+              Rp {formatted}
             </Typography>
           </CardContent>
         </CardActionArea>

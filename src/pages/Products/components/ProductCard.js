@@ -8,11 +8,10 @@ import { CardActionArea } from "@mui/material";
 import Link from "@mui/material/Link";
 
 function ProductCard(props) {
-  const { id, name, productPhoto, price, dose } = props.product;
-  const formatted = price.toLocaleString();
+  const { id, productName, productPhoto, price, dose, name } = props.product;
   return (
     <Link
-      href={`/products/${id}`}
+      href={`/products/${name}/${id}`}
       underline="none"
       sx={{ margin: "12px 0 32px 46px" }}
     >
@@ -31,7 +30,7 @@ function ProductCard(props) {
               component="div"
               textAlign="center"
             >
-              {name} {dose}mg
+              {productName} {dose}mg
             </Typography>
             <Typography
               variant="h7"
@@ -39,7 +38,7 @@ function ProductCard(props) {
               component="div"
               textAlign="center"
             >
-              Rp {formatted}
+              Rp {price}
             </Typography>
           </CardContent>
         </CardActionArea>

@@ -9,20 +9,18 @@ import Filter from "./components/Filter";
 import Sort from "./components/Sort";
 
 function Products() {
-  const [products, setProducts] = useState([]);
+  const [sortProperty, setSortProperty] = useState({ sortBy: "", order: "" });
   const [searchProducts, setSearchProducts] = useState([]);
   const params = useParams();
+
   //Fetch All Products
   const fetchProducts = async () => {
     try {
       const res = await axios.get(`/products`, {
-        params: {
-          sortBy: "name",
-          order: "Desc",
-        },
+        params: { sortBy: sortProperty.sortBy, order: sortProperty.order },
       });
       const { data } = res;
-      setProducts(data[0]);
+      // setProducts(data[0]);
       setSearchProducts(data[0]);
     } catch (error) {
       console.log(alert(error.message));
@@ -31,8 +29,24 @@ function Products() {
 
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [sortProperty]);
 
+  const sortProducts = (value) => {
+    switch (value) {
+      case "Asc":
+        setSortProperty({ sortBy: "productName", order: value });
+        break;
+      case "Desc":
+        setSortProperty({ sortBy: "productName", order: value });
+        break;
+      case "LowToHi":
+        setSortProperty({ sortBy: "price", order: "Asc" });
+        break;
+      case "HiToLow":
+        setSortProperty({ sortBy: "price", order: "Desc" });
+        break;
+    }
+  };
   //Get Data From Child Com
   const handleGetChildData = (data) => {
     setSearchProducts(data);
@@ -66,7 +80,7 @@ function Products() {
           }}
         >
           <Typography variant="h5">All Medicines</Typography>
-          <Sort />
+          <Sort sortProducts={sortProducts} />
         </Box>
         {/* productCard */}
         <Box

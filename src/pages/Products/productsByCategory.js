@@ -6,15 +6,19 @@ import { Box, Paper, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import Filter from "./components/Filter";
 import SearchBar from "./components/SearchBar";
+import Sort from "./components/Sort";
 
 function ProductsByCategory() {
+  const [sortProperty, setSortProperty] = useState({ sortBy: "", order: "" });
   const [products, setProducts] = useState([]);
   const params = useParams();
 
   //Fetch Products by Category
   const fetchProducts = async () => {
     try {
-      const res = await axios.get(`/products/category/${params.category}`);
+      const res = await axios.get(`/products/category/${params.category}`, {
+        params: { sortBy: sortProperty.sortBy, order: sortProperty.order },
+      });
       const { data } = res;
       setProducts(data[0]);
     } catch (error) {
@@ -24,12 +28,28 @@ function ProductsByCategory() {
 
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [sortProperty]);
+
+  const sortProducts = (value) => {
+    switch (value) {
+      case "Asc":
+        setSortProperty({ sortBy: "productName", order: value });
+        break;
+      case "Desc":
+        setSortProperty({ sortBy: "productName", order: value });
+        break;
+      case "LowToHi":
+        setSortProperty({ sortBy: "price", order: "Asc" });
+        break;
+      case "HiToLow":
+        setSortProperty({ sortBy: "price", order: "Desc" });
+        break;
+    }
+  };
 
   //Get Data From Child Com
   const handleGetChildData = (data) => {
     setProducts(data);
-    console.log(data);
   };
 
   const renderProducts = () => {
@@ -51,8 +71,15 @@ function ProductsByCategory() {
       >
         {/* SearchBar */}
         <SearchBar handleGetChildData={handleGetChildData} />
-        <Box sx={{ margin: "20px 0 0 45px" }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            margin: "20px 45px 0 45px",
+          }}
+        >
           <Typography variant="h5">{params.category}</Typography>
+          <Sort sortProducts={sortProducts} />
         </Box>
         {/* productCard */}
         <Box

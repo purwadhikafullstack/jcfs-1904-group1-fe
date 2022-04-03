@@ -66,13 +66,20 @@ function ProductDetails() {
             </Button>
           </Box>
           <Box>
-            <Typography variant="h5" mb="4px">
-              Category
-            </Typography>
-            <Typography variant="h6">{product.name}</Typography>
-            <Typography variant="body2" sx={{ fontSize: "18px" }}>
-              {product.description}
-            </Typography>
+            <Box paddingBottom="12px" borderBottom={1} mb="20px">
+              <Typography variant="h5" mb="4px">
+                Category
+              </Typography>
+              <Typography variant="h6">{product.name}</Typography>
+            </Box>
+            <Box>
+              <Typography variant="h5" mb="4px">
+                Description
+              </Typography>
+              <Typography variant="body2" sx={{ fontSize: "18px" }}>
+                {product.description}
+              </Typography>
+            </Box>
           </Box>
         </Box>
       </Box>

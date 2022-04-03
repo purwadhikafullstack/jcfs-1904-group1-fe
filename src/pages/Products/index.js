@@ -2,7 +2,7 @@ import React from "react";
 import ProductCard from "./components/ProductCard";
 import { useState, useEffect } from "react";
 import axios from "../../utils/axios.js";
-import { Box, Paper } from "@mui/material";
+import { Box, Paper, Typography } from "@mui/material";
 import SearchBar from "./components/SearchBar";
 import Filter from "./components/Filter";
 
@@ -51,7 +51,9 @@ function Products() {
       >
         {/* SearchBar */}
         <SearchBar handleGetChildData={handleGetChildData} />
-
+        <Box sx={{ margin: "20px 0 0 45px" }}>
+          <Typography variant="h5">All Medicines</Typography>
+        </Box>
         {/* productCard */}
         <Box
           sx={{

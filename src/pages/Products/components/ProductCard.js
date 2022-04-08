@@ -38,7 +38,7 @@ function ProductCard(props) {
               component="div"
               textAlign="center"
             >
-              Rp {price}
+              Rp {price.toLocaleString("id")}
             </Typography>
           </CardContent>
         </CardActionArea>

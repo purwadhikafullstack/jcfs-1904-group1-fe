@@ -7,9 +7,22 @@ import { Box, Paper, Typography } from "@mui/material";
 import SearchBar from "./components/SearchBar";
 import Filter from "./components/Filter";
 import Sort from "./components/Sort";
+import PaginationHandler from "./components/PaginationHandler";
 
 function Products() {
   const [sortProperty, setSortProperty] = useState({ sortBy: "", order: "" });
+  const [pagination, setPagination] = useState({
+    page: 1,
+    lastPage: 0,
+    offSet: 0,
+    itemsPerPage: 10,
+  });
+  const [queryPagination, setQueryPagination] = useState({
+    page: 1,
+    lastPage: 0,
+    offSet: 0,
+    itemsPerPage: 10,
+  });
   const [searchProducts, setSearchProducts] = useState([]);
   const params = useParams();
 
@@ -17,11 +30,20 @@ function Products() {
   const fetchProducts = async () => {
     try {
       const res = await axios.get(`/products`, {
-        params: { sortBy: sortProperty.sortBy, order: sortProperty.order },
+        params: {
+          sortBy: sortProperty.sortBy,
+          order: sortProperty.order,
+          offSet: queryPagination.offSet,
+        },
       });
       const { data } = res;
-      // setProducts(data[0]);
-      setSearchProducts(data[0]);
+      setSearchProducts(data.result[0]);
+      setPagination({
+        ...queryPagination,
+        lastPage: Math.ceil(
+          data.resultTotal[0][0].total / queryPagination.itemsPerPage
+        ),
+      });
     } catch (error) {
       console.log(alert(error.message));
     }
@@ -29,7 +51,7 @@ function Products() {
 
   useEffect(() => {
     fetchProducts();
-  }, [sortProperty]);
+  }, [sortProperty, queryPagination]);
 
   const sortProducts = (value) => {
     switch (value) {
@@ -91,6 +113,13 @@ function Products() {
           }}
         >
           {renderProducts()}
+        </Box>
+        <Box>
+          <PaginationHandler
+            pagination={pagination}
+            setPagination={setPagination}
+            setQueryPagination={setQueryPagination}
+          />
         </Box>
       </Paper>
     </Box>

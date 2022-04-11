@@ -4,6 +4,7 @@ import ProductDetails from "./pages/Products/ProductDetails";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navigation from "./components/Navigation";
 import "./index.css";
+import Dashboard from "./pages/Admin/Dashboard";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Router>
         <Navigation />
         <Routes>
+          <Route path="/admin" element={<Dashboard />} />
           <Route path="/products" element={<Products />} />
           <Route
             path="/products/category/:category"

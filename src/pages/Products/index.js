@@ -37,12 +37,10 @@ function Products() {
         },
       });
       const { data } = res;
-      setSearchProducts(data.result[0]);
+      setSearchProducts(data.result);
       setPagination({
         ...queryPagination,
-        lastPage: Math.ceil(
-          data.resultTotal[0][0].total / queryPagination.itemsPerPage
-        ),
+        lastPage: Math.ceil(data.total / queryPagination.itemsPerPage),
       });
     } catch (error) {
       console.log(alert(error.message));

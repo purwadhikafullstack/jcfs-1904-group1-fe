@@ -38,12 +38,10 @@ function ProductsByCategory() {
         },
       });
       const { data } = res;
-      setProducts(data.result[0]);
+      setProducts(data.result);
       setPagination({
         ...queryPagination,
-        lastPage: Math.ceil(
-          data.resultTotal[0][0].total / queryPagination.itemsPerPage
-        ),
+        lastPage: Math.ceil(data.total / queryPagination.itemsPerPage),
       });
     } catch (error) {
       console.log(alert(error.message));

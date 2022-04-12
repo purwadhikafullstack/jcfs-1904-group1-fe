@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import "./index.css";
 import { useEffect, useState } from "react";
 import Navigation from "./components/Navigation";
 import Home from "./pages/Home";
@@ -8,6 +9,8 @@ import Profile from "./pages/Profile";
 import Dashboard from "./pages/Dashboard";
 import ForgotPassword from "./pages/ForgotPassword";
 import { useDispatch } from "react-redux";
+import ProductsByCategory from "./pages/Products/ProductsByCategory";
+import ProductDetails from "./pages/Products/ProductDetails";
 
 import { keepLoginAction } from "./store/actions/index";
 
@@ -38,6 +41,12 @@ function App() {
             <Route path="profile" element={<Profile />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="forgot-password" element={<ForgotPassword />} />
+            <Route path="/products" element={<Products />} />
+          <Route
+            path="/products/category/:category"
+            element={<ProductsByCategory />}
+          />
+          <Route path="/products/:category/:id" element={<ProductDetails />} />
           </Routes>
         </Router>
       </div>

@@ -11,7 +11,7 @@ function Filter() {
     try {
       const res = await axios.get(`/categories`);
       const { data } = res;
-      setCategories(data[0]);
+      setCategories(data);
     } catch (error) {
       console.log(alert(error.message));
     }

@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navigation from "./components/Navigation";
 import "./index.css";
 import Dashboard from "./pages/Admin/Dashboard";
+import InputProducts from "./pages/Admin/Dashboard/Products/InputProducts";
 
 function App() {
   return (
@@ -13,6 +14,8 @@ function App() {
         <Navigation />
         <Routes>
           <Route path="/admin" element={<Dashboard />} />
+          <Route path="/admin/products/input" element={<InputProducts />} />
+
           <Route path="/products" element={<Products />} />
           <Route
             path="/products/category/:category"

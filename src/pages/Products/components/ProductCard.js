@@ -15,7 +15,7 @@ function ProductCard(props) {
       underline="none"
       sx={{ margin: "12px 0 32px 46px" }}
     >
-      <Card sx={{ maxWidth: 180 }}>
+      <Card sx={{ maxWidth: 160, height: 240 }}>
         <CardActionArea>
           <CardMedia
             component="img"

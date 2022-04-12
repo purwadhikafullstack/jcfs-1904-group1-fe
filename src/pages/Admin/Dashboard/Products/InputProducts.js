@@ -8,26 +8,63 @@ import {
   Button,
   Typography,
   Grid,
-  Autocomplete,
+  InputLabel,
+  Select,
+  MenuItem,
   FormLabel,
   FormControl,
   FormControlLabel,
   Radio,
   RadioGroup,
 } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import InputQty from "./components/InputQty";
 
 function InputProducts() {
   const [categories, setCategories] = useState([]);
   const [formState, setFormState] = useState({
-    isLiquid: true,
+    isLiquid: 1,
   });
+  const [image, setImage] = useState("");
 
   const handleLiquidButtonChange = (e) => {
-    setFormState({ ...formState, isLiquid: Boolean(parseInt(e.target.value)) });
+    setFormState({ ...formState, isLiquid: parseInt(e.target.value) });
   };
 
+  const handleChange = (e) => {
+    setFormState({ ...formState, [e.target.name]: e.target.value });
+  };
+
+  const onImageChange = (e) => {
+    const image = e.target.files[0];
+    setImage(image);
+  };
+
+  const onInputClick = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("productPhoto", image);
+      formData.append("productName", formState.productName);
+      formData.append("price", formState.price);
+      formData.append("dose", formState.dose);
+      formData.append("description", formState.description);
+      formData.append("category_id", formState.category_id);
+      formData.append("isLiquid", formState.isLiquid);
+      if (formState.isLiquid == 1) {
+        formData.append("qtyBox", formState.box);
+        formData.append("qtyBottle", formState.bottle);
+      } else {
+        formData.append("qtyBox", formState.box);
+        formData.append("qtyStrip", formState.strip);
+        formData.append("qtyPcs", formState.pcs);
+      }
+
+      const res = await axios.post(`/products`, formData);
+      alert("Input Product Success");
+      window.location.reload();
+      console.log({ res });
+    } catch (error) {
+      console.log({ error });
+    }
+  };
   const fetchCategories = async () => {
     try {
       const res = await axios.get(`/categories`);
@@ -64,6 +101,7 @@ function InputProducts() {
                   label="Product Name"
                   variant="outlined"
                   size="small"
+                  onChange={handleChange}
                 />
               </Grid>
               <Grid item xs={4} mb="24px" mr="20px">
@@ -72,6 +110,7 @@ function InputProducts() {
                   label="Price"
                   variant="outlined"
                   size="small"
+                  onChange={handleChange}
                 />
               </Grid>
               <Grid item xs={3}>
@@ -80,6 +119,7 @@ function InputProducts() {
                   label="Dose"
                   variant="outlined"
                   size="small"
+                  onChange={handleChange}
                 />
               </Grid>
               <Grid item xs={8} mb="24px">
@@ -88,13 +128,14 @@ function InputProducts() {
                   label="Description"
                   variant="outlined"
                   size="small"
+                  onChange={handleChange}
                 />
               </Grid>
               <Grid item xs={12} mb="8px">
                 <Typography variant="body">Upload Product Image</Typography>
               </Grid>
               <Grid item xs={12} mb="24px">
-                <input type="file" />
+                <input type="file" onChange={onImageChange} />
               </Grid>
               <Grid item xs={4} mb="24px">
                 <FormControl>
@@ -118,24 +159,93 @@ function InputProducts() {
                 </FormControl>
               </Grid>
               <Grid item xs={6}>
-                <Autocomplete
-                  disablePortal
-                  name="category"
-                  sx={{ width: "180px" }}
-                  options={categories.map((category) => category.name)}
-                  renderInput={(params) => (
-                    <TextField {...params} label="Category" />
-                  )}
+                <InputLabel>Category</InputLabel>
+                <Select
+                  defaultValue=""
+                  name="category_id"
+                  onChange={handleChange}
+                  sx={{ width: "160px" }}
                   size="small"
-                />
+                >
+                  <MenuItem value="">Default</MenuItem>
+                  {categories.map((category) => (
+                    <MenuItem key={category.id} value={category.id}>
+                      {category.name}
+                    </MenuItem>
+                  ))}
+                </Select>
               </Grid>
               <Grid item xs={12} mb="12px">
                 <Typography>Quantity</Typography>
               </Grid>
-              {/* IF conditional */}
-              <InputQty formState={formState} />
-              <Grid item xs={10} mb="12px" textAlign="center">
-                <Button variant="contained" color="warning">
+
+              {/*conditional */}
+              {formState.isLiquid ? (
+                <Grid container>
+                  <Grid item xs={3} mb="48px" mr="20px">
+                    <TextField
+                      name="box"
+                      label="Box"
+                      variant="outlined"
+                      size="small"
+                      onChange={handleChange}
+                    />
+                  </Grid>
+                  <Grid item xs={3} mr="20px">
+                    <TextField
+                      name="bottle"
+                      label="Bottle"
+                      variant="outlined"
+                      size="small"
+                      onChange={handleChange}
+                    />
+                  </Grid>
+                </Grid>
+              ) : (
+                <Grid container>
+                  <Grid item xs={3} mb="48px" mr="20px">
+                    <TextField
+                      name="box"
+                      label="Box"
+                      variant="outlined"
+                      size="small"
+                      onChange={handleChange}
+                    />
+                  </Grid>
+                  <Grid item xs={3} mr="20px">
+                    <TextField
+                      name="strip"
+                      label="Strip"
+                      variant="outlined"
+                      size="small"
+                      onChange={handleChange}
+                    />
+                  </Grid>
+                  <Grid item xs={3} mr="20px">
+                    <TextField
+                      name="pcs"
+                      label="Pcs"
+                      variant="outlined"
+                      size="small"
+                      onChange={handleChange}
+                    />
+                  </Grid>
+                </Grid>
+              )}
+
+              <Grid
+                item
+                xs={10}
+                mb="12px"
+                textalign="center"
+                display="flex"
+                justifyContent="center"
+              >
+                <Button
+                  variant="contained"
+                  color="warning"
+                  onClick={onInputClick}
+                >
                   Input
                 </Button>
               </Grid>

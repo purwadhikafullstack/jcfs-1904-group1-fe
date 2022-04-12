@@ -8,6 +8,7 @@ import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 import Dashboard from "./pages/Dashboard";
 import ForgotPassword from "./pages/ForgotPassword";
+import Products from "./pages/Products"
 import { useDispatch } from "react-redux";
 import ProductsByCategory from "./pages/Products/ProductsByCategory";
 import ProductDetails from "./pages/Products/ProductDetails";

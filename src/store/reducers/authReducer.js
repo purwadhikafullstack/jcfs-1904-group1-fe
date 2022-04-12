@@ -1,6 +1,7 @@
 const init = {
   id: 0,
   username: "",
+  isAdmin: 0,
 };
 
 const authReducer = (state = init, action) => {
@@ -10,6 +11,7 @@ const authReducer = (state = init, action) => {
         ...state,
         id: action.payload.id,
         username: action.payload.username,
+        isAdmin: action.payload.isAdmin,
       };
 
     case "LOGOUT_SUCCESS":

@@ -7,23 +7,21 @@ import Container from "@mui/material/Container";
 import { TextField, Typography } from "@mui/material";
 import { loginAction } from "../../store/actions";
 
-function Login() {
+function ForgotPassword() {
   const username = useSelector((state) => state.auth.username);
   const dispatch = useDispatch();
   const [formState, setFormState] = useState({
-    username: "",
-    password: "",
+    email: "",
   });
 
   const handleChange = (e) => {
     setFormState({ ...formState, [e.target.name]: e.target.value });
   };
 
-  const onLoginClick = async () => {
+  const onResetClick = async () => {
     try {
       const res = await axios.post("/users/login", {
-        username: formState.username,
-        password: formState.password,
+        email: formState.email,
       });
 
       const user = res.data.user[0];
@@ -38,7 +36,7 @@ function Login() {
   };
 
   const onInputPress = (e) => {
-    if (e.code === "Enter") onLoginClick();
+    if (e.code === "Enter") onResetClick();
   };
 
   if (username) {
@@ -49,7 +47,7 @@ function Login() {
     <Container
       sx={{
         width: 500,
-        height: 400,
+        height: 300,
         backgroundColor: "white",
         marginTop: 10,
         borderRadius: 6,
@@ -80,22 +78,10 @@ function Login() {
         }}
       >
         <TextField
-          placeholder="Enter your username"
+          placeholder="Enter your e-mail"
           variant="outlined"
-          name="username"
-          onChange={handleChange}
-          onKeyPress={onInputPress}
-          sx={{
-            p: 1,
-            m: 1,
-            width: "100%",
-          }}
-        />
-
-        <TextField
-          placeholder="Enter your password"
-          name="password"
-          type="password"
+          name="email"
+          type="email"
           onChange={handleChange}
           onKeyPress={onInputPress}
           sx={{
@@ -119,20 +105,17 @@ function Login() {
               flexWrap: "wrap",
               justifyContent: "end",
             }}
-          >
-            <Link to="/forgotpassword">Forgot password?</Link>
-            <Link to="/register">Register here</Link>
-          </Container>
+          ></Container>
           <Button
             variant="contained"
             color="primary"
-            onClick={onLoginClick}
+            onClick={onResetClick}
             sx={{
               width: "100%",
               paddingInline: 17,
             }}
           >
-            Login
+            Reset
           </Button>
         </Container>
       </Container>
@@ -140,4 +123,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default ForgotPassword;

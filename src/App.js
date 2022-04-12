@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 import Dashboard from "./pages/Dashboard";
+import ForgotPassword from "./pages/ForgotPassword";
 import { useDispatch } from "react-redux";
 
 import { keepLoginAction } from "./store/actions/index";
@@ -19,8 +20,8 @@ function App() {
 
     if (usersLocalStorage) {
       const userData = JSON.parse(usersLocalStorage);
-      const { id, username } = userData;
-      dispatch(keepLoginAction({ id, username }));
+      const { id, username, isAdmin } = userData;
+      dispatch(keepLoginAction({ id, username, isAdmin }));
     }
 
     setIsStorageChecked(true);
@@ -36,6 +37,7 @@ function App() {
             <Route path="register" element={<Register />} />
             <Route path="profile" element={<Profile />} />
             <Route path="dashboard" element={<Dashboard />} />
+            <Route path="forgot-password" element={<ForgotPassword />} />
           </Routes>
         </Router>
       </div>

@@ -13,6 +13,7 @@ function Login() {
   const [formState, setFormState] = useState({
     username: "",
     password: "",
+    isAdmin: "",
   });
 
   const handleChange = (e) => {
@@ -24,6 +25,7 @@ function Login() {
       const res = await axios.post("/users/login", {
         username: formState.username,
         password: formState.password,
+        isAdmin: formState.isAdmin,
       });
 
       const user = res.data.user[0];
@@ -120,7 +122,7 @@ function Login() {
               justifyContent: "end",
             }}
           >
-            <Link to="/forgotpassword">Forgot password?</Link>
+            <Link to="/forgot-password">Forgot password?</Link>
             <Link to="/register">Register here</Link>
           </Container>
           <Button

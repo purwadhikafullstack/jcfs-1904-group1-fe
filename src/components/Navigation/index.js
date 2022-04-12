@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Button, Container } from "@mui/material";
+import { AppBar, Button, Container, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutAction } from "../../store/actions";
@@ -33,37 +33,48 @@ const Navigation = () => {
   };
 
   return (
-    <Container
-      sx={{
-        display: "flex",
-        flexWrap: "wrap",
-        justifyContent: "space-between",
-      }}
-    >
-      <Button variant="outlined" component={Link} to="/">
-        BoDrugs
-      </Button>
-      {!isLogged ? (
-        <Button
-          variant="contained"
-          component={Link}
-          to="/login"
-          onClick={onLoginClick}
-        >
-          Log in
+    <AppBar position="static" sx={{ backgroundColor: "darkorange" }}>
+      <Container
+        sx={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "space-between",
+        }}
+      >
+        <Button color="error" variant="contained" component={Link} to="/">
+          <Typography
+            variant="button"
+            fontSize={20}
+            fontFamily={"monospace"}
+            fontStyle={"italic"}
+            style={{ textTransform: "none" }}
+            sx={{ fontWeight: 1 }}
+          >
+            bodrugs
+          </Typography>
         </Button>
-      ) : (
-        <Button
-          variant="contained"
-          color="error"
-          component={Link}
-          to="/login"
-          onClick={onLogoutClick}
-        >
-          Log out
-        </Button>
-      )}
-    </Container>
+        {!isLogged ? (
+          <Button
+            variant="contained"
+            component={Link}
+            to="/login"
+            onClick={onLoginClick}
+          >
+            Log in
+          </Button>
+        ) : (
+          <Button
+            variant="contained"
+            color="error"
+            component={Link}
+            to="/login"
+            onClick={onLogoutClick}
+          >
+            Log out
+          </Button>
+        )}
+      </Container>
+    </AppBar>
   );
 };
 export default Navigation;

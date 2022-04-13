@@ -34,7 +34,8 @@ function ProductsByCategory() {
         params: {
           sortBy: sortProperty.sortBy,
           order: sortProperty.order,
-          offSet: queryPagination,
+          offSet: queryPagination.offSet,
+          limit: queryPagination.itemsPerPage,
         },
       });
       const { data } = res;

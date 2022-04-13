@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import axios from "../../../../utils/axios";
+import axios from "../../../utils/axios";
 import {
   Box,
   Paper,
@@ -80,7 +80,7 @@ function InputProducts() {
   }, []);
 
   return (
-    <Box display="flex" justifyContent="center">
+    <Box display="flex" justifyContent="center" ml="240px">
       <Paper
         sx={{
           width: "75%",
@@ -95,7 +95,7 @@ function InputProducts() {
         <Paper elevation={3} sx={{ mt: "42px", mb: "20px", width: "40%" }}>
           <Box sx={{ flexGrow: 1, padding: "24px 0 24px 58px" }}>
             <Grid container spacing={0}>
-              <Grid item xs={8} mb="24px">
+              <Grid item xs={9} mb="24px">
                 <TextField
                   name="productName"
                   label="Product Name"
@@ -104,7 +104,7 @@ function InputProducts() {
                   onChange={handleChange}
                 />
               </Grid>
-              <Grid item xs={4} mb="24px" mr="20px">
+              <Grid item xs={4} mb="24px" mr="44px">
                 <TextField
                   name="price"
                   label="Price"
@@ -122,7 +122,7 @@ function InputProducts() {
                   onChange={handleChange}
                 />
               </Grid>
-              <Grid item xs={8} mb="24px">
+              <Grid item xs={9} mb="24px">
                 <TextField
                   name="description"
                   label="Description"
@@ -164,7 +164,7 @@ function InputProducts() {
                   defaultValue=""
                   name="category_id"
                   onChange={handleChange}
-                  sx={{ width: "160px" }}
+                  sx={{ width: "115px" }}
                   size="small"
                 >
                   <MenuItem value="">Default</MenuItem>

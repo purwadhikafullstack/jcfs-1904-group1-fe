@@ -17,8 +17,8 @@ function ProductDetails() {
           `/products/${params.category}/${params.id}`
         );
         const { data } = res;
-        setProduct(data.result[0][0]);
-        setSimilarProducts(data.resultSimilar[0]);
+        setProduct(data.result[0]);
+        setSimilarProducts(data.resultSimilar);
       } catch (error) {
         console.log(alert(error.message));
       }

@@ -2,10 +2,18 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "../../../utils/axios";
-import { Box, Typography, Button, TextField } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Button,
+  TextField,
+  MenuItem,
+  Select,
+} from "@mui/material";
 
 function ProductDetails() {
   const [product, setProduct] = useState({ price: "" });
+  const [categories, setCategories] = useState([]);
   const params = useParams();
   const [isEdit, setIsEdit] = useState(false);
   const [image, setImage] = useState("");
@@ -24,23 +32,67 @@ function ProductDetails() {
   };
 
   const onSaveClick = () => {
+    updateData();
     setIsEdit(false);
   };
 
-  useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        const res = await axios.get(
-          `/products/${params.category}/${params.id}`
-        );
-        const { data } = res;
-        setProduct(data.result[0]);
-      } catch (error) {
-        console.log(alert(error.message));
+  const onCancelClick = () => {
+    setIsEdit(false);
+  };
+
+  const updateData = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("id", product.id);
+      formData.append("productPhoto", image);
+      formData.append("productName", product.productName);
+      formData.append("price", product.price);
+      formData.append("dose", product.dose);
+      formData.append("description", product.description);
+      formData.append("category_id", product.category_id);
+      formData.append("isLiquid", product.isLiquid);
+      if (product.isLiquid === 1) {
+        formData.append("qtyBoxTotal", product.qtyBoxTotal);
+        formData.append("qtyBottleTotal", product.qtyStripTotal);
+      } else {
+        formData.append("qtyBoxTotal", product.qtyBoxTotal);
+        formData.append("qtyStripTotal", product.qtyStripTotal);
+        formData.append("qtyPcsTotal", product.qtyPcsTotal);
       }
-    };
+      const res = await axios.put(`/products/${params.id}`, formData);
+      console.log(params.id);
+      alert("Update Data Success");
+      window.location.reload();
+      console.log({ res });
+    } catch (error) {
+      console.log({ error });
+    }
+  };
+
+  const fetchProduct = async () => {
+    try {
+      const res = await axios.get(`/products/${params.category}/${params.id}`);
+      const { data } = res;
+      setProduct(data.result[0]);
+    } catch (error) {
+      console.log(alert(error.message));
+    }
+  };
+
+  const fetchCategories = async () => {
+    try {
+      const res = await axios.get(`/categories`);
+      const { data } = res;
+      setCategories(data);
+    } catch (error) {
+      console.log(alert(error.message));
+    }
+  };
+
+  useEffect(() => {
     fetchProduct();
-  }, []);
+    fetchCategories();
+  }, [isEdit]);
 
   const type = product.isLiquid ? "ml" : "mg";
 
@@ -187,13 +239,20 @@ function ProductDetails() {
                 <Typography variant="h5" mb="4px">
                   Category
                 </Typography>
-                <TextField
-                  name="name"
-                  value={product.name}
+                <Select
+                  defaultValue={product.category_id}
+                  name="category_id"
                   onChange={handleChange}
-                  size="small"
                   sx={{ width: "200px" }}
-                />
+                  size="small"
+                >
+                  <MenuItem value="">Default</MenuItem>
+                  {categories.map((category) => (
+                    <MenuItem key={category.id} value={category.id}>
+                      {category.name}
+                    </MenuItem>
+                  ))}
+                </Select>
               </Box>
               <Box borderBottom={1} paddingBottom="12px" mb="20px">
                 <Typography variant="h5" mb="4px">
@@ -296,7 +355,12 @@ function ProductDetails() {
               </Box>
             )}
 
-            <Box display="flex" justifyContent="center" mt="32px" mb="24px">
+            <Box
+              display="flex"
+              justifyContent="space-around"
+              mt="32px"
+              mb="24px"
+            >
               <Button
                 variant="contained"
                 size="small"
@@ -309,6 +373,19 @@ function ProductDetails() {
                 }}
               >
                 Save
+              </Button>
+              <Button
+                variant="contained"
+                size="small"
+                color="warning"
+                onClick={onCancelClick}
+                sx={{
+                  width: "80px",
+                  color: "white",
+                  backgroundColor: "#ff5252",
+                }}
+              >
+                Cancel
               </Button>
             </Box>
           </Box>

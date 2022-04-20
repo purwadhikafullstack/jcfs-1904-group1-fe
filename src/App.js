@@ -8,6 +8,9 @@ import Dashboard from "./pages/Admin/Dashboard";
 import InputProducts from "./pages/Admin/Products/InputProducts";
 import ProductsAdmin from "./pages/Admin/Products";
 import ProductDetailsAdmin from "./pages/Admin/Products/ProductDetails";
+import SalesReport from "./pages/Admin/Sales_Report";
+import ReportDetails from "./pages/Admin/Sales_Report/ReportDetails";
+
 function App() {
   const isAdmin = 1;
 
@@ -21,6 +24,11 @@ function App() {
           <Route
             path="/admin/products/:category/:id"
             element={<ProductDetailsAdmin />}
+          />
+          <Route path="/admin/sales-report" element={<SalesReport />} />
+          <Route
+            path="/admin/sales-report/details"
+            element={<ReportDetails />}
           />
 
           <Route path="/products" element={<Products />} />

@@ -14,8 +14,6 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
-import { link } from "react-router-dom";
 
 function Dashboard() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -108,27 +106,7 @@ function Dashboard() {
             textAlign: "center",
           }}
         >
-          <Typography mr="25px">
-            <Link href={"/products"} underline="none" color="textPrimary">
-              Medicine
-            </Link>
-          </Typography>
-          <Typography mr="25px">
-            <Link href={"/prescription"} underline="none" color="textPrimary">
-              Prescription
-            </Link>
-          </Typography>
-          <Typography mr="25px">
-            <Link href={"/contact"} underline="none" color="textPrimary">
-              Contact
-            </Link>
-          </Typography>
-          <Typography>
-            <Link href={"/cart"} underline="none" color="textPrimary">
-              Cart
-            </Link>
-          </Typography>
-
+          <Typography>Hi Admin...</Typography>
           <Tooltip title="Account settings">
             <IconButton
               onClick={handleClick}
@@ -177,10 +155,6 @@ function Dashboard() {
           transformOrigin={{ horizontal: "right", vertical: "top" }}
           anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         >
-          <MenuItem>
-            <Avatar /> Profile
-          </MenuItem>
-          <Divider />
           <MenuItem>
             <ListItemIcon>
               <Logout fontSize="small" />

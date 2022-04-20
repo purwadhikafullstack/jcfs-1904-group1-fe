@@ -81,7 +81,6 @@ function ProductsAdmin() {
 
   return (
     <Box display="flex" justifyContent="center" ml="240px">
-      {/* ProductManager */}
       <Paper
         elevation={3}
         sx={{

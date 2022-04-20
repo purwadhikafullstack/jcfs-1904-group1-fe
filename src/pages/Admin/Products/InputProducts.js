@@ -48,7 +48,7 @@ function InputProducts() {
       formData.append("description", formState.description);
       formData.append("category_id", formState.category_id);
       formData.append("isLiquid", formState.isLiquid);
-      if (formState.isLiquid == 1) {
+      if (formState.isLiquid === 1) {
         formData.append("qtyBox", formState.box);
         formData.append("qtyBottle", formState.bottle);
       } else {
@@ -142,7 +142,10 @@ function InputProducts() {
                   <FormLabel id="demo-radio-buttons-group-label">
                     isLiquid ?
                   </FormLabel>
-                  <RadioGroup defaultValue={1} name="radio-buttons-group">
+                  <RadioGroup
+                    defaultValue={formState.isLiquid}
+                    name="radio-buttons-group"
+                  >
                     <FormControlLabel
                       value={1}
                       control={<Radio />}

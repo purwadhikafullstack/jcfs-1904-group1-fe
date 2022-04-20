@@ -28,7 +28,7 @@ function SalesReport() {
               <Box ml="12px">
                 <Typography variant="h6">120</Typography>
 
-                <Typography variant="h6">New Customer</Typography>
+                <Typography variant="h6">Total Customer</Typography>
               </Box>
             </Box>
           </Box>

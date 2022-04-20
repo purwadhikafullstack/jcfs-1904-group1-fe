@@ -16,9 +16,8 @@ import {
   TableHead,
   TablePagination,
   TableRow,
+  Button,
 } from "@mui/material";
-import TextField from "@mui/material/TextField";
-
 import axios from "../../../utils/axios";
 import LineChart from "./components/LineChart";
 
@@ -26,14 +25,61 @@ function ReportDetails() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [transactions, setTransactions] = useState([]);
+  const [revenue, setRevenue] = useState([]);
+  const [pagination, setPagination] = useState({
+    offSet: 0,
+    count: 0,
+  });
+  const [queryPagination, setQueryPagination] = useState({
+    offSet: 0,
+  });
+  const [formState, setFormState] = useState({
+    initMonth: "",
+    initYear: "",
+    finalMonth: "",
+    finalYear: "",
+  });
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  const handleChange = (e) => {
+    setFormState({ ...formState, [e.target.name]: e.target.value });
+  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
+    if (newPage > page) {
+      setQueryPagination({
+        ...pagination,
+        offSet: pagination.offSet + rowsPerPage,
+      });
+    } else if (newPage < page) {
+      setQueryPagination({
+        ...pagination,
+        offSet: pagination.offSet - rowsPerPage,
+      });
+    }
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
+    setRowsPerPage(event.target.value);
     setPage(0);
+  };
+  const onApplyClick = () => {
+    // fetchTransactions();
+    setPage(0);
+    setQueryPagination({ ...pagination, offSet: 0 });
   };
 
   const fetchTransactions = async () => {
@@ -41,19 +87,26 @@ function ReportDetails() {
       const res = await axios.get(`/transactions/revenue`, {
         params: {
           limit: rowsPerPage,
+          initMonth: formState.initMonth,
+          initYear: formState.initYear,
+          finalMonth: formState.finalMonth,
+          finalYear: formState.finalYear,
+          offSet: queryPagination.offSet,
         },
       });
 
-      const { data, revByMonth } = res.data;
+      const { data, dataChart, totalCount } = res.data;
       setTransactions(data);
-      console.log(revByMonth);
+      setRevenue(dataChart);
+      setPagination({ ...queryPagination, count: totalCount[0].total });
+
       setChartData({
         ...chartData,
-        labels: revByMonth.map((data) => data.month),
+        labels: dataChart.map((data) => data.filter),
         datasets: [
           {
             label: "Amount",
-            data: revByMonth.map((data) => data.amount),
+            data: dataChart.map((data) => data.amount),
             backgroundColor: ["#ff5252"],
             borderColor: "#ff5252",
             borderWidth: 2,
@@ -68,7 +121,7 @@ function ReportDetails() {
 
   useEffect(() => {
     fetchTransactions();
-  }, [rowsPerPage]);
+  }, [rowsPerPage, queryPagination]);
 
   const [chartData, setChartData] = useState({
     labels: "",
@@ -108,6 +161,7 @@ function ReportDetails() {
     return row;
   });
 
+  console.log(formState);
   return (
     <Box ml="240px" display="flex" justifyContent="center">
       <Paper
@@ -121,29 +175,29 @@ function ReportDetails() {
         {/* FILTER */}
         <Box ml="40px">
           <Typography>Filter</Typography>
-          <Box display="flex" alignItems="center">
+          <Box display="flex" alignItems="center" mt="12px">
             <FormControl size="small" sx={{ m: "2px 0", minWidth: 90 }}>
               <InputLabel id="demo-simple-select-label">Month</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                disableUnderline
                 name="initMonth"
-                // onChange={sortHandler}
+                value={formState.initMonth}
+                onChange={handleChange}
                 label="Month"
               >
-                <MenuItem value={1}>January</MenuItem>
-                <MenuItem value={2}>February</MenuItem>
-                <MenuItem value={3}>March</MenuItem>
-                <MenuItem value={4}>April</MenuItem>
-                <MenuItem value={5}>May</MenuItem>
-                <MenuItem value={6}>June</MenuItem>
-                <MenuItem value={7}>July</MenuItem>
-                <MenuItem value={8}>August</MenuItem>
-                <MenuItem value={9}>September</MenuItem>
-                <MenuItem value={10}>October</MenuItem>
-                <MenuItem value={11}>November</MenuItem>
-                <MenuItem value={12}>December</MenuItem>
+                <MenuItem value="01">January</MenuItem>
+                <MenuItem value="02">February</MenuItem>
+                <MenuItem value="03">March</MenuItem>
+                <MenuItem value="04">April</MenuItem>
+                <MenuItem value="05">May</MenuItem>
+                <MenuItem value="06">June</MenuItem>
+                <MenuItem value="07">July</MenuItem>
+                <MenuItem value="08">August</MenuItem>
+                <MenuItem value="09">September</MenuItem>
+                <MenuItem value="10">October</MenuItem>
+                <MenuItem value="11">November</MenuItem>
+                <MenuItem value="12">December</MenuItem>
               </Select>
             </FormControl>
             <FormControl size="small" sx={{ m: "2px 0", minWidth: 80 }}>
@@ -151,56 +205,71 @@ function ReportDetails() {
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                disableUnderline
                 name="initYear"
-                // onChange={sortHandler}
+                value={formState.initYear}
+                onChange={handleChange}
                 label="Year"
               >
-                <MenuItem value={2021}>2021</MenuItem>
-                <MenuItem value={2022}>2022</MenuItem>
+                <MenuItem value="2021">2021</MenuItem>
+                <MenuItem value="2022">2022</MenuItem>
               </Select>
             </FormControl>
             <Typography fontSize="18px" marginInline="12px">
-              To
+              -
             </Typography>
             <FormControl size="small" sx={{ m: "2px 0", minWidth: 90 }}>
               <InputLabel id="demo-simple-select-label">Month</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                disableUnderline
                 name="finalMonth"
-                // onChange={sortHandler}
+                value={formState.finalMonth}
+                onChange={handleChange}
                 label="Month"
               >
-                <MenuItem value={1}>January</MenuItem>
-                <MenuItem value={2}>February</MenuItem>
-                <MenuItem value={3}>March</MenuItem>
-                <MenuItem value={4}>April</MenuItem>
-                <MenuItem value={5}>May</MenuItem>
-                <MenuItem value={6}>June</MenuItem>
-                <MenuItem value={7}>July</MenuItem>
-                <MenuItem value={8}>August</MenuItem>
-                <MenuItem value={9}>September</MenuItem>
-                <MenuItem value={10}>October</MenuItem>
-                <MenuItem value={11}>November</MenuItem>
-                <MenuItem value={12}>December</MenuItem>
+                <MenuItem value="01">January</MenuItem>
+                <MenuItem value="02">February</MenuItem>
+                <MenuItem value="03">March</MenuItem>
+                <MenuItem value="04">April</MenuItem>
+                <MenuItem value="05">May</MenuItem>
+                <MenuItem value="06">June</MenuItem>
+                <MenuItem value="07">July</MenuItem>
+                <MenuItem value="08">August</MenuItem>
+                <MenuItem value="09">September</MenuItem>
+                <MenuItem value="10">October</MenuItem>
+                <MenuItem value="11">November</MenuItem>
+                <MenuItem value="12">December</MenuItem>
               </Select>
             </FormControl>
             <FormControl size="small" sx={{ m: "2px 0", minWidth: 80 }}>
               <InputLabel id="demo-simple-select-label">Year</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
+                value={formState.finalYear}
                 id="demo-simple-select"
-                disableUnderline
                 name="finalYear"
-                // onChange={sortHandler}
+                onChange={handleChange}
                 label="Year"
               >
-                <MenuItem value={2021}>2021</MenuItem>
-                <MenuItem value={2022}>2022</MenuItem>
+                <MenuItem value="2021">2021</MenuItem>
+                <MenuItem value="2022">2022</MenuItem>
               </Select>
             </FormControl>
+            <Box ml="24px">
+              <Button
+                variant="contained"
+                size="small"
+                color="warning"
+                onClick={onApplyClick}
+                sx={{
+                  width: "120px",
+                  color: "white",
+                  backgroundColor: "#ff5252",
+                }}
+              >
+                APPLY
+              </Button>
+            </Box>
           </Box>
         </Box>
 
@@ -216,12 +285,21 @@ function ReportDetails() {
         >
           <Box>
             <Typography align="center" variant="h5">
-              TITLE
+              Revenue Chart
             </Typography>
           </Box>
           <LineChart chartData={chartData} />
-          <Box>
-            <Typography variant="h6">Total Revenue : xxxxx</Typography>
+          <Box display="flex">
+            <Typography variant="h6" mr="4px">
+              Total Revenue :{" "}
+            </Typography>
+            <Typography variant="h6" fontWeight="bold" color="green">
+              Rp{" "}
+              {revenue
+                .map((data) => data.amount)
+                .reduce((a, b) => a + b, 0)
+                .toLocaleString("id")}
+            </Typography>
           </Box>
         </Box>
 
@@ -282,18 +360,14 @@ function ReportDetails() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 20]}
             component="div"
-            count={rows.length}
+            count={pagination.count}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
         </Paper>
-        <Box display="flex" justifyContent="flex-end" m="24px">
-          {/* <Box>
-            <Typography>Total Revenue</Typography>
-          </Box> */}
-        </Box>
+        <Box display="flex" justifyContent="flex-end" m="24px"></Box>
       </Paper>
     </Box>
   );

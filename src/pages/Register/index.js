@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 import axios from "../../utils/axios";
 import Button from "@mui/material/Button";

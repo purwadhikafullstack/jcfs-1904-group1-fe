@@ -2,31 +2,30 @@ import React from "react";
 import ProductCard from "./components/ProductCard";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import axios from "../../utils/axios.js";
-import { Box, Paper, Typography } from "@mui/material";
-import SearchBar from "./components/SearchBar";
-import Filter from "./components/Filter";
-import Sort from "./components/Sort";
-import PaginationHandler from "./components/PaginationHandler";
+import axios from "../../../utils/axios";
+import { Box, Paper, Typography, Button } from "@mui/material";
+import SearchBar from "../../Products/components/SearchBar";
+import Sort from "../../Products/components/Sort";
+import PaginationHandler from "../../Products/components/PaginationHandler";
 
-function Products() {
+function ProductsAdmin() {
   const [sortProperty, setSortProperty] = useState({ sortBy: "", order: "" });
   const [pagination, setPagination] = useState({
     page: 1,
     lastPage: 0,
     offSet: 0,
-    itemsPerPage: 10,
+    itemsPerPage: 8,
   });
   const [queryPagination, setQueryPagination] = useState({
     page: 1,
     lastPage: 0,
     offSet: 0,
-    itemsPerPage: 10,
+    itemsPerPage: 8,
   });
   const [searchProducts, setSearchProducts] = useState([]);
   const params = useParams();
 
-  //Fetch All Products
+  //Fetch Products
   const fetchProducts = async () => {
     try {
       const res = await axios.get(`/products`, {
@@ -81,9 +80,7 @@ function Products() {
   };
 
   return (
-    <Box display="flex" justifyContent="center">
-      {/* ProductManager */}
-      <Filter />
+    <Box display="flex" justifyContent="center" ml="240px">
       <Paper
         elevation={3}
         sx={{
@@ -91,6 +88,18 @@ function Products() {
           paddingTop: "25px",
         }}
       >
+        <Box display="flex" justifyContent="center">
+          <Button
+            href="/admin/products/input"
+            variant="contained"
+            size="small"
+            color="warning"
+            // color="warning"
+            sx={{ width: "120px", color: "white", backgroundColor: "#ff5252" }}
+          >
+            Add Product
+          </Button>
+        </Box>
         {/* SearchBar */}
         <SearchBar handleGetChildData={handleGetChildData} />
         <Box
@@ -125,4 +134,4 @@ function Products() {
   );
 }
 
-export default Products;
+export default ProductsAdmin;

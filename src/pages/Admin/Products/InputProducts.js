@@ -170,7 +170,6 @@ function InputProducts() {
                   sx={{ width: "115px" }}
                   size="small"
                 >
-                  <MenuItem value="">Default</MenuItem>
                   {categories.map((category) => (
                     <MenuItem key={category.id} value={category.id}>
                       {category.name}

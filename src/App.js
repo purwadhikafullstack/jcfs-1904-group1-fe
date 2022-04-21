@@ -5,10 +5,9 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Profile from "./pages/Profile";
-import Dashboard from "./pages/Dashboard";
 import ForgotPassword from "./pages/ForgotPassword";
 import Products from "./pages/Products";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ProductsByCategory from "./pages/Products/ProductsByCategory";
 import ProductDetails from "./pages/Products/ProductDetails";
 import { keepLoginAction } from "./store/actions/index";
@@ -23,7 +22,7 @@ import ReportDetails from "./pages/Admin/Sales_Report/ReportDetails";
 function App() {
   const [isStorageChecked, setIsStorageChecked] = useState(false);
   const dispatch = useDispatch();
-  const isAdmin = 1;
+  const isAdmin = useSelector((state) => state.auth.isAdmin);
 
   useEffect(() => {
     const usersLocalStorage = localStorage.getItem("userData");
@@ -38,7 +37,7 @@ function App() {
   }, []);
 
   if (isStorageChecked) {
-    if ((isAdmin = 1)) {
+    if (isAdmin) {
       return (
         <div className="App">
           <Router>

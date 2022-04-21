@@ -9,6 +9,8 @@ import {
   TextField,
   MenuItem,
   Select,
+  FormControl,
+  OutlinedInput,
 } from "@mui/material";
 
 function ProductDetails() {
@@ -213,12 +215,15 @@ function ProductDetails() {
               }}
             >
               <TextField
+                variant="outlined"
+                label={null}
                 name="productName"
                 value={product.productName}
                 onChange={handleChange}
                 size="small"
                 sx={{ width: "200px", mr: "24px" }}
               />
+
               <TextField
                 name="dose"
                 value={product.dose}
@@ -246,7 +251,6 @@ function ProductDetails() {
                   sx={{ width: "200px" }}
                   size="small"
                 >
-                  <MenuItem value="">Default</MenuItem>
                   {categories.map((category) => (
                     <MenuItem key={category.id} value={category.id}>
                       {category.name}

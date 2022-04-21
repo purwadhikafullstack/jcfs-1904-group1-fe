@@ -47,7 +47,7 @@ function ProductDetails() {
         <img src={product.productPhoto} alt="Gambar Obat" width={320} />
         <Box padding="24px 0 0 64px" sx={{ width: "40%" }}>
           <Typography variant="h4" fontWeight={600}>
-            {product.productName} halo {product.dose}
+            {product.productName} {product.dose}
             {type}
           </Typography>
           <Typography variant="h5" sx={{ mb: "24px" }}>

@@ -1,23 +1,25 @@
 const init = {
-    id: 0,
-    nis: ""
+  id: 0,
+  username: "",
+  isAdmin: 0,
 };
 
 const authReducer = (state = init, action) => {
-    switch(action.type) {
-        case "LOGIN_SUCCESS":
-            return {
-                ...state,
-                id: action.payload.id,
-                nis: action.payload.nis
-            };
+  switch (action.type) {
+    case "LOGIN_SUCCESS":
+      return {
+        ...state,
+        id: action.payload.id,
+        username: action.payload.username,
+        isAdmin: action.payload.isAdmin,
+      };
 
-        case "LOGOUT_SUCCESS":
-            return init;
+    case "LOGOUT_SUCCESS":
+      return init;
 
-        default:
-            return state;
-    };
+    default:
+      return state;
+  }
 };
 
 export default authReducer;

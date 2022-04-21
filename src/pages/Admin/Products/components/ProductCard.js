@@ -13,7 +13,7 @@ function ProductCard(props) {
   const type = isLiquid ? "ml" : "mg";
   return (
     <Link
-      href={`/products/${name}/${id}`}
+      href={`/admin/products/${name}/${id}`}
       underline="none"
       sx={{ margin: "12px 0 32px 46px" }}
     >

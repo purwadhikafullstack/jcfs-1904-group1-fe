@@ -8,10 +8,12 @@ import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 import Dashboard from "./pages/Dashboard";
 import ForgotPassword from "./pages/ForgotPassword";
-import Products from "./pages/Products"
+import ResetPassword from "./pages/ResetPassword";
+import Products from "./pages/Products";
 import { useDispatch } from "react-redux";
 import ProductsByCategory from "./pages/Products/ProductsByCategory";
 import ProductDetails from "./pages/Products/ProductDetails";
+import Carts from "./pages/Carts";
 
 import { keepLoginAction } from "./store/actions/index";
 
@@ -42,12 +44,17 @@ function App() {
             <Route path="profile" element={<Profile />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="forgot-password" element={<ForgotPassword />} />
+            <Route path="reset-password" element={<ResetPassword />} />
             <Route path="/products" element={<Products />} />
-          <Route
-            path="/products/category/:category"
-            element={<ProductsByCategory />}
-          />
-          <Route path="/products/:category/:id" element={<ProductDetails />} />
+            <Route
+              path="/products/category/:category"
+              element={<ProductsByCategory />}
+            />
+            <Route
+              path="/products/:category/:id"
+              element={<ProductDetails />}
+            />
+            <Route path="/carts/:userId" element={<Carts />} />
           </Routes>
         </Router>
       </div>

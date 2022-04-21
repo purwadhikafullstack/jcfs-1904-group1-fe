@@ -2,19 +2,21 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, Link } from "react-router-dom";
 import axios from "../../utils/axios";
-import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
-import { TextField, Typography } from "@mui/material";
+import { TextField, Typography, Button, Container } from "@mui/material";
 import { loginAction } from "../../store/actions";
 
 function Login() {
-  const username = useSelector((state) => state.auth.username);
+  const { username, token } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [formState, setFormState] = useState({
     username: "",
     password: "",
     isAdmin: "",
   });
+
+  if (username) {
+    return <Navigate to="/" replace />;
+  }
 
   const handleChange = (e) => {
     setFormState({ ...formState, [e.target.name]: e.target.value });
@@ -26,6 +28,7 @@ function Login() {
         username: formState.username,
         password: formState.password,
         isAdmin: formState.isAdmin,
+        // headers: { Authorization: `Bearer ${token}` },
       });
 
       const user = res.data.user[0];
@@ -35,6 +38,7 @@ function Login() {
       console.log(res.data.user[0]);
       dispatch(action);
     } catch (error) {
+      alert(error.response.data.message);
       console.log({ error });
     }
   };
@@ -42,10 +46,6 @@ function Login() {
   const onInputPress = (e) => {
     if (e.code === "Enter") onLoginClick();
   };
-
-  if (username) {
-    return <Navigate to="/" replace />;
-  }
 
   return (
     <Container
@@ -82,6 +82,7 @@ function Login() {
         }}
       >
         <TextField
+          label={null}
           placeholder="Enter your username"
           variant="outlined"
           name="username"
@@ -122,8 +123,12 @@ function Login() {
               justifyContent: "end",
             }}
           >
-            <Link to="/forgot-password">Forgot password?</Link>
-            <Link to="/register">Register here</Link>
+            <Typography>
+              <Link to="/forgot-password">Forgot password?</Link>
+            </Typography>
+            <Typography>
+              <Link to="/register">Register here</Link>
+            </Typography>
           </Container>
           <Button
             variant="contained"

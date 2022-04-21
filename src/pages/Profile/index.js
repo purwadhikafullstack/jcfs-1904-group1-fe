@@ -6,7 +6,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "../../utils/axios";
 
 import Box from "@mui/material/Box";
@@ -175,7 +175,6 @@ function Profile() {
         >
           <FormControlLabel value="female" control={<Radio />} label="Female" />
           <FormControlLabel value="male" control={<Radio />} label="Male" />
-          <FormControlLabel value="other" control={<Radio />} label="Other" />
         </RadioGroup>
         <Container>
           <Typography variant="h7">Address</Typography>
@@ -190,7 +189,8 @@ function Profile() {
             width: "100%",
           }}
         />
-        <Container>
+        <Link to={"/reset-password"}></Link>
+        {/* <Container>
           <Typography variant="h7">Password</Typography>
         </Container>
         <TextField
@@ -202,7 +202,7 @@ function Profile() {
             m: 1,
             width: "100%",
           }}
-        />
+        /> */}
 
         <Button
           variant="contained"

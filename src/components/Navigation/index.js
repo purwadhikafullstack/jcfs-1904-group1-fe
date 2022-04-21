@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Paper, Link } from "@mui/material";
+import { Button, Box, Paper, Link } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -8,9 +8,16 @@ import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Tooltip from "@mui/material/Tooltip";
+import LoginIcon from "@mui/icons-material/Login";
 import Logout from "@mui/icons-material/Logout";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutAction } from "../../store/actions";
 
 function Navigation() {
+  const { username, id } = useSelector((state) => {
+    return state.auth;
+  });
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -19,6 +26,13 @@ function Navigation() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const dispatch = useDispatch();
+
+  const onLogoutClick = () => {
+    dispatch(logoutAction());
+  };
+
   return (
     <Paper elevation={3} sx={{ backgroundColor: "#ff5252" }}>
       <Box
@@ -28,6 +42,7 @@ function Navigation() {
           justifyContent: "flex-end",
           alignItems: "center",
           textAlign: "center",
+          height: "42px",
         }}
       >
         <Typography mr="25px">
@@ -46,23 +61,31 @@ function Navigation() {
           </Link>
         </Typography>
         <Typography>
-          <Link href={"/cart"} underline="none" color="textPrimary">
+          <Link href={`/carts/${id}`} underline="none" color="textPrimary">
             Cart
           </Link>
         </Typography>
-
-        <Tooltip title="Account settings">
-          <IconButton
-            onClick={handleClick}
-            size="small"
-            sx={{ ml: 2 }}
-            aria-controls={open ? "account-menu" : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? "true" : undefined}
-          >
-            <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
-          </IconButton>
-        </Tooltip>
+        {!username ? (
+          <Typography ml="25px" mr="15px">
+            <Link href={"/login"} underline="none" color="textPrimary">
+              <LoginIcon fontSize="small" />
+              Log in
+            </Link>
+          </Typography>
+        ) : (
+          <Tooltip title="Account settings">
+            <IconButton
+              onClick={handleClick}
+              size="small"
+              sx={{ ml: 2 }}
+              aria-controls={open ? "account-menu" : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? "true" : undefined}
+            >
+              <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+            </IconButton>
+          </Tooltip>
+        )}
       </Box>
       <Menu
         anchorEl={anchorEl}
@@ -99,11 +122,11 @@ function Navigation() {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem>
+        <MenuItem component="a" href="/profile">
           <Avatar /> Profile
         </MenuItem>
         <Divider />
-        <MenuItem>
+        <MenuItem onClick={onLogoutClick} component="a" href="/login">
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>

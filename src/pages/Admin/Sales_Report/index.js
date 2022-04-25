@@ -59,7 +59,7 @@ function SalesReport() {
               <Box ml="12px">
                 <Typography variant="h6">28472912</Typography>
                 <Link
-                  href="/admin/sales-report/details"
+                  href="/admin/sales-report/products"
                   underline="hover"
                   color="inherit"
                 >

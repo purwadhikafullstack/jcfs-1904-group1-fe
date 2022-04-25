@@ -52,17 +52,17 @@ function ProductDetails() {
   };
 
   return (
-    <Box sx={{ padding: "0 24px 0 24px" }}>
+    <Box sx={{ padding: "0 24px" }}>
       <Box
         sx={{
           display: "flex",
           justifyContent: "center",
-          alignItems: "start",
-          mt: "20px",
+          alignItems: "center",
+          mt: "42px",
         }}
       >
         <img src={product.productPhoto} alt="Gambar Obat" width={320} />
-        <Box padding="24px 0 0 64px" sx={{ width: "40%" }}>
+        <Box padding="0 0 0 64px" sx={{ width: "40%" }}>
           <Typography variant="h4" fontWeight={600}>
             {product.productName} {product.dose}
             {type}

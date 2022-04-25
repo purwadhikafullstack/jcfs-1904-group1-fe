@@ -15,7 +15,7 @@ function ProductCard(props) {
     <Link
       href={`/products/${name}/${id}`}
       underline="none"
-      sx={{ margin: "12px 0 32px 46px" }}
+      sx={{ margin: "24px" }}
     >
       <Card sx={{ maxWidth: 160, height: 240 }}>
         <CardActionArea>

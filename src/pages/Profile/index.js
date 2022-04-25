@@ -6,7 +6,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate, Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "../../utils/axios";
 
 import Box from "@mui/material/Box";
@@ -16,6 +16,7 @@ import { TextField, Typography } from "@mui/material";
 
 function Profile() {
   const usersLocalStorage = localStorage.getItem("userData");
+  const params = useParams();
   const userData = JSON.parse(usersLocalStorage);
   const { id, username, fullName, age, address, gender, password } = userData;
 
@@ -30,6 +31,9 @@ function Profile() {
   };
   const [formState, setFormState] = useState(initFormState);
   // const { password } = formState;
+  const handleChange = (e) => {
+    setFormState({ ...formState, [e.target.name]: e.target.value });
+  };
 
   const onSaveClick = async () => {
     try {
@@ -45,13 +49,10 @@ function Profile() {
       formData.append("address", formState.address);
 
       const res = await axios.put(`/users/${id}`, formData);
+      console.log(formData);
       alert("Data updated");
       console.log({ res });
     } catch (error) {}
-  };
-
-  const handleChange = (e) => {
-    setFormState({ ...formState, [e.target.name]: e.target.value });
   };
 
   return (
@@ -175,7 +176,6 @@ function Profile() {
         >
           <FormControlLabel value="female" control={<Radio />} label="Female" />
           <FormControlLabel value="male" control={<Radio />} label="Male" />
-          <FormControlLabel value="other" control={<Radio />} label="Other" />
         </RadioGroup>
         <Container>
           <Typography variant="h7">Address</Typography>
@@ -190,7 +190,8 @@ function Profile() {
             width: "100%",
           }}
         />
-        <Container>
+        <Link to={"/reset-password"}></Link>
+        {/* <Container>
           <Typography variant="h7">Password</Typography>
         </Container>
         <TextField
@@ -202,7 +203,7 @@ function Profile() {
             m: 1,
             width: "100%",
           }}
-        />
+        /> */}
 
         <Button
           variant="contained"

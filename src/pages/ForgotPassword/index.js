@@ -1,15 +1,9 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Navigate, Link } from "react-router-dom";
 import axios from "../../utils/axios";
-import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
-import { TextField, Typography } from "@mui/material";
-import { loginAction } from "../../store/actions";
+import { TextField, Typography, Button, Container } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
 
 function ForgotPassword() {
-  const username = useSelector((state) => state.auth.username);
-  const dispatch = useDispatch();
   const [formState, setFormState] = useState({
     email: "",
   });
@@ -18,30 +12,20 @@ function ForgotPassword() {
     setFormState({ ...formState, [e.target.name]: e.target.value });
   };
 
-  const onResetClick = async () => {
+  const onSubmitClick = async () => {
     try {
-      const res = await axios.post("/users/login", {
+      const res = await axios.post("/users/forgot-password", {
         email: formState.email,
       });
-
-      const user = res.data.user[0];
-
-      const action = loginAction(user);
-
-      console.log(res.data.user[0]);
-      dispatch(action);
+      alert("Reset password email has been sent");
     } catch (error) {
       console.log({ error });
     }
   };
 
   const onInputPress = (e) => {
-    if (e.code === "Enter") onResetClick();
+    if (e.code === "Enter") onSubmitClick();
   };
-
-  if (username) {
-    return <Navigate to="/" replace />;
-  }
 
   return (
     <Container
@@ -109,7 +93,7 @@ function ForgotPassword() {
           <Button
             variant="contained"
             color="primary"
-            onClick={onResetClick}
+            onClick={onSubmitClick}
             sx={{
               width: "100%",
               paddingInline: 17,

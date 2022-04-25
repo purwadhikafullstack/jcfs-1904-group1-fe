@@ -43,7 +43,7 @@ function ProductsAdmin() {
         lastPage: Math.ceil(data.total / queryPagination.itemsPerPage),
       });
     } catch (error) {
-      console.log(alert(error.message));
+      console.log(error.message);
     }
   };
 
@@ -117,7 +117,7 @@ function ProductsAdmin() {
           sx={{
             display: "flex",
             flexWrap: "wrap",
-            justifyContent: "center",
+            justifyContent: "flex-start",
           }}
         >
           {renderProducts()}

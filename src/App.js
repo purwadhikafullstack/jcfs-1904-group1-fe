@@ -6,10 +6,13 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import Products from "./pages/Products";
 import { useDispatch, useSelector } from "react-redux";
 import ProductsByCategory from "./pages/Products/ProductsByCategory";
 import ProductDetails from "./pages/Products/ProductDetails";
+import Carts from "./pages/Carts";
+
 import { keepLoginAction } from "./store/actions/index";
 import "./index.css";
 import Dashboard from "./pages/Admin/Dashboard";
@@ -30,8 +33,8 @@ function App() {
 
     if (usersLocalStorage) {
       const userData = JSON.parse(usersLocalStorage);
-      const { id, username, isAdmin } = userData;
-      dispatch(keepLoginAction({ id, username, isAdmin }));
+      const { user, token } = userData;
+      dispatch(keepLoginAction({ user, token }));
     }
 
     setIsStorageChecked(true);
@@ -77,7 +80,9 @@ function App() {
               <Route path="profile" element={<Profile />} />
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="forgot-password" element={<ForgotPassword />} />
+              <Route path="reset-password/:token" element={<ResetPassword />} />
               <Route path="/products" element={<Products />} />
+              <Route path="/carts/:userId" element={<Carts />} />
               <Route
                 path="/products/category/:category"
                 element={<ProductsByCategory />}

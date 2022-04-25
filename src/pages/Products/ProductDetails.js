@@ -1,11 +1,13 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import axios from "../../utils/axios";
 import { Box, Typography, Button } from "@mui/material";
 import ProductCard from "./components/ProductCard";
 
 function ProductDetails() {
+  const userId = useSelector((state) => state.auth.id);
   const [product, setProduct] = useState({ priceStrip: "", name: "" });
   const [similarProducts, setSimilarProducts] = useState([]);
   const params = useParams();
@@ -25,6 +27,21 @@ function ProductDetails() {
     };
     fetchProduct();
   }, []);
+
+  const postCart = async () => {
+    try {
+      const response = axios.post(`/carts`, {
+        user_id: userId,
+        qty: 1,
+        product_id: product.id,
+      });
+    } catch (error) {}
+  };
+
+  const onAddToCartClick = () => {
+    postCart();
+    alert("Added to cart");
+  };
 
   const type = product.isLiquid ? "ml" : "mg";
 
@@ -61,6 +78,7 @@ function ProductDetails() {
                 color: "white",
                 mb: "20px",
               }}
+              onClick={onAddToCartClick}
             >
               Add To Cart
             </Button>

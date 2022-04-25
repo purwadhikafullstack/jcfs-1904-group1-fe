@@ -18,6 +18,7 @@ import ProductsAdmin from "./pages/Admin/Products";
 import ProductDetailsAdmin from "./pages/Admin/Products/ProductDetails";
 import SalesReport from "./pages/Admin/Sales_Report";
 import ReportDetails from "./pages/Admin/Sales_Report/ReportDetails";
+import ProductsSalesReport from "./pages/Admin/Sales_Report/ProductsSalesReport";
 
 function App() {
   const [isStorageChecked, setIsStorageChecked] = useState(false);
@@ -54,8 +55,12 @@ function App() {
                 path="/admin/sales-report/details"
                 element={<ReportDetails />}
               />
+              <Route
+                path="/admin/sales-report/products"
+                element={<ProductsSalesReport />}
+              />
 
-              <Route path="/products" element={<Products />} />
+              {/* <Route path="/products" element={<Products />} /> */}
             </Routes>
           </Router>
         </div>

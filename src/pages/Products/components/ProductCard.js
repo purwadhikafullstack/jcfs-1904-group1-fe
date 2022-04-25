@@ -8,14 +8,14 @@ import { CardActionArea } from "@mui/material";
 import Link from "@mui/material/Link";
 
 function ProductCard(props) {
-  const { id, productName, productPhoto, price, dose, name, isLiquid } =
+  const { id, productName, productPhoto, priceStrip, dose, name, isLiquid } =
     props.product;
   const type = isLiquid ? "ml" : "mg";
   return (
     <Link
       href={`/products/${name}/${id}`}
       underline="none"
-      sx={{ margin: "12px 0 32px 46px" }}
+      sx={{ margin: "24px" }}
     >
       <Card sx={{ maxWidth: 160, height: 240 }}>
         <CardActionArea>
@@ -41,7 +41,7 @@ function ProductCard(props) {
               component="div"
               textAlign="center"
             >
-              Rp {price.toLocaleString("id")}
+              Rp {priceStrip.toLocaleString("id")}
             </Typography>
           </CardContent>
         </CardActionArea>

@@ -24,9 +24,9 @@ function ProductsByCategory() {
     offSet: 0,
     itemsPerPage: 10,
   });
-
   const params = useParams();
-
+  const selectedCategory = params.category;
+  console.log(selectedCategory);
   //Fetch Products by Category
   const fetchProducts = async () => {
     try {
@@ -82,46 +82,64 @@ function ProductsByCategory() {
   };
 
   return (
-    <Box display="flex" justifyContent="center">
-      {/* ProductManager */}
-      <Filter />
-      <Paper
-        elevation={3}
-        sx={{
-          width: "80%",
-          paddingTop: "25px",
-        }}
-      >
-        {/* SearchBar */}
-        <SearchBar handleGetChildData={handleGetChildData} />
+    <Box>
+      <Box
+        sx={{ backgroundColor: "#d5d5d5", width: "100%", height: "72px" }}
+      ></Box>
+      <Box display="flex" justifyContent="center" mt="-36px" pb="24px">
+        {/* ProductManager */}
+
         <Box
           sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            margin: "20px 45px 0 45px",
+            borderRadius: "5px",
+            m: "160px 12px 0 0",
+            backgroundColor: "white",
+            height: "240px",
+            width: "160px",
+            padding: "12px",
+            boxShadow: "0 1px 12px #aeafaf",
           }}
         >
-          <Typography variant="h5">{params.category}</Typography>
+          <Filter selectedCategory={selectedCategory} />
           <Sort sortProducts={sortProducts} />
         </Box>
-        {/* productCard */}
-        <Box
+        <Paper
+          elevation={3}
           sx={{
-            display: "flex",
-            flexWrap: "wrap",
-            justifyContent: "flex-start",
+            width: "80%",
+            paddingTop: "25px",
           }}
         >
-          {renderProducts()}
-        </Box>
-        <Box>
-          <PaginationHandler
-            pagination={pagination}
-            setPagination={setPagination}
-            setQueryPagination={setQueryPagination}
-          />
-        </Box>
-      </Paper>
+          {/* SearchBar */}
+          <SearchBar handleGetChildData={handleGetChildData} />
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              margin: "20px 45px 0 45px",
+            }}
+          >
+            <Typography variant="h5">{params.category}</Typography>
+          </Box>
+          {/* productCard */}
+          <Box
+            sx={{
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "flex-start",
+            }}
+          >
+            {renderProducts()}
+          </Box>
+          <Box>
+            <PaginationHandler
+              pagination={pagination}
+              setPagination={setPagination}
+              setQueryPagination={setQueryPagination}
+            />
+          </Box>
+        </Paper>
+      </Box>
     </Box>
   );
 }

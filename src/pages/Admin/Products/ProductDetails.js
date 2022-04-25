@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 
 function ProductDetails() {
-  const [product, setProduct] = useState({ price: "" });
+  const [product, setProduct] = useState({ priceStrip: "" });
   const [categories, setCategories] = useState([]);
   const params = useParams();
   const [isEdit, setIsEdit] = useState(false);
@@ -48,7 +48,7 @@ function ProductDetails() {
       formData.append("id", product.id);
       formData.append("productPhoto", image);
       formData.append("productName", product.productName);
-      formData.append("price", product.price);
+      formData.append("priceStrip", product.priceStrip);
       formData.append("dose", product.dose);
       formData.append("description", product.description);
       formData.append("category_id", product.category_id);
@@ -123,7 +123,7 @@ function ProductDetails() {
                 paddingBottom: "12px",
               }}
             >
-              Rp{product.price.toLocaleString("id")}
+              Rp{product.priceStrip.toLocaleString("id")}
             </Typography>
             <Box>
               <Box paddingBottom="12px" borderBottom={1} mb="20px">
@@ -232,8 +232,8 @@ function ProductDetails() {
                 sx={{ width: "64px" }}
               />
               <TextField
-                name="price"
-                value={product.price}
+                name="priceStrip"
+                value={product.priceStrip}
                 onChange={handleChange}
                 size="small"
                 sx={{ width: "200px" }}

@@ -6,30 +6,43 @@ import { Navigate, useParams } from "react-router-dom";
 
 function ResetPassword() {
   const [formState, setFormState] = useState({
-    password: "",
+    newPassword: "",
+    confirmNewPassword: "",
   });
 
+  const params = useParams();
   const handleChange = (e) => {
     setFormState({ ...formState, [e.target.name]: e.target.value });
   };
 
+  const { token } = useParams();
   const onSubmitClick = async () => {
+    console.log(token);
     try {
       const res = await axios.put("/users/reset-password", {
-        password: formState.password,
-        token: useParams.token,
+        password: formState.newPassword,
+        token: params.token,
       });
     } catch (error) {
       console.log({ error });
     }
-    alert("Password has been reset");
-    <Navigate to="/login" replace />;
   };
 
   const onInputPress = (e) => {
     if (e.code === "Enter") onSubmitClick();
   };
 
+  const compareResult = () => {
+    console.log(formState);
+    // if null
+    if (formState.newPassword !== formState.confirmNewPassword) {
+      alert("Please insert the new passwords correctly.");
+    } else {
+      onSubmitClick();
+      alert("Password has been reset successfully.");
+      // <Navigate to="/login" replace />;
+    }
+  };
   return (
     <Container
       sx={{
@@ -67,7 +80,7 @@ function ResetPassword() {
         <TextField
           placeholder="Enter new password"
           variant="outlined"
-          name="oldPassword"
+          name="newPassword"
           type="password"
           onChange={handleChange}
           sx={{
@@ -79,7 +92,7 @@ function ResetPassword() {
         <TextField
           placeholder="Confirm your new password"
           variant="outlined"
-          name="newPassword"
+          name="confirmNewPassword"
           type="password"
           onChange={handleChange}
           onKeyPress={onInputPress}
@@ -106,17 +119,15 @@ function ResetPassword() {
             }}
           ></Container>
           <Button
-            component="a"
-            href="/login"
             variant="contained"
             color="primary"
-            onClick={onSubmitClick}
+            onClick={compareResult}
             sx={{
               width: "100%",
               paddingInline: 17,
             }}
           >
-            Reset
+            submit
           </Button>
         </Container>
       </Container>

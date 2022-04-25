@@ -62,10 +62,10 @@ function ProductsByCategory() {
         setSortProperty({ sortBy: "productName", order: value });
         break;
       case "LowToHi":
-        setSortProperty({ sortBy: "price", order: "Asc" });
+        setSortProperty({ sortBy: "priceStrip", order: "Asc" });
         break;
       case "HiToLow":
-        setSortProperty({ sortBy: "price", order: "Desc" });
+        setSortProperty({ sortBy: "priceStrip", order: "Desc" });
         break;
     }
   };

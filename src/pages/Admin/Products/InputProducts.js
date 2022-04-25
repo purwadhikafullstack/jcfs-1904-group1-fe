@@ -43,7 +43,7 @@ function InputProducts() {
       const formData = new FormData();
       formData.append("productPhoto", image);
       formData.append("productName", formState.productName);
-      formData.append("price", formState.price);
+      formData.append("priceStrip", formState.priceStrip);
       formData.append("dose", formState.dose);
       formData.append("description", formState.description);
       formData.append("category_id", formState.category_id);
@@ -106,7 +106,7 @@ function InputProducts() {
               </Grid>
               <Grid item xs={4} mb="24px" mr="44px">
                 <TextField
-                  name="price"
+                  name="priceStrip"
                   label="Price"
                   variant="outlined"
                   size="small"

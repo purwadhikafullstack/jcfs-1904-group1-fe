@@ -8,7 +8,7 @@ import ProductCard from "./components/ProductCard";
 
 function ProductDetails() {
   const userId = useSelector((state) => state.auth.id);
-  const [product, setProduct] = useState({ price: "", name: "" });
+  const [product, setProduct] = useState({ priceStrip: "", name: "" });
   const [similarProducts, setSimilarProducts] = useState([]);
   const params = useParams();
 
@@ -28,8 +28,19 @@ function ProductDetails() {
     fetchProduct();
   }, []);
 
+  const postCart = async () => {
+    try {
+      const response = axios.post(`/carts`, {
+        user_id: userId,
+        qty: 1,
+        product_id: product.id,
+      });
+    } catch (error) {}
+  };
+
   const onAddToCartClick = () => {
-    axios.post(`/carts/${params.id}`, { user_id: userId, qty: 1 });
+    postCart();
+    alert("Added to cart");
   };
 
   const type = product.isLiquid ? "ml" : "mg";
@@ -57,7 +68,7 @@ function ProductDetails() {
             {type}
           </Typography>
           <Typography variant="h5" sx={{ mb: "24px" }}>
-            Rp{product.price.toLocaleString("id")}
+            Rp{product.priceStrip.toLocaleString("id")}
           </Typography>
           <Box sx={{ mb: "12px", borderBottom: "1px solid" }}>
             <Button

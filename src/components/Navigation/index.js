@@ -66,12 +66,16 @@ function Navigation() {
           </Link>
         </Typography>
         {!username ? (
-          <Typography ml="25px" mr="15px">
+          <Box pr="12px">
             <Link href={"/login"} underline="none" color="textPrimary">
-              <LoginIcon fontSize="small" />
-              Log in
+              <Box display="flex" alignItems="center">
+                <Typography ml="25px" mr="5px">
+                  Log in
+                </Typography>
+                <LoginIcon fontSize="small" />
+              </Box>
             </Link>
-          </Typography>
+          </Box>
         ) : (
           <Tooltip title="Account settings">
             <IconButton
@@ -126,7 +130,7 @@ function Navigation() {
           <Avatar /> Profile
         </MenuItem>
         <Divider />
-        <MenuItem onClick={onLogoutClick} component="a" href="/login">
+        <MenuItem onClick={onLogoutClick} component="a" href="/products">
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>

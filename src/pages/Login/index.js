@@ -31,11 +31,11 @@ function Login() {
         // headers: { Authorization: `Bearer ${token}` },
       });
 
-      const user = res.data.user[0];
+      const user = res.data.user;
+      const token = res.data.token;
+      const action = loginAction({user, token});
 
-      const action = loginAction(user);
-
-      console.log(res.data.user[0]);
+      // console.log(res.data.user[0]);
       dispatch(action);
     } catch (error) {
       alert(error.response.data.message);

@@ -128,7 +128,6 @@ function Products() {
               display: "flex",
               flexWrap: "wrap",
               justifyContent: "start",
-              border: "1px solid black",
             }}
           >
             {renderProducts()}

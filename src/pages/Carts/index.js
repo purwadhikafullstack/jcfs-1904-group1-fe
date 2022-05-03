@@ -8,43 +8,35 @@ import {
   Box,
   Paper,
 } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import AddBoxIcon from "@mui/icons-material/AddBox";
+import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
+
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
 function Carts() {
   const userId = useSelector((state) => state.auth.id);
+  const [product, setProduct] = useState({ priceStrip: "", name: "" });
   const [carts, setCarts] = useState([]);
   const [priceState, setPriceState] = useState({
-    // subTotal: 0,
-    // tax: 0,
-    // totalPrice: 0,
+    tax: "",
+    ppnObat: "",
     total: "",
     totalAfterTax: "",
   });
-  const [formState, setFormState] = useState({
-    recipientName: "",
-    address: "",
-    payment: 0,
-  });
-  const [isShowSummary, setIsShowSummary] = useState(false);
 
-  const params = useParams();
+  const [state, setState] = useState("");
 
-  const handleChange = (e) => {
-    setFormState({ ...formState, [e.target.name]: e.target.value });
-  };
   const fetchCarts = async () => {
     try {
       const { data } = await axios.get(`/carts/${userId}`);
 
-      // data.forEach((cart) => (priceState.subTotal += cart.qty * cart.price));
-
-      // const tax = subTotal * 0.05;
-      // const totalPrice = subTotal + tax;
-
       setPriceState({
         ...priceState,
         total: data.total,
+        ppnObat: data.ppnObat,
+        tax: data.tax,
         totalAfterTax: data.totalAfterTax,
       });
       setCarts(data.result);
@@ -55,70 +47,97 @@ function Carts() {
 
   useEffect(() => {
     fetchCarts();
-  }, [carts]);
+  }, [state]);
 
-  const onCheckoutClick = () => {};
+  const onCheckoutClick = async () => {
+    // alert("clicked");
+    try {
+      const d = new Date();
+      const date = d.getDate();
+      const month = d.getMonth();
+      const year = d.getFullYear();
+      const time = d.getTime();
+
+      const newTransaction = {
+        invoice: `INV/${userId}/${year}${month}${date}/${time}`,
+        user_id: userId,
+        amount: priceState.totalAfterTax,
+        carts,
+      };
+
+      await axios.post("/carts/checkout", newTransaction);
+      alert("Checkout successful");
+    } catch (error) {
+      alert("Checkout failed");
+      console.log(error);
+    }
+  };
   // const onDeleteClick = async (id) => {
   //   try {
   //   } catch (error) {}
   // };
 
-  const [quantity, setQuantity] = useState();
-
-  const quantityBtnHandler = (type) => {
-    switch (type) {
-      case 0:
-        setQuantity(cart.qty + 1);
-        break;
-      case 1:
-        setQuantity(quantity - 1);
-        break;
-    }
-  };
-
   const renderCarts = () => {
     return carts.map((cart, index) => {
       return (
         <Box>
-          <Box display="flex" justifyContent="space-evenly" alignItems="center">
+          <Box display="flex" justifyContent="space-around" alignItems="center">
             <Box>
-              <img src={cart.productPhoto} alt="" style={{ height: "125px" }} />
+              <img
+                src={cart.productPhoto}
+                alt="product image"
+                style={{ height: "50%", width: "110px" }}
+              />
+
               <Box display="flex">
                 <Typography marginInline="auto">{cart.productName}</Typography>
               </Box>
             </Box>
-            <Typography>{cart.priceStrip}</Typography>
-            <Box width="200px" display="flex" justifyContent="space-evenly">
+
+            <Typography>Rp {cart.priceStrip.toLocaleString("id")}</Typography>
+            <Box width="200px" display="flex" alignItems="center">
               <Box>
-                <Button
-                  size="small"
-                  sx={{ width: "12px" }}
-                  variant="contained"
-                  color="success"
-                  // onClick={quantityBtnHandler(1)}
-                >
-                  -
+                <Button>
+                  <IndeterminateCheckBoxIcon
+                    color="success"
+                    onClick={async () => {
+                      try {
+                        const res = axios.put(`/carts/decQty`, {
+                          user_id: userId,
+                          product_id: cart.product_id,
+                        });
+                        setState(cart.qty);
+                      } catch (error) {}
+                    }}
+                  ></IndeterminateCheckBoxIcon>
                 </Button>
               </Box>
-              <Typography variant="h5">{cart.qty}</Typography>
+              <Typography>{cart.qty}</Typography>
               <Box>
-                <Button
-                  size="small"
-                  sx={{ width: "12px" }}
-                  variant="contained"
-                  color="success"
-                  // onClick={quantityBtnHandler(0)}
-                >
-                  +
+                <Button>
+                  <AddBoxIcon
+                    color="success"
+                    onClick={async () => {
+                      try {
+                        const res = axios.put(`/carts/incQty`, {
+                          user_id: userId,
+                          product_id: cart.product_id,
+                        });
+                        setState(cart.qty);
+                      } catch (error) {}
+                    }}
+                  ></AddBoxIcon>
                 </Button>
               </Box>
             </Box>
-            <Typography>{cart.qty * cart.priceStrip}</Typography>
+            <Typography>
+              Rp {(cart.qty * cart.priceStrip).toLocaleString("id")}
+            </Typography>
           </Box>
           {index == carts.length - 1 ? (
             <Box
-              borderBottom={0}
-              borderColor="lightgray"
+              borderBottom={1}
+              borderColor="darkgray"
               paddingBottom="12px"
               mb="20px"
             />
@@ -136,91 +155,96 @@ function Carts() {
   };
 
   return (
-    <Box>
-      <Box display="flex" justifyContent="space-around">
-        <Paper
-          sx={{
-            width: "70%",
-            backgroundColor: "white",
-            marginTop: 10,
-            borderRadius: 6,
-            boxShadow: 3,
-          }}
+    <Box display="flex" justifyContent="space-around">
+      <Paper
+        sx={{
+          width: "70%",
+          backgroundColor: "white",
+          marginTop: 10,
+          borderRadius: 3,
+          boxShadow: 3,
+        }}
+      >
+        <Box display={"flex"} justifyContent="center">
+          <Typography variant="h4" pt={"20px"}>
+            Cart
+          </Typography>
+        </Box>
+        <Box
+          marginTop="20px"
+          justifyContent="space-around"
+          borderBottom={1}
+          borderColor="darkgray"
+          display="flex"
         >
-          <Box display={"flex"} justifyContent="center">
-            <Typography variant="h4" pt={"20px"}>
-              Cart
-            </Typography>
-          </Box>
-          <Box
-            justifyContent={"space-evenly"}
-            borderBottom={1}
-            borderColor="lightgray"
-            display="flex"
+          <Typography
+            variant="h6"
+            // sx={{ ml: "220px" }}
           >
-            <Typography
-              variant="h6"
-              // sx={{ ml: "220px" }}
-            >
-              Name
-            </Typography>
-            <Typography
-              variant="h6"
-              // sx={{ ml: "220px" }}
-            >
-              Price
-            </Typography>
-            <Typography
-              variant="h6"
-              // sx={{ ml: "220px" }}
-            >
-              Quantity
-            </Typography>
-            <Typography
-              variant="h6"
-              // sx={{ ml: "220px" }}
-            >
-              Total Price
-            </Typography>
-          </Box>
+            Name
+          </Typography>
+          <Typography
+            variant="h6"
+            // sx={{ ml: "220px" }}
+          >
+            Price
+          </Typography>
+          <Typography
+            variant="h6"
+            // sx={{ ml: "220px" }}
+          >
+            Quantity
+          </Typography>
+          <Typography
+            variant="h6"
+            // sx={{ ml: "220px" }}
+          >
+            Total Price
+          </Typography>
+        </Box>
+        {renderCarts()}
+      </Paper>
+      <Paper
+        sx={{
+          width: "20%",
+          backgroundColor: "white",
+          marginTop: 10,
+          borderRadius: 3,
+          boxShadow: 3,
+        }}
+      >
+        <Box display="flex" justifyContent="end" marginRight="12px">
+          <Box display="flex" justifyContent="space-between">
+            <Box>
+              <Typography mr="12px">Sub Total : </Typography>
+              <Typography mr="12px">
+                PPn {priceState.ppnObat * 100}%:
+              </Typography>
+              <Typography mr="12px">Total : </Typography>
+            </Box>
+            <Box>
+              <Typography>
+                Rp {priceState.total.toLocaleString("id")}
+              </Typography>
 
-          <Box>{renderCarts()}</Box>
-          <Box display="flex" justifyContent="end">
-            <Box display="flex" justifyContent="space-between">
-              <Box>
-                <Typography mr="12px">Sub Total : </Typography>
-                <Typography mr="12px">PPn 10% : </Typography>
-                <Typography mr="12px">Total : </Typography>
-              </Box>
-              <Box>
-                <Typography>
-                  Rp {priceState.total.toLocaleString("id")}
-                </Typography>
+              <Typography>Rp {priceState.tax.toLocaleString("id")}</Typography>
 
-                <Typography>xxxxxxxx</Typography>
-
-                <Typography>
-                  Rp {priceState.totalAfterTax.toLocaleString("id")}
-                </Typography>
-              </Box>
+              <Typography>
+                Rp {priceState.totalAfterTax.toLocaleString("id")}
+              </Typography>
             </Box>
           </Box>
-          <Box display="flex" justifyContent="end">
-            <Button variant="contained">Checkout</Button>
-          </Box>
-        </Paper>
-        <Paper
-          sx={{
-            width: "20%",
-            backgroundColor: "white",
-            marginTop: 10,
-            borderRadius: 6,
-            boxShadow: 3,
-          }}
-        >
-          <Box>ascasdas</Box>
-        </Paper>
-      </Box>
+        </Box>
+        <Box display="flex" justifyContent="end">
+          <Button
+            variant="contained"
+            sx={{ margin: "12px" }}
+            onClick={onCheckoutClick}
+          >
+            Checkout
+          </Button>
+        </Box>
+      </Paper>
     </Box>
   );
 }

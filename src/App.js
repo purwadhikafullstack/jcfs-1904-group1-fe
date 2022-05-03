@@ -12,6 +12,8 @@ import { useDispatch, useSelector } from "react-redux";
 import ProductsByCategory from "./pages/Products/ProductsByCategory";
 import ProductDetails from "./pages/Products/ProductDetails";
 import Carts from "./pages/Carts";
+import Payment from "./pages/Payment";
+import Transactions from "./pages/Transactions";
 
 import { keepLoginAction } from "./store/actions/index";
 import "./index.css";
@@ -41,6 +43,7 @@ function App() {
   }, []);
 
   if (isStorageChecked) {
+    // ADMIN PAGE
     if (isAdmin) {
       return (
         <div className="App">
@@ -69,6 +72,7 @@ function App() {
         </div>
       );
     } else {
+      // USER PAGE
       return (
         <div className="App">
           <Router>
@@ -83,6 +87,8 @@ function App() {
               <Route path="reset-password/:token" element={<ResetPassword />} />
               <Route path="/products" element={<Products />} />
               <Route path="/carts/:userId" element={<Carts />} />
+              <Route path="/transactions/:userId" element={<Transactions />} />
+              <Route path="/payment/:userId" element={<Payment />} />
               <Route
                 path="/products/category/:category"
                 element={<ProductsByCategory />}

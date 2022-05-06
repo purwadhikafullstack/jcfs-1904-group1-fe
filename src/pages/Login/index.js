@@ -6,7 +6,7 @@ import { TextField, Typography, Button, Container } from "@mui/material";
 import { loginAction } from "../../store/actions";
 
 function Login() {
-  const { username, token } = useSelector((state) => state.auth);
+  const { username, isAdmin, token } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [formState, setFormState] = useState({
     username: "",
@@ -14,8 +14,10 @@ function Login() {
     isAdmin: "",
   });
 
-  if (username) {
-    return <Navigate to="/" replace />;
+  if (isAdmin == 1) {
+    return <Navigate to="/admin/sales-report" replace />;
+  } else if (username) {
+    return <Navigate to="/products" replace />;
   }
 
   const handleChange = (e) => {
@@ -33,7 +35,7 @@ function Login() {
 
       const user = res.data.user;
       const token = res.data.token;
-      const action = loginAction({user, token});
+      const action = loginAction({ user, token });
 
       // console.log(res.data.user[0]);
       dispatch(action);

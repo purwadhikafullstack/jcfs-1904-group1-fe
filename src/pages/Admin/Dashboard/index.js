@@ -100,6 +100,14 @@ function Dashboard() {
                   <ListItemText primary="Transactions History" />
                 </ListItem>
               </Link>
+              <Link underline="none" color="textPrimary" href="/admin/stocks">
+                <ListItem button key="Stocks">
+                  <ListItemIcon>
+                    <InboxIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Stocks" />
+                </ListItem>
+              </Link>
             </List>
             <Divider />
           </Box>

@@ -18,12 +18,13 @@ function Profile() {
   const usersLocalStorage = localStorage.getItem("userData");
   const params = useParams();
   const userData = JSON.parse(usersLocalStorage);
-  const { id, username, fullName, age, address, gender, password } = userData;
-
+  const { id, username, fullName, email, age, address, gender, password } =
+    userData.user;
   // const { id, name, email } = useSelector((state) => state.auth.user);
   const initFormState = {
     username: username,
     fullName: fullName,
+    email: email,
     age: age,
     address: address,
     gender: gender,
@@ -33,6 +34,16 @@ function Profile() {
   // const { password } = formState;
   const handleChange = (e) => {
     setFormState({ ...formState, [e.target.name]: e.target.value });
+  };
+
+  const fetchProduct = async () => {
+    try {
+      const res = await axios.get(`/users/${id}`);
+      const { data } = res;
+      // setProduct(data.result[0]);
+    } catch (error) {
+      console.log(alert(error.message));
+    }
   };
 
   const onSaveClick = async () => {
@@ -77,7 +88,7 @@ function Profile() {
           marginBottom: 2,
         }}
       >
-        {userData.username}'s Profile
+        {username}'s Profile
       </Typography>
       <Container
         sx={{
@@ -127,7 +138,7 @@ function Profile() {
           <Typography variant="h7">Full Name</Typography>
         </Container>
         <TextField
-          defaultValue={userData.fullName}
+          defaultValue={fullName}
           placeholder="full name"
           onChange={handleChange}
           type="name"
@@ -141,7 +152,7 @@ function Profile() {
           <Typography variant="h7">e-mail</Typography>
         </Container>
         <TextField
-          defaultValue={userData.email}
+          defaultValue={email}
           onChange={handleChange}
           placeholder="Email"
           type="email"
@@ -156,7 +167,7 @@ function Profile() {
         </Container>
 
         <TextField
-          defaultValue={userData.age}
+          defaultValue={age}
           onChange={handleChange}
           placeholder="age"
           sx={{
@@ -172,7 +183,7 @@ function Profile() {
           row
           aria-labelledby="demo-row-radio-buttons-group-label"
           name="row-radio-buttons-group"
-          defaultValue={userData.gender}
+          defaultValue={gender}
         >
           <FormControlLabel value="female" control={<Radio />} label="Female" />
           <FormControlLabel value="male" control={<Radio />} label="Male" />
@@ -181,7 +192,7 @@ function Profile() {
           <Typography variant="h7">Address</Typography>
         </Container>
         <TextField
-          defaultValue={userData.address}
+          defaultValue={address}
           onChange={handleChange}
           placeholder="address"
           sx={{

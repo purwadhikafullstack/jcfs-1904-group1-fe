@@ -68,9 +68,18 @@ function Navigation() {
               Contact
             </Link>
           </Typography>
-          <Typography>
+          <Typography mr="25px">
             <Link href={`/carts/${id}`} underline="hover" color="textPrimary">
               Cart
+            </Link>
+          </Typography>
+          <Typography>
+            <Link
+              href={`/transactions/${id}`}
+              underline="hover"
+              color="textPrimary"
+            >
+              Transactions
             </Link>
           </Typography>
 

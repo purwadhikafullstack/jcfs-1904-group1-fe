@@ -147,11 +147,12 @@ function ProductsSalesReport() {
         {/* FILTER */}
         <Box
           sx={{
-            width: "85%",
+            width: "66%",
             marginInline: "auto",
             backgroundColor: "white",
             borderRadius: "5px",
             boxShadow: "0 1px 12px #aeafaf",
+            border: "solid #ff5252",
           }}
         >
           <FormControl size="small" sx={{ m: "10px 4px 0 4px", minWidth: 140 }}>
@@ -174,7 +175,7 @@ function ProductsSalesReport() {
               })}
             </Select>
           </FormControl>
-          <Box display="flex" alignItems="center" m="12px 4px" pb="10px">
+          <Box display="flex" alignItems="center" m="12px 4px 0 4px" pb="10px">
             <FormControl size="small" sx={{ mr: "4px", minWidth: 130 }}>
               <InputLabel id="demo-simple-select-label">Month</InputLabel>
               <Select

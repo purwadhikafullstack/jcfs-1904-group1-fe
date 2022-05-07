@@ -124,10 +124,9 @@ function Products() {
           <Box
             sx={{
               width: "90%",
-              margin: "0 auto",
+              marginInline: "auto",
               display: "flex",
               flexWrap: "wrap",
-              justifyContent: "start",
             }}
           >
             {renderProducts()}

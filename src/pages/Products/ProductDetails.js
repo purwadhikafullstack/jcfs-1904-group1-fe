@@ -28,18 +28,21 @@ function ProductDetails() {
         ...formState,
         variant: e.target.value,
         price: product.priceStrip,
+        stock: product.qtyStripAvailable,
       });
     } else if (e.target.value == "box") {
       setFormState({
         ...formState,
         variant: e.target.value,
         price: product.priceBox,
+        stock: product.qtyBoxAvailable,
       });
     } else if (e.target.value == "pcs") {
       setFormState({
         ...formState,
         variant: e.target.value,
         price: product.pricePcs,
+        stock: product.qtyPcsAvailable,
       });
     }
   };
@@ -47,11 +50,13 @@ function ProductDetails() {
     const fetchProduct = async () => {
       try {
         const res = await axios.get(
-          `/products/${params.category}/${params.id}`
+          `/products/${params.category}/${params.id}`,
+          { params: { productName: product.productName } }
         );
         const { data } = res;
         setProduct(data.result[0]);
         setSimilarProducts(data.resultSimilar);
+
         if (data.result[0].isLiquid) {
           setFormState({
             ...formState,
@@ -65,7 +70,7 @@ function ProductDetails() {
     };
     fetchProduct();
   }, []);
-
+  console.log(product.productName);
   const postCart = async () => {
     try {
       const response = axios.post(`/carts`, {
@@ -135,6 +140,7 @@ function ProductDetails() {
                 >
                   <FormControlLabel
                     value="box"
+                    disabled={product.qtyBoxAvailable == 0}
                     labelPlacement="top"
                     control={<Radio color="warning" />}
                     label="Box"
@@ -155,7 +161,14 @@ function ProductDetails() {
               </FormControl>
             </Box>
           )}
-          <Box sx={{ mb: "20px", borderBottom: "1px solid" }}>
+          <Box
+            sx={{
+              mb: "20px",
+              borderBottom: "1px solid",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
             <Button
               variant="contained"
               color="warning"
@@ -167,6 +180,13 @@ function ProductDetails() {
             >
               Add To Cart
             </Button>
+            <Box margin="-24px 0 0 12px">
+              <Typography>
+                (Stock :{" "}
+                {!formState.stock ? product.qtyStripAvailable : formState.stock}
+                )
+              </Typography>
+            </Box>
           </Box>
           <Box>
             <Box borderBottom={1} mb="20px">
@@ -192,15 +212,17 @@ function ProductDetails() {
           </Box>
         </Box>
       </Box>
-      <Box ml="180px" mt="42px">
-        <Typography variant="h4">Similar Products</Typography>
+      <Box mt="42px">
+        <Typography textAlign="center" variant="h4">
+          Best Seller In Category {product.name}
+        </Typography>
       </Box>
       <Box
         sx={{
           width: "90%",
           margin: "0 auto",
           display: "flex",
-          justifyContent: "start",
+          justifyContent: "center",
         }}
       >
         {renderProducts()}

@@ -13,8 +13,9 @@ function ProductCard(props) {
       underline="none"
       sx={{
         margin: "24px",
-        flex: "15%",
         boxShadow: "0 3px 8px #aeafaf",
+        // width: "15%",
+        flex: "0 0 15%",
       }}
     >
       <Card sx={{ height: "240px" }}>

@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import axios from "../../../utils/axios";
 import {
   Box,
@@ -19,6 +20,7 @@ import {
 } from "@mui/material";
 
 function InputProducts() {
+  const { id } = useSelector((state) => state.auth);
   const [categories, setCategories] = useState([]);
   const [formState, setFormState] = useState({
     isLiquid: 1,
@@ -42,6 +44,7 @@ function InputProducts() {
     try {
       const formData = new FormData();
       formData.append("productPhoto", image);
+      formData.append("user_id", id);
       formData.append("productName", formState.productName);
       formData.append("priceStrip", formState.priceStrip);
       formData.append("dose", formState.dose);

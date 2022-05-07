@@ -10,23 +10,24 @@ import {
   TextField,
   MenuItem,
   Select,
-  FormControl,
-  OutlinedInput,
 } from "@mui/material";
+import { useSelector } from "react-redux";
 
 function ProductDetails() {
+  const { id } = useSelector((state) => state.auth);
   const [product, setProduct] = useState({
     priceStrip: "",
     priceBox: "",
     pricePcs: "",
   });
+  const [newStock, setNewStock] = useState({ priceStrip: "" });
   const [categories, setCategories] = useState([]);
   const params = useParams();
   const [isEdit, setIsEdit] = useState(false);
   const [image, setImage] = useState("");
 
   const handleChange = (e) => {
-    setProduct({ ...product, [e.target.name]: e.target.value });
+    setNewStock({ ...newStock, [e.target.name]: e.target.value });
   };
 
   const onImageChange = (e) => {
@@ -79,6 +80,7 @@ function ProductDetails() {
     try {
       const formData = new FormData();
       formData.append("id", product.id);
+      formData.append("user_id", id);
       formData.append("productPhoto", image);
       formData.append("productName", product.productName);
       formData.append("priceStrip", product.priceStrip);
@@ -87,13 +89,17 @@ function ProductDetails() {
       formData.append("category_id", product.category_id);
       formData.append("isLiquid", product.isLiquid);
       if (product.isLiquid === 1) {
-        formData.append("qtyBottleTotal", product.qtyStripTotal);
+        formData.append("qtyBottleTotal", newStock.qtyStripTotal);
+        formData.append("qtyBottleCurrent", product.qtyStripTotal);
       } else {
         formData.append("priceBox", product.priceBox);
         formData.append("pricePcs", product.pricePcs);
-        formData.append("qtyBoxTotal", product.qtyBoxTotal);
-        formData.append("qtyStripTotal", product.qtyStripTotal);
-        formData.append("qtyPcsTotal", product.qtyPcsTotal);
+        formData.append("qtyBoxTotal", newStock.qtyBoxTotal);
+        formData.append("qtyBoxCurrent", product.qtyBoxTotal);
+        formData.append("qtyStripTotal", newStock.qtyStripTotal);
+        formData.append("qtyStripCurrent", product.qtyStripTotal);
+        formData.append("qtyPcsTotal", newStock.qtyPcsTotal);
+        formData.append("qtyPcsCurrent", product.qtyPcsTotal);
       }
       const res = await axios.put(`/products/${params.id}`, formData);
       console.log(params.id);
@@ -110,6 +116,7 @@ function ProductDetails() {
       const res = await axios.get(`/products/${params.category}/${params.id}`);
       const { data } = res;
       setProduct(data.result[0]);
+      setNewStock(data.result[0]);
     } catch (error) {
       console.log(alert(error.message));
     }
@@ -131,7 +138,7 @@ function ProductDetails() {
   }, [isEdit]);
 
   const type = product.isLiquid ? "ml" : "mg";
-
+  console.log(newStock);
   return (
     <Box sx={{ padding: "0 24px 0 24px", ml: "240px" }}>
       {!isEdit ? (
@@ -223,7 +230,7 @@ function ProductDetails() {
                   <Typography variant="h6">Box :</Typography>
                   <Typography variant="h6">{product.qtyBoxTotal}</Typography>
                 </Box>
-                <Box display="flex" justifyContent="space-between" width="72px">
+                <Box display="flex" justifyContent="space-between" width="78px">
                   <Typography variant="h6">Strip :</Typography>
                   <Typography variant="h6">{product.qtyStripTotal}</Typography>
                 </Box>
@@ -417,7 +424,7 @@ function ProductDetails() {
                   <Typography variant="h6">Bottle :</Typography>
                   <TextField
                     name="qtyStripTotal"
-                    value={product.qtyStripTotal}
+                    value={newStock.qtyStripTotal}
                     onChange={handleChange}
                     type="number"
                     size="small"
@@ -435,7 +442,7 @@ function ProductDetails() {
                   <Typography variant="h6">Box :</Typography>
                   <TextField
                     name="qtyBoxTotal"
-                    value={product.qtyBoxTotal}
+                    value={newStock.qtyBoxTotal}
                     onChange={handleChange}
                     type="number"
                     size="small"
@@ -450,7 +457,7 @@ function ProductDetails() {
                   <Typography variant="h6">Strip :</Typography>
                   <TextField
                     name="qtyStripTotal"
-                    value={product.qtyStripTotal}
+                    value={newStock.qtyStripTotal}
                     onChange={handleChange}
                     type="number"
                     size="small"
@@ -465,7 +472,7 @@ function ProductDetails() {
                   <Typography variant="h6">Pcs :</Typography>
                   <TextField
                     name="qtyPcsTotal"
-                    value={product.qtyPcsTotal}
+                    value={newStock.qtyPcsTotal}
                     onChange={handleChange}
                     type="number"
                     size="small"

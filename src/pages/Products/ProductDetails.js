@@ -16,7 +16,7 @@ import {
 import ProductCard from "./components/ProductCard";
 
 function ProductDetails() {
-  const userId = useSelector((state) => state.auth.id);
+  const { userId, username } = useSelector((state) => state.auth.id);
   const [product, setProduct] = useState({ priceStrip: "" });
   const [similarProducts, setSimilarProducts] = useState([]);
   const [formState, setFormState] = useState({ variant: "strip", price: 0 });
@@ -83,8 +83,12 @@ function ProductDetails() {
   };
 
   const onAddToCartClick = () => {
-    postCart();
-    alert("Added to cart");
+    if (username) {
+      postCart();
+      alert("Added to cart");
+    } else {
+      alert("Please login first to continue");
+    }
   };
 
   const type = product.isLiquid ? "ml" : "mg";

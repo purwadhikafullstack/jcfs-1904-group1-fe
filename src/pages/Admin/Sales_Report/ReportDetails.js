@@ -85,7 +85,6 @@ function ReportDetails() {
           offSet: queryPagination.offSet,
         },
       });
-
       const { data, dataChart, totalCount } = res.data;
       setTransactions(data);
       setRevenue(dataChart);

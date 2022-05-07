@@ -44,6 +44,7 @@ function Carts() {
       alert(error);
     }
   };
+  console.log(carts);
 
   useEffect(() => {
     fetchCarts();
@@ -151,7 +152,7 @@ function Carts() {
           </Box>
           {index == carts.length - 1 ? (
             <Box
-              borderBottom={1}
+              borderBottom={0}
               borderColor="darkgray"
               paddingBottom="12px"
               mb="20px"
@@ -200,7 +201,7 @@ function Carts() {
           </Typography>
           <Typography
             variant="h6"
-            // sx={{ ml: "220px" }}
+            // sx={{ ml: "20px" }}
           >
             Price
           </Typography>
@@ -223,49 +224,63 @@ function Carts() {
             Total Price
           </Typography>
         </Box>
-        {renderCarts()}
+        {carts.length ? (
+          renderCarts()
+        ) : (
+          <Typography>No products in cart!</Typography>
+        )}
       </Paper>
-      <Paper
-        sx={{
-          width: "20%",
-          backgroundColor: "white",
-          marginTop: 10,
-          borderRadius: 3,
-          boxShadow: 3,
-        }}
-      >
-        <Box display="flex" justifyContent="end" marginRight="12px">
-          <Box display="flex" justifyContent="space-between">
-            <Box>
-              <Typography mr="12px">Sub Total : </Typography>
-              <Typography mr="12px">
-                PPn {priceState.ppnObat * 100}%:
-              </Typography>
-              <Typography mr="12px">Total : </Typography>
-            </Box>
-            <Box>
-              <Typography>
-                Rp {priceState.total.toLocaleString("id")}
-              </Typography>
+      {carts.length ? (
+        <Paper
+          sx={{
+            width: "15%",
+            height: 130,
+            backgroundColor: "white",
+            marginBottom: 10,
+            marginTop: 10,
+            borderRadius: 3,
+            boxShadow: 3,
+          }}
+        >
+          <Box display="flex" justifyContent="end" marginRight="12px">
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignContent="center"
+            >
+              <Box>
+                <Typography mr="12px">Sub Total : </Typography>
+                <Typography mr="12px">
+                  PPn {priceState.ppnObat * 100}%:
+                </Typography>
+                <Typography mr="12px">Total : </Typography>
+              </Box>
+              <Box>
+                <Typography>
+                  Rp {priceState.total.toLocaleString("id")}
+                </Typography>
 
-              <Typography>Rp {priceState.tax.toLocaleString("id")}</Typography>
+                <Typography>
+                  Rp {priceState.tax.toLocaleString("id")}
+                </Typography>
 
-              <Typography>
-                Rp {priceState.totalAfterTax.toLocaleString("id")}
-              </Typography>
+                <Typography>
+                  Rp {priceState.totalAfterTax.toLocaleString("id")}
+                </Typography>
+              </Box>
             </Box>
           </Box>
-        </Box>
-        <Box display="flex" justifyContent="end">
-          <Button
-            variant="contained"
-            sx={{ margin: "12px" }}
-            onClick={onCheckoutClick}
-          >
-            Checkout
-          </Button>
-        </Box>
-      </Paper>
+          <Box display="flex" justifyContent="end">
+            <Button
+              variant="contained"
+              sx={{ margin: "12px" }}
+              onClick={onCheckoutClick}
+            >
+              Checkout
+            </Button>
+          </Box>
+        </Paper>
+      ) : null}
     </Box>
   );
 }

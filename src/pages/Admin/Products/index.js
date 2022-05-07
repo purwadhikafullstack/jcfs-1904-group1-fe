@@ -9,7 +9,6 @@ import Sort from "../../Products/components/Sort";
 import PaginationHandler from "../../Products/components/PaginationHandler";
 
 function ProductsAdmin() {
-  const [sortProperty, setSortProperty] = useState({ sortBy: "", order: "" });
   const [pagination, setPagination] = useState({
     page: 1,
     lastPage: 0,
@@ -28,10 +27,8 @@ function ProductsAdmin() {
   //Fetch Products
   const fetchProducts = async () => {
     try {
-      const res = await axios.get(`/products`, {
+      const res = await axios.get(`/products/admin`, {
         params: {
-          sortBy: sortProperty.sortBy,
-          order: sortProperty.order,
           offSet: queryPagination.offSet,
           limit: queryPagination.itemsPerPage,
         },
@@ -49,24 +46,8 @@ function ProductsAdmin() {
 
   useEffect(() => {
     fetchProducts();
-  }, [sortProperty, queryPagination]);
+  }, [queryPagination]);
 
-  const sortProducts = (value) => {
-    switch (value) {
-      case "Asc":
-        setSortProperty({ sortBy: "productName", order: value });
-        break;
-      case "Desc":
-        setSortProperty({ sortBy: "productName", order: value });
-        break;
-      case "LowToHi":
-        setSortProperty({ sortBy: "priceStrip", order: "Asc" });
-        break;
-      case "HiToLow":
-        setSortProperty({ sortBy: "priceStrip", order: "Desc" });
-        break;
-    }
-  };
   //Get Data From Child Com
   const handleGetChildData = (data) => {
     setSearchProducts(data);
@@ -94,7 +75,6 @@ function ProductsAdmin() {
             variant="contained"
             size="small"
             color="warning"
-            // color="warning"
             sx={{ width: "120px", color: "white", backgroundColor: "#ff5252" }}
           >
             Add Product
@@ -110,14 +90,15 @@ function ProductsAdmin() {
           }}
         >
           <Typography variant="h5">All Medicines</Typography>
-          <Sort sortProducts={sortProducts} />
         </Box>
         {/* productCard */}
         <Box
           sx={{
+            width: "90%",
+            margin: "0 auto",
             display: "flex",
             flexWrap: "wrap",
-            justifyContent: "flex-start",
+            justifyContent: "start",
           }}
         >
           {renderProducts()}

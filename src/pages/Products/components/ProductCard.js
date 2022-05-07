@@ -1,11 +1,7 @@
 import React from "react";
+import { Card, CardContent, CardMedia, Typography, Link } from "@mui/material";
 
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
-import Link from "@mui/material/Link";
 
 function ProductCard(props) {
   const { id, productName, productPhoto, priceStrip, dose, name, isLiquid } =
@@ -15,13 +11,17 @@ function ProductCard(props) {
     <Link
       href={`/products/${name}/${id}`}
       underline="none"
-      sx={{ margin: "24px" }}
+      sx={{
+        margin: "24px",
+        flex: "15%",
+        boxShadow: "0 3px 8px #aeafaf",
+      }}
     >
-      <Card sx={{ maxWidth: 160, height: 240 }}>
+      <Card sx={{ height: "240px" }}>
         <CardActionArea>
           <CardMedia
             component="img"
-            height="160"
+            height="160px"
             image={productPhoto}
             alt="green iguana"
           />

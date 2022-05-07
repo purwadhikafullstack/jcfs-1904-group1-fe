@@ -20,13 +20,13 @@ function ProductsSalesByMonth(props) {
       minWidth: 80,
       align: "center",
     },
-    { id: "Sold", label: "Sold", minWidth: 30, align: "center" },
+    { id: "Qty", label: "Qty", minWidth: 30, align: "center" },
     { id: "Variant", label: "Variant", minWidth: 30, align: "center" },
     { id: "Date", label: "Date", minWidth: 30, align: "center" },
   ];
 
-  function createData(Product, Sold, Variant, Date, id) {
-    return { Product, Sold, Variant, Date, id };
+  function createData(Product, Qty, Variant, Date, id) {
+    return { Product, Qty, Variant, Date, id };
   }
 
   const rows = productSalesMonthly.map((data) => {

@@ -108,8 +108,9 @@ function ProductsSalesReport() {
       id: "Product",
       label: "Product",
       minWidth: 60,
+      align: "center",
     },
-    { id: "Username", label: "Username", minWidth: 40 },
+    { id: "Username", label: "Username", minWidth: 40, align: "center" },
     {
       id: "Qty",
       label: "Qty",

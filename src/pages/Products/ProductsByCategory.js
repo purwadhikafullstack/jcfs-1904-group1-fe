@@ -124,9 +124,11 @@ function ProductsByCategory() {
           {/* productCard */}
           <Box
             sx={{
+              width: "90%",
+              margin: "0 auto",
               display: "flex",
               flexWrap: "wrap",
-              justifyContent: "flex-start",
+              justifyContent: "start",
             }}
           >
             {renderProducts()}

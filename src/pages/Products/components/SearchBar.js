@@ -36,7 +36,7 @@ function SearchBar(props) {
         onKeyPress={onInputPress}
         fullWidth
         sx={{
-          border: "1px solid ",
+          border: "2px solid #d5d5d5 ",
           backgroundColor: "white",
           paddingLeft: "10px",
           borderRadius: "3px",
@@ -48,6 +48,7 @@ function SearchBar(props) {
         color="warning"
         onClick={onSearchMed}
         sx={{
+          ml: "8px",
           color: "white",
         }}
       >

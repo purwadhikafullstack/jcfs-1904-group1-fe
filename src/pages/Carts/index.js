@@ -39,7 +39,7 @@ function Carts() {
         tax: data.tax,
         totalAfterTax: data.totalAfterTax,
       });
-      setCarts(data.result);
+      setCarts(data.dataSend);
     } catch (error) {
       alert(error);
     }
@@ -81,8 +81,14 @@ function Carts() {
     return carts.map((cart, index) => {
       return (
         <Box>
-          <Box display="flex" justifyContent="space-around" alignItems="center">
-            <Box>
+          <Box
+            sx={{ width: "90%" }}
+            display="flex"
+            marginInline="auto"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Box flex="1">
               <img
                 src={cart.productPhoto}
                 alt="product image"
@@ -90,12 +96,14 @@ function Carts() {
               />
 
               <Box display="flex">
-                <Typography marginInline="auto">{cart.productName}</Typography>
+                <Typography>{cart.productName}</Typography>
               </Box>
             </Box>
 
-            <Typography>Rp {cart.priceStrip.toLocaleString("id")}</Typography>
-            <Box width="200px" display="flex" alignItems="center">
+            <Typography flex="1">
+              Rp {cart.price.toLocaleString("id")}
+            </Typography>
+            <Box flex="1" width="120px" display="flex" alignItems="center">
               <Box>
                 <Button>
                   <IndeterminateCheckBoxIcon
@@ -105,6 +113,7 @@ function Carts() {
                         const res = axios.put(`/carts/decQty`, {
                           user_id: userId,
                           product_id: cart.product_id,
+                          variant: cart.variant,
                         });
                         setState(cart.qty);
                       } catch (error) {}
@@ -122,6 +131,7 @@ function Carts() {
                         const res = axios.put(`/carts/incQty`, {
                           user_id: userId,
                           product_id: cart.product_id,
+                          variant: cart.variant,
                         });
                         setState(cart.qty);
                       } catch (error) {}
@@ -130,8 +140,13 @@ function Carts() {
                 </Button>
               </Box>
             </Box>
-            <Typography>
-              Rp {(cart.qty * cart.priceStrip).toLocaleString("id")}
+
+            <Typography flex="1" textAlign="center">
+              {cart.variant}
+            </Typography>
+
+            <Typography textAlign="end" flex="1">
+              Rp {(cart.qty * cart.price).toLocaleString("id")}
             </Typography>
           </Box>
           {index == carts.length - 1 ? (
@@ -165,7 +180,7 @@ function Carts() {
           boxShadow: 3,
         }}
       >
-        <Box display={"flex"} justifyContent="center">
+        <Box display="flex" justifyContent="center">
           <Typography variant="h4" pt={"20px"}>
             Cart
           </Typography>
@@ -181,7 +196,7 @@ function Carts() {
             variant="h6"
             // sx={{ ml: "220px" }}
           >
-            Name
+            Product
           </Typography>
           <Typography
             variant="h6"
@@ -194,6 +209,12 @@ function Carts() {
             // sx={{ ml: "220px" }}
           >
             Quantity
+          </Typography>
+          <Typography
+            variant="h6"
+            // sx={{ ml: "220px" }}
+          >
+            Variant
           </Typography>
           <Typography
             variant="h6"

@@ -54,9 +54,6 @@ function Dashboard() {
             backgroundColor: "#ff5252",
           }}
         >
-          <Box border="1px solid black">
-            <Typography variant="h3">LOGO</Typography>
-          </Box>
           <Toolbar />
           <Box sx={{ overflow: "auto", marginTop: "-60px" }}>
             <List>
@@ -98,6 +95,14 @@ function Dashboard() {
                     <InboxIcon />
                   </ListItemIcon>
                   <ListItemText primary="Transactions History" />
+                </ListItem>
+              </Link>
+              <Link underline="none" color="textPrimary" href="/admin/stocks">
+                <ListItem button key="Stocks">
+                  <ListItemIcon>
+                    <InboxIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Stocks" />
                 </ListItem>
               </Link>
             </List>

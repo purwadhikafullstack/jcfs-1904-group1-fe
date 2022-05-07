@@ -25,6 +25,7 @@ import ProductDetailsAdmin from "./pages/Admin/Products/ProductDetails";
 import SalesReport from "./pages/Admin/Sales_Report";
 import ReportDetails from "./pages/Admin/Sales_Report/ReportDetails";
 import ProductsSalesReport from "./pages/Admin/Sales_Report/ProductsSalesReport";
+import Stocks from "./pages/Admin/Stocks";
 
 function App() {
   const [isStorageChecked, setIsStorageChecked] = useState(false);
@@ -51,7 +52,10 @@ function App() {
           <Router>
             <Dashboard />
             <Routes>
+              <Route path="login" element={<Login />} />
+
               <Route path="/admin/products" element={<ProductsAdmin />} />
+              <Route path="/admin/stocks" element={<Stocks />} />
               <Route path="/admin/products/input" element={<InputProducts />} />
               <Route
                 path="/admin/products/:category/:id"

@@ -14,6 +14,7 @@ import ProductDetails from "./pages/Products/ProductDetails";
 import Carts from "./pages/Carts";
 import Payment from "./pages/Payment";
 import Transactions from "./pages/Transactions";
+import TransactionDetails from "./pages/TransactionDetails";
 
 import { keepLoginAction } from "./store/actions/index";
 import "./index.css";
@@ -88,6 +89,10 @@ function App() {
               <Route path="/products" element={<Products />} />
               <Route path="/carts/:userId" element={<Carts />} />
               <Route path="/transactions/:userId" element={<Transactions />} />
+              <Route
+                path="/transactions/details/:transactionId"
+                element={<TransactionDetails />}
+              />
               <Route path="/payment/:userId" element={<Payment />} />
               <Route
                 path="/products/category/:category"

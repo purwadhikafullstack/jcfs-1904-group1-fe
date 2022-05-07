@@ -136,7 +136,7 @@ function Carts() {
           </Box>
           {index == carts.length - 1 ? (
             <Box
-              borderBottom={1}
+              borderBottom={0}
               borderColor="darkgray"
               paddingBottom="12px"
               mb="20px"
@@ -185,7 +185,7 @@ function Carts() {
           </Typography>
           <Typography
             variant="h6"
-            // sx={{ ml: "220px" }}
+            // sx={{ ml: "20px" }}
           >
             Price
           </Typography>
@@ -206,15 +206,21 @@ function Carts() {
       </Paper>
       <Paper
         sx={{
-          width: "20%",
+          width: "15%",
+          height: 130,
           backgroundColor: "white",
+          marginBottom: 10,
           marginTop: 10,
           borderRadius: 3,
           boxShadow: 3,
         }}
       >
         <Box display="flex" justifyContent="end" marginRight="12px">
-          <Box display="flex" justifyContent="space-between">
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignContent="center"
+          >
             <Box>
               <Typography mr="12px">Sub Total : </Typography>
               <Typography mr="12px">

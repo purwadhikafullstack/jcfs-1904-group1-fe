@@ -54,9 +54,6 @@ function Dashboard() {
             backgroundColor: "#ff5252",
           }}
         >
-          <Box border="1px solid black">
-            <Typography variant="h3">LOGO</Typography>
-          </Box>
           <Toolbar />
           <Box sx={{ overflow: "auto", marginTop: "-60px" }}>
             <List>

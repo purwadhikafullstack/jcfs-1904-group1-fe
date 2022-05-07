@@ -66,20 +66,20 @@ function ProductDetails() {
     fetchProduct();
   }, []);
 
-  console.log(formState);
   const postCart = async () => {
     try {
       const response = axios.post(`/carts`, {
         user_id: userId,
         qty: 1,
         product_id: product.id,
+        variant: formState.variant,
       });
     } catch (error) {}
   };
 
   const onAddToCartClick = () => {
-    console.log(formState);
-    // alert("Added to cart");
+    postCart();
+    alert("Added to cart");
   };
 
   const type = product.isLiquid ? "ml" : "mg";

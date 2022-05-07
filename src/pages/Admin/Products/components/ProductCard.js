@@ -8,8 +8,16 @@ import { CardActionArea } from "@mui/material";
 import Link from "@mui/material/Link";
 
 function ProductCard(props) {
-  const { id, productName, productPhoto, priceStrip, dose, name, isLiquid } =
-    props.product;
+  const {
+    id,
+    productName,
+    productPhoto,
+    priceStrip,
+    dose,
+    name,
+    isLiquid,
+    isDeleted,
+  } = props.product;
   const type = isLiquid ? "ml" : "mg";
   return (
     <Link
@@ -17,7 +25,13 @@ function ProductCard(props) {
       underline="none"
       sx={{ margin: "24px", flex: "20%" }}
     >
-      <Card sx={{ maxWidth: "160", height: "240" }}>
+      <Card
+        sx={{
+          maxWidth: "160",
+          height: "240",
+          backgroundColor: `${isDeleted ? "red" : "white"}`,
+        }}
+      >
         <CardActionArea>
           <CardMedia
             component="img"

@@ -98,10 +98,10 @@ function Transactions() {
           status: state.status,
         },
       });
-      const { totalCount } = res.data;
+      // const { totalCount } = res.data;
 
-      setTransactions(res.data.result[0]);
-      setPagination({ ...queryPagination, count: totalCount[0].total });
+      setTransactions(res.data.dataDate);
+      setPagination({ ...queryPagination });
     } catch (error) {
       alert(error);
     }

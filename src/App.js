@@ -12,7 +12,6 @@ import { useDispatch, useSelector } from "react-redux";
 import ProductsByCategory from "./pages/Products/ProductsByCategory";
 import ProductDetails from "./pages/Products/ProductDetails";
 import Carts from "./pages/Carts";
-import Payment from "./pages/Payment";
 import Transactions from "./pages/Transactions";
 import TransactionDetails from "./pages/TransactionDetails";
 
@@ -26,6 +25,8 @@ import SalesReport from "./pages/Admin/Sales_Report";
 import ReportDetails from "./pages/Admin/Sales_Report/ReportDetails";
 import ProductsSalesReport from "./pages/Admin/Sales_Report/ProductsSalesReport";
 import Stocks from "./pages/Admin/Stocks";
+import Orders from "./pages/Admin/Orders";
+import DetailTransaction from "./pages/Admin/DetailTransaction";
 
 function App() {
   const [isStorageChecked, setIsStorageChecked] = useState(false);
@@ -70,6 +71,11 @@ function App() {
                 path="/admin/sales-report/products"
                 element={<ProductsSalesReport />}
               />
+              <Route path="/admin/orders" element={<Orders />} />
+              <Route
+                path="/admin/detail-transaction/:transactionId"
+                element={<DetailTransaction />}
+              />
 
               {/* <Route path="/products" element={<Products />} /> */}
             </Routes>
@@ -97,7 +103,6 @@ function App() {
                 path="/transactions/details/:transactionId"
                 element={<TransactionDetails />}
               />
-              <Route path="/payment/:userId" element={<Payment />} />
               <Route
                 path="/products/category/:category"
                 element={<ProductsByCategory />}

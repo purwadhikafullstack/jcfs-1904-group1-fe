@@ -27,6 +27,9 @@ import ProductsSalesReport from "./pages/Admin/Sales_Report/ProductsSalesReport"
 import Stocks from "./pages/Admin/Stocks";
 import Orders from "./pages/Admin/Orders";
 import DetailTransaction from "./pages/Admin/DetailTransaction";
+import CustomOrderDetail from "./pages/Admin/DetailTransaction/CustomOrderDetail";
+import CartsAdmin from "./pages/Admin/Carts";
+import CartDetails from "./pages/Admin/Carts/CartDetails";
 
 function App() {
   const [isStorageChecked, setIsStorageChecked] = useState(false);
@@ -75,6 +78,15 @@ function App() {
               <Route
                 path="/admin/detail-transaction/:transactionId"
                 element={<DetailTransaction />}
+              />
+              <Route
+                path="/admin/detail-transaction/custom/:transactionId"
+                element={<CustomOrderDetail />}
+              />
+              <Route path="/admin/carts" element={<CartsAdmin />} />
+              <Route
+                path="/admin/carts/details/:userId/:transactionId"
+                element={<CartDetails />}
               />
 
               {/* <Route path="/products" element={<Products />} /> */}

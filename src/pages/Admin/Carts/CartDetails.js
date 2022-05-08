@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "../../utils/axios";
+import axios from "../../../utils/axios";
 import {
   ImageList,
   TextField,
@@ -15,9 +15,10 @@ import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
-function Carts() {
-  const userId = useSelector((state) => state.auth.id);
-  const [product, setProduct] = useState({ priceStrip: "", name: "" });
+function CartDetails() {
+  const params = useParams();
+  const transactionId = params.transactionId;
+  const userId = params.userId;
   const [carts, setCarts] = useState([]);
   const [priceState, setPriceState] = useState({
     tax: "",
@@ -30,7 +31,9 @@ function Carts() {
 
   const fetchCarts = async () => {
     try {
-      const { data } = await axios.get(`/carts/user/${userId}`);
+      const { data } = await axios.get(
+        `/carts/admin/${userId}/${transactionId}`
+      );
 
       setPriceState({
         ...priceState,
@@ -44,29 +47,24 @@ function Carts() {
       alert(error);
     }
   };
-  console.log(carts);
 
   useEffect(() => {
     fetchCarts();
   }, [state]);
 
   const onCheckoutClick = async () => {
-    // alert("clicked");
     try {
-      const d = new Date();
-      const date = d.getDate();
-      const month = d.getMonth();
-      const year = d.getFullYear();
-      const time = d.getTime();
-
       const newTransaction = {
-        invoice: `INV/${userId}/${year}${month}${date}/${time}`,
         user_id: userId,
+        status: "waiting payment",
         amount: priceState.totalAfterTax,
         carts,
       };
 
-      await axios.post("/carts/checkout", newTransaction);
+      await axios.post(
+        `/transactions/checkout/${userId}/${transactionId}`,
+        newTransaction
+      );
       alert("Checkout successful");
     } catch (error) {
       alert("Checkout failed");
@@ -83,13 +81,17 @@ function Carts() {
       return (
         <Box>
           <Box
-            sx={{ width: "90%" }}
             display="flex"
+            justifyContent="space-around"
             marginInline="auto"
-            justifyContent="space-between"
             alignItems="center"
           >
-            <Box flex="1">
+            <Box
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+              width="20%"
+            >
               <img
                 src={cart.productPhoto}
                 alt="product image"
@@ -100,21 +102,29 @@ function Carts() {
                 <Typography>{cart.productName}</Typography>
               </Box>
             </Box>
+            <Box
+              sx={{ width: "20%", display: "flex", justifyContent: "center" }}
+            >
+              <Typography>Rp {cart.price.toLocaleString("id")}</Typography>
+            </Box>
 
-            <Typography flex="1">
-              Rp {cart.price.toLocaleString("id")}
-            </Typography>
-            <Box flex="1" width="120px" display="flex" alignItems="center">
+            <Box
+              width="20%"
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+            >
               <Box>
                 <Button>
                   <IndeterminateCheckBoxIcon
                     color="success"
                     onClick={async () => {
                       try {
-                        const res = axios.put(`/carts/decQty`, {
+                        const res = await axios.put(`/carts/decQty`, {
                           user_id: userId,
                           product_id: cart.product_id,
                           variant: cart.variant,
+                          status: "custom",
                         });
                         setState(cart.qty);
                       } catch (error) {}
@@ -129,10 +139,11 @@ function Carts() {
                     color="success"
                     onClick={async () => {
                       try {
-                        const res = axios.put(`/carts/incQty`, {
+                        const res = await axios.put(`/carts/incQty`, {
                           user_id: userId,
                           product_id: cart.product_id,
                           variant: cart.variant,
+                          status: "custom",
                         });
                         setState(cart.qty);
                       } catch (error) {}
@@ -141,14 +152,18 @@ function Carts() {
                 </Button>
               </Box>
             </Box>
-
-            <Typography flex="1" textAlign="center">
-              {cart.variant}
-            </Typography>
-
-            <Typography textAlign="end" flex="1">
-              Rp {(cart.qty * cart.price).toLocaleString("id")}
-            </Typography>
+            <Box
+              sx={{ width: "20%", display: "flex", justifyContent: "center" }}
+            >
+              <Typography textAlign="center">{cart.variant}</Typography>
+            </Box>
+            <Box
+              sx={{ width: "20%", display: "flex", justifyContent: "center" }}
+            >
+              <Typography>
+                Rp {(cart.qty * cart.price).toLocaleString("id")}
+              </Typography>
+            </Box>
           </Box>
           {index == carts.length - 1 ? (
             <Box
@@ -171,7 +186,7 @@ function Carts() {
   };
 
   return (
-    <Box display="flex" justifyContent="space-around">
+    <Box ml="240px" display="flex" justifyContent="space-around">
       <Paper
         sx={{
           width: "70%",
@@ -193,36 +208,21 @@ function Carts() {
           borderColor="darkgray"
           display="flex"
         >
-          <Typography
-            variant="h6"
-            // sx={{ ml: "220px" }}
-          >
-            Product
-          </Typography>
-          <Typography
-            variant="h6"
-            // sx={{ ml: "20px" }}
-          >
-            Price
-          </Typography>
-          <Typography
-            variant="h6"
-            // sx={{ ml: "220px" }}
-          >
-            Quantity
-          </Typography>
-          <Typography
-            variant="h6"
-            // sx={{ ml: "220px" }}
-          >
-            Variant
-          </Typography>
-          <Typography
-            variant="h6"
-            // sx={{ ml: "220px" }}
-          >
-            Total Price
-          </Typography>
+          <Box sx={{ width: "20%", display: "flex", justifyContent: "center" }}>
+            <Typography variant="h6">Product</Typography>
+          </Box>
+          <Box sx={{ width: "20%", display: "flex", justifyContent: "center" }}>
+            <Typography variant="h6">Price</Typography>
+          </Box>
+          <Box sx={{ width: "20%", display: "flex", justifyContent: "center" }}>
+            <Typography variant="h6">Quantity</Typography>
+          </Box>
+          <Box sx={{ width: "20%", display: "flex", justifyContent: "center" }}>
+            <Typography variant="h6">Variant</Typography>
+          </Box>
+          <Box sx={{ width: "20%", display: "flex", justifyContent: "center" }}>
+            <Typography variant="h6">Total Price</Typography>
+          </Box>
         </Box>
         {carts.length ? (
           renderCarts()
@@ -273,6 +273,7 @@ function Carts() {
           <Box display="flex" justifyContent="end">
             <Button
               variant="contained"
+              href="/admin/orders"
               sx={{ margin: "12px" }}
               onClick={onCheckoutClick}
             >
@@ -285,4 +286,4 @@ function Carts() {
   );
 }
 
-export default Carts;
+export default CartDetails;

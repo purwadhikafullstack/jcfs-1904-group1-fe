@@ -51,7 +51,6 @@ function Carts() {
   }, [state]);
 
   const onCheckoutClick = async () => {
-    // alert("clicked");
     try {
       const d = new Date();
       const date = d.getDate();
@@ -73,23 +72,20 @@ function Carts() {
       console.log(error);
     }
   };
-  // const onDeleteClick = async (id) => {
-  //   try {
-  //   } catch (error) {}
-  // };
 
   const renderCarts = () => {
     return carts.map((cart, index) => {
       return (
         <Box>
-          <Box
-            sx={{ width: "90%" }}
-            display="flex"
-            marginInline="auto"
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <Box flex="1">
+          <Box display="flex" justifyContent="space-around" alignItems="center">
+            <Box
+              width="20%"
+              variant="h6"
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              flexDirection="column"
+            >
               <img
                 src={cart.productPhoto}
                 alt="product image"
@@ -101,17 +97,27 @@ function Carts() {
               </Box>
             </Box>
 
-            <Typography flex="1">
-              Rp {cart.price.toLocaleString("id")}
-            </Typography>
-            <Box flex="1" width="120px" display="flex" alignItems="center">
+            <Box
+              width="20%"
+              variant="h6"
+              display="flex"
+              justifyContent="center"
+            >
+              <Typography>Rp {cart.price.toLocaleString("id")}</Typography>
+            </Box>
+            <Box
+              width="20%"
+              variant="h6"
+              display="flex"
+              justifyContent="center"
+            >
               <Box>
                 <Button>
                   <IndeterminateCheckBoxIcon
                     color="success"
                     onClick={async () => {
                       try {
-                        const res = axios.put(`/carts/decQty`, {
+                        const res = await axios.put(`/carts/decQty`, {
                           user_id: userId,
                           product_id: cart.product_id,
                           variant: cart.variant,
@@ -122,14 +128,16 @@ function Carts() {
                   ></IndeterminateCheckBoxIcon>
                 </Button>
               </Box>
-              <Typography>{cart.qty}</Typography>
+              <Box display="flex" alignItems="center">
+                <Typography>{cart.qty}</Typography>
+              </Box>
               <Box>
                 <Button>
                   <AddBoxIcon
                     color="success"
                     onClick={async () => {
                       try {
-                        const res = axios.put(`/carts/incQty`, {
+                        const res = await axios.put(`/carts/incQty`, {
                           user_id: userId,
                           product_id: cart.product_id,
                           variant: cart.variant,
@@ -141,14 +149,24 @@ function Carts() {
                 </Button>
               </Box>
             </Box>
-
-            <Typography flex="1" textAlign="center">
-              {cart.variant}
-            </Typography>
-
-            <Typography textAlign="end" flex="1">
-              Rp {(cart.qty * cart.price).toLocaleString("id")}
-            </Typography>
+            <Box
+              width="20%"
+              variant="h6"
+              display="flex"
+              justifyContent="center"
+            >
+              <Typography>{cart.variant}</Typography>
+            </Box>
+            <Box
+              width="20%"
+              variant="h6"
+              display="flex"
+              justifyContent="center"
+            >
+              <Typography>
+                Rp {(cart.qty * cart.price).toLocaleString("id")}
+              </Typography>
+            </Box>
           </Box>
           {index == carts.length - 1 ? (
             <Box
@@ -193,36 +211,21 @@ function Carts() {
           borderColor="darkgray"
           display="flex"
         >
-          <Typography
-            variant="h6"
-            // sx={{ ml: "220px" }}
-          >
-            Product
-          </Typography>
-          <Typography
-            variant="h6"
-            // sx={{ ml: "20px" }}
-          >
-            Price
-          </Typography>
-          <Typography
-            variant="h6"
-            // sx={{ ml: "220px" }}
-          >
-            Quantity
-          </Typography>
-          <Typography
-            variant="h6"
-            // sx={{ ml: "220px" }}
-          >
-            Variant
-          </Typography>
-          <Typography
-            variant="h6"
-            // sx={{ ml: "220px" }}
-          >
-            Total Price
-          </Typography>
+          <Box width="20%" variant="h6" display="flex" justifyContent="center">
+            <Typography variant="h6">Product</Typography>
+          </Box>
+          <Box width="20%" variant="h6" display="flex" justifyContent="center">
+            <Typography variant="h6">Price</Typography>
+          </Box>
+          <Box width="20%" variant="h6" display="flex" justifyContent="center">
+            <Typography variant="h6">Quantity</Typography>
+          </Box>
+          <Box width="20%" variant="h6" display="flex" justifyContent="center">
+            <Typography variant="h6">Variant</Typography>
+          </Box>{" "}
+          <Box width="20%" variant="h6" display="flex" justifyContent="center">
+            <Typography variant="h6">Total Price</Typography>
+          </Box>
         </Box>
         {carts.length ? (
           renderCarts()
@@ -234,15 +237,13 @@ function Carts() {
         <Paper
           sx={{
             width: "15%",
-            height: 130,
             backgroundColor: "white",
-            marginBottom: 10,
             marginTop: 10,
             borderRadius: 3,
             boxShadow: 3,
           }}
         >
-          <Box display="flex" justifyContent="end" marginRight="12px">
+          <Box bordisplay="flex" justifyContent="center">
             <Box
               display="flex"
               justifyContent="space-between"
@@ -271,13 +272,11 @@ function Carts() {
             </Box>
           </Box>
           <Box display="flex" justifyContent="end">
-            <Button
-              variant="contained"
-              sx={{ margin: "12px" }}
-              onClick={onCheckoutClick}
-            >
-              Checkout
-            </Button>
+            <Box border="solid">
+              <Button variant="contained" onClick={onCheckoutClick}>
+                Checkout
+              </Button>
+            </Box>
           </Box>
         </Paper>
       ) : null}

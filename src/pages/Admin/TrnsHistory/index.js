@@ -21,10 +21,10 @@ import {
 } from "@mui/material";
 import { useSelector } from "react-redux";
 
-function Orders() {
+function TrnsHistory() {
   const userId = useSelector((state) => state.auth.id);
   const [page, setPage] = useState(0);
-  const [state, setState] = useState({ status: "waiting payment" });
+  const [state, setState] = useState({ status: "complete" });
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [transactions, setTransactions] = useState([]);
   const [pagination, setPagination] = useState({
@@ -203,4 +203,4 @@ function Orders() {
   );
 }
 
-export default Orders;
+export default TrnsHistory;

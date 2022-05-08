@@ -14,6 +14,7 @@ import ProductDetails from "./pages/Products/ProductDetails";
 import Carts from "./pages/Carts";
 import Transactions from "./pages/Transactions";
 import TransactionDetails from "./pages/TransactionDetails";
+import TrnsHistory from "./pages/Admin/TrnsHistory";
 
 import { keepLoginAction } from "./store/actions/index";
 import "./index.css";
@@ -27,6 +28,7 @@ import ProductsSalesReport from "./pages/Admin/Sales_Report/ProductsSalesReport"
 import Stocks from "./pages/Admin/Stocks";
 import Orders from "./pages/Admin/Orders";
 import DetailTransaction from "./pages/Admin/DetailTransaction";
+import Prescription from "./pages/Prescription";
 
 function App() {
   const [isStorageChecked, setIsStorageChecked] = useState(false);
@@ -73,6 +75,10 @@ function App() {
               />
               <Route path="/admin/orders" element={<Orders />} />
               <Route
+                path="/admin/transactions-history"
+                element={<TrnsHistory />}
+              />
+              <Route
                 path="/admin/detail-transaction/:transactionId"
                 element={<DetailTransaction />}
               />
@@ -99,6 +105,7 @@ function App() {
               <Route path="/products" element={<Products />} />
               <Route path="/carts/:userId" element={<Carts />} />
               <Route path="/transactions/:userId" element={<Transactions />} />
+              <Route path="/prescription/:userId" element={<Prescription />} />
               <Route
                 path="/transactions/details/:transactionId"
                 element={<TransactionDetails />}

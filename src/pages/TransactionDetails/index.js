@@ -8,9 +8,6 @@ import {
   Box,
   Paper,
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import AddBoxIcon from "@mui/icons-material/AddBox";
-import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
 
 import { useSelector } from "react-redux";
 import { useParams, Navigate, Link } from "react-router-dom";
@@ -28,6 +25,7 @@ function TransactionDetails() {
   );
   const [state, setState] = useState("");
   const [status, setStatus] = useState("");
+  const [upload, setUpload] = useState("");
 
   const fetchTransaction = async () => {
     try {
@@ -47,18 +45,18 @@ function TransactionDetails() {
 
   useEffect(() => {
     fetchTransaction();
-  }, [state]);
+  }, [state, image]);
 
   const onImageChange = (e) => {
-    const newImage = e.target.files[0];
-    setImage(newImage);
-    console.log(image);
+    let newImage = e.target.files[0];
+    setUpload(newImage);
+    setImage(URL.createObjectURL(newImage));
   };
 
   const onUploadClick = async () => {
     try {
       const formData = new FormData();
-      formData.append("paymentPhoto", image);
+      formData.append("paymentPhoto", upload);
 
       const res = await axios.put(
         `/transactions/details/${params.transactionId}`,
@@ -78,23 +76,65 @@ function TransactionDetails() {
       return (
         <Box>
           <Box display="flex" justifyContent="space-around" alignItems="center">
-            <Typography>{transaction.productName}</Typography>
-            <Typography>
-              {transaction.productPrice.toLocaleString("id")}
-            </Typography>
-
-            <img
-              src={transaction.productPhoto}
-              alt="product image"
-              style={{ height: "50%", width: "100px" }}
-            />
-            <Typography>{transaction.qty}</Typography>
-            <Typography>{transaction.variant}</Typography>
-            <Typography>
-              {(transaction.productPrice * transaction.qty).toLocaleString(
-                "id"
-              )}
-            </Typography>
+            <Box
+              width="16%"
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+            >
+              <Typography>{transaction.productName}</Typography>
+            </Box>
+            <Box
+              width="16%"
+              variant="h6"
+              display="flex"
+              justifyContent="center"
+            >
+              <Typography>
+                Rp{transaction.productPrice.toLocaleString("id")}
+              </Typography>
+            </Box>
+            <Box
+              width="16%"
+              variant="h6"
+              display="flex"
+              justifyContent="center"
+            >
+              <img
+                src={transaction.productPhoto}
+                alt="product image"
+                style={{ height: "50%", width: "100px" }}
+              />
+            </Box>
+            <Box
+              width="16%"
+              variant="h6"
+              display="flex"
+              justifyContent="center"
+            >
+              <Typography>{transaction.qty}</Typography>
+            </Box>
+            <Box
+              width="16%"
+              variant="h6"
+              display="flex"
+              justifyContent="center"
+            >
+              <Typography>{transaction.variant}</Typography>
+            </Box>
+            <Box
+              width="16%"
+              variant="h6"
+              display="flex"
+              justifyContent="center"
+            >
+              <Typography>
+                Rp
+                {(transaction.productPrice * transaction.qty).toLocaleString(
+                  "id"
+                )}
+              </Typography>
+            </Box>
           </Box>
           {index == transaction.length - 1 ? (
             <Box
@@ -139,16 +179,36 @@ function TransactionDetails() {
           borderColor="darkgray"
           display="flex"
         >
-          <Typography variant="h6">Name</Typography>
-          <Typography variant="h6">Price</Typography>
-          <Typography variant="h6">Photo</Typography>
-          <Typography variant="h6">Quantity</Typography>
-          <Typography variant="h6">Variant</Typography>
-          <Typography variant="h6">Total Price</Typography>
+          <Box width="16%" variant="h6" display="flex" justifyContent="center">
+            <Typography variant="h6">Name</Typography>
+          </Box>
+          <Box width="16%" variant="h6" display="flex" justifyContent="center">
+            <Typography variant="h6">Price</Typography>
+          </Box>
+          <Box width="16%" variant="h6" display="flex" justifyContent="center">
+            <Typography variant="h6">Photo</Typography>
+          </Box>
+          <Box width="16%" variant="h6" display="flex" justifyContent="center">
+            <Typography variant="h6">Quantity</Typography>
+          </Box>
+          <Box width="16%" variant="h6" display="flex" justifyContent="center">
+            <Typography variant="h6">Variant</Typography>
+          </Box>
+          <Box width="16%" variant="h6" display="flex" justifyContent="center">
+            <Typography variant="h6">Total Price</Typography>
+          </Box>
         </Box>
         {renderTransaction()}
-        <Box display="flex" justifyContent="space-between">
-          <Box margin="auto" textAlign="center" border="solid" width="70%">
+        <Box display="flex" justifyContent="space-around">
+          <Box
+            margin="auto"
+            textAlign="center"
+            border="solid"
+            borderRadius="3px"
+            borderColor="darkgray"
+            width="65%"
+            paddingY="3px"
+          >
             <Typography variant="h5">
               Total: Rp{amount.toLocaleString("id")}
             </Typography>
@@ -157,7 +217,7 @@ function TransactionDetails() {
               <Typography variant="h4" color="red">
                 803 8098 1239 1293
               </Typography>
-              atas nama
+              atas nama:
               <Typography variant="h4" fontWeight="bold">
                 Rezeky Chan
               </Typography>

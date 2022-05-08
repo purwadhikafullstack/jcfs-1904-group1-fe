@@ -33,7 +33,6 @@ function ResetPassword() {
   };
 
   const compareResult = () => {
-    console.log(formState);
     // if null
     if (formState.newPassword !== formState.confirmNewPassword) {
       alert("Please insert the new passwords correctly.");

@@ -37,7 +37,6 @@ function Login() {
       const token = res.data.token;
       const action = loginAction({ user, token });
 
-      // console.log(res.data.user[0]);
       dispatch(action);
     } catch (error) {
       alert(error.response.data.message);

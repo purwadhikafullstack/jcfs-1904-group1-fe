@@ -44,7 +44,6 @@ function Carts() {
       alert(error);
     }
   };
-  console.log(carts);
 
   useEffect(() => {
     fetchCarts();

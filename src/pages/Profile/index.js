@@ -60,7 +60,6 @@ function Profile() {
       formData.append("address", formState.address);
 
       const res = await axios.put(`/users/${id}`, formData);
-      console.log(formData);
       alert("Data updated");
       console.log({ res });
     } catch (error) {}

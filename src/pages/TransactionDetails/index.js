@@ -62,7 +62,6 @@ function TransactionDetails() {
         `/transactions/details/${params.transactionId}`,
         formData
       );
-      console.log(params.id);
       alert("Payment photo upload success");
       window.location.reload();
       console.log({ res });

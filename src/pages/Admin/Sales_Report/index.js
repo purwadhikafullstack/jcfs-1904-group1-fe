@@ -8,7 +8,6 @@ import EuroSymbolIcon from "@mui/icons-material/EuroSymbol";
 
 function SalesReport() {
   const [data, setData] = useState({ count: "", revenue: "", sold: "" });
-  console.log(data);
   const fetchCustomer = async () => {
     try {
       const res = await axios.get(`/users/count`);

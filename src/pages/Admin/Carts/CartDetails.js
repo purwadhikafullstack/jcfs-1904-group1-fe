@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "../../utils/axios";
+import axios from "../../../utils/axios";
 import {
   ImageList,
   TextField,
@@ -15,9 +15,10 @@ import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
-function Carts() {
-  const userId = useSelector((state) => state.auth.id);
-  const [product, setProduct] = useState({ priceStrip: "", name: "" });
+function CartDetails() {
+  const params = useParams();
+  const transactionId = params.transactionId;
+  const userId = params.userId;
   const [carts, setCarts] = useState([]);
   const [priceState, setPriceState] = useState({
     tax: "",
@@ -30,7 +31,9 @@ function Carts() {
 
   const fetchCarts = async () => {
     try {
-      const { data } = await axios.get(`/carts/user/${userId}`);
+      const { data } = await axios.get(
+        `/carts/admin/${userId}/${transactionId}`
+      );
 
       setPriceState({
         ...priceState,
@@ -44,7 +47,6 @@ function Carts() {
       alert(error);
     }
   };
-  console.log(carts);
 
   useEffect(() => {
     fetchCarts();
@@ -52,39 +54,43 @@ function Carts() {
 
   const onCheckoutClick = async () => {
     try {
-      const d = new Date();
-      const date = d.getDate();
-      const month = d.getMonth();
-      const year = d.getFullYear();
-      const time = d.getTime();
-
       const newTransaction = {
-        invoice: `INV/${userId}/${year}${month}${date}/${time}`,
         user_id: userId,
+        status: "waiting payment",
         amount: priceState.totalAfterTax,
         carts,
       };
 
-      await axios.post("/carts/checkout", newTransaction);
+      await axios.post(
+        `/transactions/checkout/${userId}/${transactionId}`,
+        newTransaction
+      );
       alert("Checkout successful");
     } catch (error) {
       alert("Checkout failed");
       console.log(error);
     }
   };
+  // const onDeleteClick = async (id) => {
+  //   try {
+  //   } catch (error) {}
+  // };
 
   const renderCarts = () => {
     return carts.map((cart, index) => {
       return (
         <Box>
-          <Box display="flex" justifyContent="space-around" alignItems="center">
+          <Box
+            display="flex"
+            justifyContent="space-around"
+            marginInline="auto"
+            alignItems="center"
+          >
             <Box
-              width="20%"
-              variant="h6"
               display="flex"
-              justifyContent="center"
-              alignItems="center"
               flexDirection="column"
+              alignItems="center"
+              width="20%"
             >
               <img
                 src={cart.productPhoto}
@@ -96,20 +102,17 @@ function Carts() {
                 <Typography>{cart.productName}</Typography>
               </Box>
             </Box>
-
             <Box
-              width="20%"
-              variant="h6"
-              display="flex"
-              justifyContent="center"
+              sx={{ width: "20%", display: "flex", justifyContent: "center" }}
             >
               <Typography>Rp {cart.price.toLocaleString("id")}</Typography>
             </Box>
+
             <Box
               width="20%"
-              variant="h6"
               display="flex"
               justifyContent="center"
+              alignItems="center"
             >
               <Box>
                 <Button>
@@ -121,6 +124,7 @@ function Carts() {
                           user_id: userId,
                           product_id: cart.product_id,
                           variant: cart.variant,
+                          status: "custom",
                         });
                         setState(cart.qty);
                       } catch (error) {}
@@ -128,9 +132,7 @@ function Carts() {
                   ></IndeterminateCheckBoxIcon>
                 </Button>
               </Box>
-              <Box display="flex" alignItems="center">
-                <Typography>{cart.qty}</Typography>
-              </Box>
+              <Typography>{cart.qty}</Typography>
               <Box>
                 <Button>
                   <AddBoxIcon
@@ -141,6 +143,7 @@ function Carts() {
                           user_id: userId,
                           product_id: cart.product_id,
                           variant: cart.variant,
+                          status: "custom",
                         });
                         setState(cart.qty);
                       } catch (error) {}
@@ -150,18 +153,12 @@ function Carts() {
               </Box>
             </Box>
             <Box
-              width="20%"
-              variant="h6"
-              display="flex"
-              justifyContent="center"
+              sx={{ width: "20%", display: "flex", justifyContent: "center" }}
             >
-              <Typography>{cart.variant}</Typography>
+              <Typography textAlign="center">{cart.variant}</Typography>
             </Box>
             <Box
-              width="20%"
-              variant="h6"
-              display="flex"
-              justifyContent="center"
+              sx={{ width: "20%", display: "flex", justifyContent: "center" }}
             >
               <Typography>
                 Rp {(cart.qty * cart.price).toLocaleString("id")}
@@ -189,7 +186,7 @@ function Carts() {
   };
 
   return (
-    <Box display="flex" justifyContent="space-around">
+    <Box ml="240px" display="flex" justifyContent="space-around">
       <Paper
         sx={{
           width: "70%",
@@ -211,19 +208,19 @@ function Carts() {
           borderColor="darkgray"
           display="flex"
         >
-          <Box width="20%" variant="h6" display="flex" justifyContent="center">
+          <Box sx={{ width: "20%", display: "flex", justifyContent: "center" }}>
             <Typography variant="h6">Product</Typography>
           </Box>
-          <Box width="20%" variant="h6" display="flex" justifyContent="center">
+          <Box sx={{ width: "20%", display: "flex", justifyContent: "center" }}>
             <Typography variant="h6">Price</Typography>
           </Box>
-          <Box width="20%" variant="h6" display="flex" justifyContent="center">
+          <Box sx={{ width: "20%", display: "flex", justifyContent: "center" }}>
             <Typography variant="h6">Quantity</Typography>
           </Box>
-          <Box width="20%" variant="h6" display="flex" justifyContent="center">
+          <Box sx={{ width: "20%", display: "flex", justifyContent: "center" }}>
             <Typography variant="h6">Variant</Typography>
-          </Box>{" "}
-          <Box width="20%" variant="h6" display="flex" justifyContent="center">
+          </Box>
+          <Box sx={{ width: "20%", display: "flex", justifyContent: "center" }}>
             <Typography variant="h6">Total Price</Typography>
           </Box>
         </Box>
@@ -237,13 +234,15 @@ function Carts() {
         <Paper
           sx={{
             width: "15%",
+            height: 130,
             backgroundColor: "white",
+            marginBottom: 10,
             marginTop: 10,
             borderRadius: 3,
             boxShadow: 3,
           }}
         >
-          <Box bordisplay="flex" justifyContent="center">
+          <Box display="flex" justifyContent="end" marginRight="12px">
             <Box
               display="flex"
               justifyContent="space-between"
@@ -272,11 +271,14 @@ function Carts() {
             </Box>
           </Box>
           <Box display="flex" justifyContent="end">
-            <Box border="solid">
-              <Button variant="contained" onClick={onCheckoutClick}>
-                Checkout
-              </Button>
-            </Box>
+            <Button
+              variant="contained"
+              href="/admin/orders"
+              sx={{ margin: "12px" }}
+              onClick={onCheckoutClick}
+            >
+              Checkout
+            </Button>
           </Box>
         </Paper>
       ) : null}
@@ -284,4 +286,4 @@ function Carts() {
   );
 }
 
-export default Carts;
+export default CartDetails;

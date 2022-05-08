@@ -82,13 +82,13 @@ function Orders() {
     },
   ];
 
-  function createData(Invoice, Status, Amount, Date, id) {
-    return { Invoice, Status, Amount, Date, id };
+  function createData(Invoice, Status, Amount, Date, id, isByPrescription) {
+    return { Invoice, Status, Amount, Date, id, isByPrescription };
   }
 
   const rows = transactions.map((transaction) => {
-    const { invoice, status, amount, date, id } = transaction;
-    const row = createData(invoice, status, amount, date, id);
+    const { invoice, status, amount, date, id, isByPrescription } = transaction;
+    const row = createData(invoice, status, amount, date, id, isByPrescription);
     return row;
   });
   const fetchTransactions = async () => {
@@ -143,6 +143,9 @@ function Orders() {
             <Button name="reject" flex="1" onClick={buttonWPHandler}>
               reject
             </Button>
+            <Button name="custom" flex="1" onClick={buttonWPHandler}>
+              custom
+            </Button>
           </Box>
           <TableContainer>
             <Table stickyHeader aria-label="sticky table">
@@ -175,7 +178,11 @@ function Orders() {
                           return (
                             <TableCell key={column.id} align={column.align}>
                               <Link
-                                href={`detail-transaction/${row.id}`}
+                                href={
+                                  row.isByPrescription == 1
+                                    ? `detail-transaction/custom/${row.id}`
+                                    : `detail-transaction/${row.id}`
+                                }
                                 underline="hover"
                                 color="inherit"
                               >

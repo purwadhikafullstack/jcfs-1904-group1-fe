@@ -34,75 +34,91 @@ function SalesReport() {
 
   return (
     <Box ml="240px" paddingX="12px" mt="8px">
-      <Box>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-around",
+          alignItems: "center",
+          paddingY: "8px",
+          width: "90%",
+          height: "600px",
+          marginInline: "auto",
+        }}
+      >
         <Box
           sx={{
+            width: "30%",
+            height: "20%",
+            backgroundColor: "#ff5252",
+            color: "white",
             display: "flex",
-            justifyContent: "space-between",
-            paddingY: "8px",
-            width: "90%",
-            marginInline: "auto",
+            flexDirection: "column",
+            justifyContent: "center",
           }}
         >
-          <Box
-            sx={{
-              width: "25%",
-              backgroundColor: "#ff5252",
-              color: "white",
-            }}
-          >
-            <Box display="flex" justifyContent="center" alignItems="center">
-              <PersonIcon fontSize="large" />
-              <Box ml="12px">
-                <Typography variant="h6" textAlign="center">
-                  {data.count}
-                </Typography>
-
-                <Typography variant="h6">Total Customer</Typography>
-              </Box>
+          <Box display="flex" justifyContent="center" alignItems="center">
+            <PersonIcon sx={{ fontSize: "80px" }} />
+            <Box ml="12px">
+              <Typography variant="h4" textAlign="center">
+                {data.count}
+              </Typography>
+              <Typography variant="h4">Total Customer</Typography>
             </Box>
           </Box>
-          <Box
-            sx={{
-              width: "25%",
-              backgroundColor: "#ff5252",
-              color: "white",
-            }}
-          >
-            <Box display="flex" justifyContent="center" alignItems="center">
-              <EuroSymbolIcon fontSize="large" />
-              <Box ml="12px">
-                <Typography variant="h6" textAlign="center">
-                  {parseInt(data.revenue).toLocaleString("id")}
-                </Typography>
-                <Link
-                  href="/admin/sales-report/details"
-                  underline="hover"
-                  color="inherit"
-                >
-                  <Typography variant="h6">All-Time Revenue</Typography>
-                </Link>
-              </Box>
+        </Box>
+        <Box
+          sx={{
+            width: "30%",
+            height: "20%",
+            backgroundColor: "#ff5252",
+            color: "white",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+          }}
+        >
+          <Box display="flex" justifyContent="center" alignItems="center">
+            <EuroSymbolIcon sx={{ fontSize: "80px" }} />
+            <Box ml="12px">
+              <Typography variant="h4" textAlign="center">
+                {parseInt(data.revenue).toLocaleString("id")}
+              </Typography>
+              <Link
+                href="/admin/sales-report/details"
+                underline="hover"
+                color="inherit"
+              >
+                <Typography variant="h4">All-Time Revenue</Typography>
+              </Link>
             </Box>
           </Box>
+        </Box>
 
-          <Box
-            sx={{ color: "white", width: "25%", backgroundColor: "#ff5252" }}
-          >
-            <Box display="flex" justifyContent="center" alignItems="center">
-              <BarChartIcon fontSize="large" />
-              <Box ml="12px">
-                <Typography variant="h6" textAlign="center">
-                  {data.sold}
-                </Typography>
-                <Link
-                  href="/admin/sales-report/products"
-                  underline="hover"
-                  color="inherit"
-                >
-                  <Typography variant="h6">Products Sold</Typography>
-                </Link>
-              </Box>
+        <Box
+          sx={{
+            color: "white",
+            height: "20%",
+            width: "30%",
+            backgroundColor: "#ff5252",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+          }}
+        >
+          <Box display="flex" justifyContent="center" alignItems="center">
+            <BarChartIcon sx={{ fontSize: "80px" }} />
+            <Box ml="12px">
+              <Typography variant="h4" textAlign="center">
+                {data.sold}
+              </Typography>
+              <Link
+                href="/admin/sales-report/products"
+                underline="hover"
+                color="inherit"
+              >
+                <Typography variant="h4">Products Sold</Typography>
+              </Link>
             </Box>
           </Box>
         </Box>

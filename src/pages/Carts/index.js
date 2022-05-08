@@ -121,6 +121,7 @@ function Carts() {
                           user_id: userId,
                           product_id: cart.product_id,
                           variant: cart.variant,
+                          status: "cart",
                         });
                         setState(cart.qty);
                       } catch (error) {}
@@ -141,6 +142,7 @@ function Carts() {
                           user_id: userId,
                           product_id: cart.product_id,
                           variant: cart.variant,
+                          status: "cart",
                         });
                         setState(cart.qty);
                       } catch (error) {}

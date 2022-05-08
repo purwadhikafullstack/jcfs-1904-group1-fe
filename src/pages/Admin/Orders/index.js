@@ -177,9 +177,10 @@ function Orders() {
                         if (column.id === "Invoice") {
                           return (
                             <TableCell key={column.id} align={column.align}>
+                              {/* {row.Status === "custom"} */}
                               <Link
                                 href={
-                                  row.isByPrescription == 1
+                                  row.Status === "custom"
                                     ? `detail-transaction/custom/${row.id}`
                                     : `detail-transaction/${row.id}`
                                 }

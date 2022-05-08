@@ -16,7 +16,7 @@ import {
 import ProductCard from "./components/ProductCard";
 
 function ProductDetails() {
-  const { userId, username } = useSelector((state) => state.auth.id);
+  const { id, username } = useSelector((state) => state.auth);
   const [product, setProduct] = useState({ priceStrip: "" });
   const [similarProducts, setSimilarProducts] = useState([]);
   const [formState, setFormState] = useState({ variant: "strip", price: 0 });
@@ -74,7 +74,7 @@ function ProductDetails() {
   const postCart = async () => {
     try {
       const response = axios.post(`/carts`, {
-        user_id: userId,
+        user_id: id,
         qty: 1,
         product_id: product.id,
         variant: formState.variant,
@@ -83,11 +83,11 @@ function ProductDetails() {
   };
 
   const onAddToCartClick = () => {
-    if (username) {
+    if (!username) {
+      alert("Please login to add to cart");
+    } else {
       postCart();
       alert("Added to cart");
-    } else {
-      alert("Please login first to continue");
     }
   };
 

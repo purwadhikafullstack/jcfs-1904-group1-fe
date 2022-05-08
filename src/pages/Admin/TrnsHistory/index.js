@@ -21,10 +21,10 @@ import {
 } from "@mui/material";
 import { useSelector } from "react-redux";
 
-function Orders() {
+function TrnsHistory() {
   const userId = useSelector((state) => state.auth.id);
   const [page, setPage] = useState(0);
-  const [state, setState] = useState({ status: "waiting payment" });
+  const [state, setState] = useState({ status: "complete" });
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [transactions, setTransactions] = useState([]);
   const [pagination, setPagination] = useState({
@@ -82,13 +82,13 @@ function Orders() {
     },
   ];
 
-  function createData(Invoice, Status, Amount, Date, id, isByPrescription) {
-    return { Invoice, Status, Amount, Date, id, isByPrescription };
+  function createData(Invoice, Status, Amount, Date, id) {
+    return { Invoice, Status, Amount, Date, id };
   }
 
   const rows = transactions.map((transaction) => {
-    const { invoice, status, amount, date, id, isByPrescription } = transaction;
-    const row = createData(invoice, status, amount, date, id, isByPrescription);
+    const { invoice, status, amount, date, id } = transaction;
+    const row = createData(invoice, status, amount, date, id);
     return row;
   });
   const fetchTransactions = async () => {
@@ -143,9 +143,6 @@ function Orders() {
             <Button name="reject" flex="1" onClick={buttonWPHandler}>
               reject
             </Button>
-            <Button name="custom" flex="1" onClick={buttonWPHandler}>
-              custom
-            </Button>
           </Box>
           <TableContainer>
             <Table stickyHeader aria-label="sticky table">
@@ -178,11 +175,7 @@ function Orders() {
                           return (
                             <TableCell key={column.id} align={column.align}>
                               <Link
-                                href={
-                                  row.isByPrescription == 1
-                                    ? `detail-transaction/custom/${row.id}`
-                                    : `detail-transaction/${row.id}`
-                                }
+                                href={`detail-transaction/${row.id}`}
                                 underline="hover"
                                 color="inherit"
                               >
@@ -210,4 +203,4 @@ function Orders() {
   );
 }
 
-export default Orders;
+export default TrnsHistory;

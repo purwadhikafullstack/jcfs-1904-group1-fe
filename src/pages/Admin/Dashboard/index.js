@@ -85,6 +85,14 @@ function Dashboard() {
                   <ListItemText primary="Orders" />
                 </ListItem>
               </Link>
+              <Link underline="none" color="textPrimary" href="/admin/carts">
+                <ListItem button key="Carts">
+                  <ListItemIcon>
+                    <InboxIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Carts" />
+                </ListItem>
+              </Link>
               <Link
                 underline="none"
                 color="textPrimary"

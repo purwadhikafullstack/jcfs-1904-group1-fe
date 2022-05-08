@@ -446,7 +446,6 @@ function ProductDetails() {
                     onChange={handleChange}
                     type="number"
                     size="small"
-                    sx={{ width: "62px" }}
                   />
                 </Box>
                 <Box

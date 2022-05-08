@@ -28,8 +28,6 @@ function DetailTransaction() {
   const fetchTransaction = async () => {
     try {
       const res = await axios.get(`transactions/admin/${transactionId}`);
-      console.log(res.data);
-      console.log(res.data.result[0]);
       setTransaction(res.data.result[0]);
       setInvoice(res.data.result[0][0].invoice);
       setAmount(res.data.result[0][0].amount);

@@ -291,6 +291,19 @@ function ReportDetails() {
             marginInline: "auto",
           }}
         >
+          <Box sx={{ backgroundColor: "#d5d5d5" }}>
+            <Typography
+              variant="h5"
+              sx={{
+                p: "12px 0",
+                textAlign: "center",
+                fontWeight: "600",
+                color: "maroon",
+              }}
+            >
+              Revenue Detail
+            </Typography>
+          </Box>
           <TableContainer>
             <Table stickyHeader aria-label="sticky table">
               <TableHead>

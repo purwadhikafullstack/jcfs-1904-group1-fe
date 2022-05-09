@@ -1,22 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import axios from "../../../utils/axios";
 import {
   Box,
   Typography,
-  Select,
-  FormControl,
-  MenuItem,
-  InputLabel,
   Paper,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
-  TablePagination,
   TableRow,
-  Button,
   Link,
 } from "@mui/material";
 
@@ -63,7 +56,7 @@ function CartsAdmin() {
       setUserId(res.data.result[0].id);
       setCarts(res.data.result);
     } catch (error) {
-      alert(error);
+      console.log(error);
     }
   };
   useEffect(() => {

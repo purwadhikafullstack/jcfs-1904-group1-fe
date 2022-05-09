@@ -3,10 +3,6 @@ import { useState, useEffect } from "react";
 import {
   Box,
   Typography,
-  Select,
-  FormControl,
-  MenuItem,
-  InputLabel,
   Paper,
   Table,
   TableBody,
@@ -21,12 +17,53 @@ import axios from "../../../utils/axios";
 
 function Stocks() {
   const [logs, setLogs] = useState([]);
+  const [state, setState] = useState("stocks");
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [pagination, setPagination] = useState({
+    offSet: 0,
+    count: 0,
+  });
+  const [queryPagination, setQueryPagination] = useState({
+    offSet: 0,
+  });
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+    if (newPage > page) {
+      setQueryPagination({
+        ...pagination,
+        offSet: pagination.offSet + rowsPerPage,
+      });
+    } else if (newPage < page) {
+      setQueryPagination({
+        ...pagination,
+        offSet: pagination.offSet - rowsPerPage,
+      });
+    }
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(event.target.value);
+    setPage(0);
+  };
+
+  const buttonHandler = (e) => {
+    setState(e.target.name);
+  };
 
   const fetchLogs = async () => {
     try {
-      const res = await axios.get(`/logs`);
-      const { data } = res;
+      const res = await axios.get(`/logs`, {
+        params: {
+          limit: rowsPerPage,
+          offSet: queryPagination.offSet,
+          state: state,
+        },
+      });
+      const { data, totalCount } = res.data;
       setLogs(data);
+      setPagination({ ...queryPagination, count: totalCount[0].total });
     } catch (error) {
       console.log(error.message);
     }
@@ -34,7 +71,7 @@ function Stocks() {
 
   useEffect(() => {
     fetchLogs();
-  }, []);
+  }, [rowsPerPage, queryPagination, state]);
 
   const columns = [
     {
@@ -121,7 +158,40 @@ function Stocks() {
   });
 
   return (
-    <Box ml="240px">
+    <Box ml="240px" display="flex" flexDirection="column">
+      <Box
+        width="25%"
+        marginInline="auto"
+        marginTop="38px"
+        display="flex"
+        justifyContent="space-around"
+      >
+        <Button
+          size="large"
+          color="warning"
+          variant="contained"
+          name="stocks"
+          flex="1"
+          sx={{ width: "180px", color: "white", backgroundColor: "#ff5252" }}
+          onClick={buttonHandler}
+          disabled={state === "stocks"}
+        >
+          Stocks Logs
+        </Button>
+
+        <Button
+          color="warning"
+          variant="contained"
+          sx={{ width: "180px", color: "white", backgroundColor: "#ff5252" }}
+          size="large"
+          name="prescription"
+          flex="1"
+          onClick={buttonHandler}
+          disabled={state === "prescription"}
+        >
+          Custom Order
+        </Button>
+      </Box>
       <Paper
         elevation={3}
         sx={{
@@ -142,7 +212,7 @@ function Stocks() {
               color: "maroon",
             }}
           >
-            Stocks Log
+            {state === "stocks" ? "Stocks Logs" : "Custom Order Logs"}
           </Typography>
         </Box>
         <TableContainer>
@@ -174,8 +244,8 @@ function Stocks() {
                     {columns.map((column) => {
                       const value = row[column.id];
                       if (
-                        row.Description == "New Product" ||
-                        row.Description == "Restock"
+                        row.Description === "New Product" ||
+                        row.Description === "Restock"
                       ) {
                         return (
                           <TableCell
@@ -204,16 +274,16 @@ function Stocks() {
             </TableBody>
           </Table>
         </TableContainer>
-        {/* <TablePagination
+        <TablePagination
           sx={{ backgroundColor: "#d5d5d5" }}
-          rowsPerPageOptions={[5, 10, 20]}
+          rowsPerPageOptions={[10, 20]}
           component="div"
           count={pagination.count}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
-        /> */}
+        />
       </Paper>
     </Box>
   );

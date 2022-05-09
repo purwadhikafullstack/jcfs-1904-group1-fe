@@ -24,7 +24,7 @@ function ProductCard(props) {
             component="img"
             height="160px"
             image={productPhoto}
-            alt="green iguana"
+            alt="Product Photo"
           />
           <CardContent>
             <Typography

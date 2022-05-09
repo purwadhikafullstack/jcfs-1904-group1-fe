@@ -23,21 +23,21 @@ function ProductDetails() {
   const params = useParams();
 
   const handleChange = (e) => {
-    if (e.target.value == "strip") {
+    if (e.target.value === "strip") {
       setFormState({
         ...formState,
         variant: e.target.value,
         price: product.priceStrip,
         stock: product.qtyStripAvailable,
       });
-    } else if (e.target.value == "box") {
+    } else if (e.target.value === "box") {
       setFormState({
         ...formState,
         variant: e.target.value,
         price: product.priceBox,
         stock: product.qtyBoxAvailable,
       });
-    } else if (e.target.value == "pcs") {
+    } else if (e.target.value === "pcs") {
       setFormState({
         ...formState,
         variant: e.target.value,
@@ -65,7 +65,7 @@ function ProductDetails() {
           });
         }
       } catch (error) {
-        console.log(alert(error.message));
+        console.log(error.message);
       }
     };
     fetchProduct();
@@ -100,11 +100,11 @@ function ProductDetails() {
   };
 
   let price;
-  if (formState.variant == "strip" || formState.variant == "bottle") {
+  if (formState.variant === "strip" || formState.variant === "bottle") {
     price = product.priceStrip.toLocaleString("id");
-  } else if (formState.variant == "box") {
+  } else if (formState.variant === "box") {
     price = product.priceBox.toLocaleString("id");
-  } else if (formState.variant == "pcs") {
+  } else if (formState.variant === "pcs") {
     price = product.pricePcs.toLocaleString("id");
   }
 
@@ -118,7 +118,7 @@ function ProductDetails() {
           mt: "42px",
         }}
       >
-        <img src={product.productPhoto} alt="Product Photo" width={320} />
+        <img src={product.productPhoto} alt="ProductPhoto" width={320} />
         <Box padding="0 0 0 64px" sx={{ width: "40%" }}>
           <Typography variant="h4" fontWeight={600} sx={{ mb: "8px" }}>
             {product.productName} {product.dose}
@@ -144,19 +144,21 @@ function ProductDetails() {
                 >
                   <FormControlLabel
                     value="box"
-                    disabled={product.qtyBoxAvailable == 0}
+                    disabled={product.qtyBoxAvailable === 0}
                     labelPlacement="top"
                     control={<Radio color="warning" />}
                     label="Box"
                   />
                   <FormControlLabel
                     value="strip"
+                    disabled={product.qtyStripAvailable === 0}
                     control={<Radio color="warning" />}
                     labelPlacement="top"
                     label="Strip"
                   />
                   <FormControlLabel
                     value="pcs"
+                    disabled={product.qtyPcsAvailable === 0}
                     labelPlacement="top"
                     control={<Radio color="warning" />}
                     label="Pcs"
@@ -224,7 +226,7 @@ function ProductDetails() {
       <Box
         sx={{
           width: "90%",
-          margin: "0 auto",
+          marginInline: "auto",
           display: "flex",
           justifyContent: "center",
         }}

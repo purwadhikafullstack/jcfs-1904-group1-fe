@@ -53,7 +53,7 @@ function Carts() {
     try {
       const d = new Date();
       const date = d.getDate();
-      const month = d.getMonth();
+      const month = d.getMonth() + 1;
       const year = d.getFullYear();
       const time = d.getTime();
 
@@ -231,7 +231,9 @@ function Carts() {
         {carts.length ? (
           renderCarts()
         ) : (
-          <Typography>No products in cart!</Typography>
+          <Box display="flex" justifyContent="center">
+            <Typography>No products in cart!</Typography>
+          </Box>
         )}
       </Paper>
       {carts.length ? (

@@ -33,7 +33,7 @@ function ForgotPassword() {
         width: 500,
         height: 300,
         backgroundColor: "white",
-        marginTop: 10,
+        marginp: 10,
         borderRadius: 6,
         boxShadow: 3,
       }}

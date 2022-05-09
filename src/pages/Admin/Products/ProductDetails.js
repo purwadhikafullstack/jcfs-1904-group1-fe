@@ -102,7 +102,7 @@ function ProductDetails() {
         formData.append("qtyPcsCurrent", product.qtyPcsTotal);
       }
       const res = await axios.put(`/products/${params.id}`, formData);
-      
+
       alert("Update Data Success");
       window.location.reload();
       console.log({ res });
@@ -318,7 +318,6 @@ function ProductDetails() {
             >
               <TextField
                 variant="outlined"
-                label={null}
                 name="productName"
                 value={product.productName}
                 onChange={handleChange}

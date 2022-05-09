@@ -20,7 +20,7 @@ function EditProfilePhoto() {
 
       formData.append("userPhoto", upload);
 
-      const res = await axios.post(`/uploads/details/${userId}`, formData);
+      const res = await axios.put(`/uploads/details/${userId}`, formData);
       alert("Profile photo uploaded");
       console.log(res);
     } catch (error) {

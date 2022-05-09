@@ -33,6 +33,7 @@ import Prescription from "./pages/Prescription";
 import CustomOrderDetail from "./pages/Admin/DetailTransaction/CustomOrderDetail";
 import CartsAdmin from "./pages/Admin/Carts";
 import CartDetails from "./pages/Admin/Carts/CartDetails";
+import Footer from "./components/Footer";
 
 function App() {
   const [isStorageChecked, setIsStorageChecked] = useState(false);
@@ -62,7 +63,7 @@ function App() {
               <Route path="login" element={<Login />} />
 
               <Route path="/admin/products" element={<ProductsAdmin />} />
-              <Route path="/admin/stocks" element={<Stocks />} />
+              <Route path="/admin/logs" element={<Stocks />} />
               <Route path="/admin/products/input" element={<InputProducts />} />
               <Route
                 path="/admin/products/:category/:id"
@@ -141,6 +142,7 @@ function App() {
                 element={<ProductDetails />}
               />
             </Routes>
+            <Footer />
           </Router>
         </div>
       );

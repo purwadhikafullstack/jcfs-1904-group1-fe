@@ -105,12 +105,12 @@ function Dashboard() {
                   <ListItemText primary="Transactions History" />
                 </ListItem>
               </Link>
-              <Link underline="none" color="textPrimary" href="/admin/stocks">
-                <ListItem button key="Stocks">
+              <Link underline="none" color="textPrimary" href="/admin/logs">
+                <ListItem button key="Logs">
                   <ListItemIcon>
                     <InboxIcon />
                   </ListItemIcon>
-                  <ListItemText primary="Stocks" />
+                  <ListItemText primary="Logs" />
                 </ListItem>
               </Link>
             </List>

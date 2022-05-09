@@ -13,13 +13,13 @@ function ProductsAdmin() {
     page: 1,
     lastPage: 0,
     offSet: 0,
-    itemsPerPage: 8,
+    itemsPerPage: 10,
   });
   const [queryPagination, setQueryPagination] = useState({
     page: 1,
     lastPage: 0,
     offSet: 0,
-    itemsPerPage: 8,
+    itemsPerPage: 10,
   });
   const [searchProducts, setSearchProducts] = useState([]);
   const params = useParams();
@@ -73,9 +73,9 @@ function ProductsAdmin() {
           <Button
             href="/admin/products/input"
             variant="contained"
-            size="small"
+            size="large"
             color="warning"
-            sx={{ width: "120px", color: "white", backgroundColor: "#ff5252" }}
+            sx={{ width: "170px", color: "white", backgroundColor: "#ff5252" }}
           >
             Add Product
           </Button>
@@ -98,7 +98,6 @@ function ProductsAdmin() {
             margin: "0 auto",
             display: "flex",
             flexWrap: "wrap",
-            justifyContent: "start",
           }}
         >
           {renderProducts()}

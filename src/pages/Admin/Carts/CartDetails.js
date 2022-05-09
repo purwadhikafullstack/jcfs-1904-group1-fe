@@ -1,18 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "../../../utils/axios";
-import {
-  ImageList,
-  TextField,
-  Typography,
-  Button,
-  Box,
-  Paper,
-} from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { Typography, Button, Box, Paper } from "@mui/material";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
 
-import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
 function CartDetails() {
@@ -44,7 +35,7 @@ function CartDetails() {
       });
       setCarts(data.dataSend);
     } catch (error) {
-      alert(error);
+      console.log(error);
     }
   };
 
@@ -65,16 +56,11 @@ function CartDetails() {
         `/transactions/checkout/${userId}/${transactionId}`,
         newTransaction
       );
-      alert("Checkout successful");
+      alert("Checkout successfully");
     } catch (error) {
       alert("Checkout failed");
-      console.log(error);
     }
   };
-  // const onDeleteClick = async (id) => {
-  //   try {
-  //   } catch (error) {}
-  // };
 
   const renderCarts = () => {
     return carts.map((cart, index) => {
@@ -115,7 +101,7 @@ function CartDetails() {
               alignItems="center"
             >
               <Box>
-                <Button>
+                <Button disabled={cart.qty == 1}>
                   <IndeterminateCheckBoxIcon
                     color="success"
                     onClick={async () => {

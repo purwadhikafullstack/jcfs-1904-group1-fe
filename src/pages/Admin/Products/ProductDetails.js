@@ -26,8 +26,11 @@ function ProductDetails() {
   const [isEdit, setIsEdit] = useState(false);
   const [image, setImage] = useState("");
 
-  const handleChange = (e) => {
+  const handleChangeStock = (e) => {
     setNewStock({ ...newStock, [e.target.name]: e.target.value });
+  };
+  const handleChange = (e) => {
+    setProduct({ ...product, [e.target.name]: e.target.value });
   };
 
   const onImageChange = (e) => {
@@ -423,7 +426,7 @@ function ProductDetails() {
                   <TextField
                     name="qtyStripTotal"
                     value={newStock.qtyStripTotal}
-                    onChange={handleChange}
+                    onChange={handleChangeStock}
                     type="number"
                     size="small"
                     sx={{ width: "62px" }}
@@ -441,7 +444,7 @@ function ProductDetails() {
                   <TextField
                     name="qtyBoxTotal"
                     value={newStock.qtyBoxTotal}
-                    onChange={handleChange}
+                    onChange={handleChangeStock}
                     type="number"
                     size="small"
                   />
@@ -455,7 +458,7 @@ function ProductDetails() {
                   <TextField
                     name="qtyStripTotal"
                     value={newStock.qtyStripTotal}
-                    onChange={handleChange}
+                    onChange={handleChangeStock}
                     type="number"
                     size="small"
                     sx={{ width: "62px" }}
@@ -470,7 +473,7 @@ function ProductDetails() {
                   <TextField
                     name="qtyPcsTotal"
                     value={newStock.qtyPcsTotal}
-                    onChange={handleChange}
+                    onChange={handleChangeStock}
                     type="number"
                     size="small"
                     sx={{ width: "62px" }}

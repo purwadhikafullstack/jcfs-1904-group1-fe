@@ -23,11 +23,15 @@ function ProductCard(props) {
     <Link
       href={`/admin/products/${name}/${id}`}
       underline="none"
-      sx={{ margin: "24px", flex: "20%" }}
+      sx={{
+        margin: "24px",
+        boxShadow: "0 3px 8px #aeafaf",
+
+        flex: "0 0 15%",
+      }}
     >
       <Card
         sx={{
-          maxWidth: "160",
           height: "240",
           backgroundColor: `${isDeleted ? "red" : "white"}`,
         }}

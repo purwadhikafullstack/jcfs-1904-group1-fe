@@ -3,8 +3,10 @@ import axios from "../../utils/axios";
 import { TextField, Typography, Button, Container } from "@mui/material";
 import { useState, useEffect } from "react";
 import { Navigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function ResetPassword() {
+  const { username } = useSelector((state) => state.auth);
   const [formState, setFormState] = useState({
     newPassword: "",
     confirmNewPassword: "",
@@ -19,7 +21,7 @@ function ResetPassword() {
   const onSubmitClick = async () => {
     console.log(token);
     try {
-      const res = await axios.put("/users/reset-password", {
+      const res = await axios.put(`/users/reset-password/${token}`, {
         password: formState.newPassword,
         token: params.token,
       });
@@ -33,7 +35,6 @@ function ResetPassword() {
   };
 
   const compareResult = () => {
-    console.log(formState);
     // if null
     if (formState.newPassword !== formState.confirmNewPassword) {
       alert("Please insert the new passwords correctly.");
@@ -122,6 +123,7 @@ function ResetPassword() {
             variant="contained"
             color="primary"
             onClick={compareResult}
+            href="/login"
             sx={{
               width: "100%",
               paddingInline: 17,

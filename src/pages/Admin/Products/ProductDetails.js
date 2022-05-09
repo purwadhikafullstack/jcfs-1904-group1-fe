@@ -105,7 +105,7 @@ function ProductDetails() {
         formData.append("qtyPcsCurrent", product.qtyPcsTotal);
       }
       const res = await axios.put(`/products/${params.id}`, formData);
-      console.log(params.id);
+
       alert("Update Data Success");
       window.location.reload();
       console.log({ res });
@@ -131,7 +131,7 @@ function ProductDetails() {
       const { data } = res;
       setCategories(data);
     } catch (error) {
-      console.log(alert(error.message));
+      alert(error.message);
     }
   };
 
@@ -141,7 +141,6 @@ function ProductDetails() {
   }, [isEdit]);
 
   const type = product.isLiquid ? "ml" : "mg";
-  console.log(newStock);
   return (
     <Box sx={{ padding: "0 24px 0 24px", ml: "240px" }}>
       {!isEdit ? (
@@ -322,7 +321,6 @@ function ProductDetails() {
             >
               <TextField
                 variant="outlined"
-                label={null}
                 name="productName"
                 value={product.productName}
                 onChange={handleChange}

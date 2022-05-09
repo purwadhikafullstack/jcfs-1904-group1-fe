@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Box, Paper, Link } from "@mui/material";
+import { Button, Box, Paper, Link, AppBar } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -36,7 +36,7 @@ function Navigation() {
   };
 
   return (
-    <Paper elevation={3} sx={{ backgroundColor: "#ff5252" }}>
+    <AppBar sx={{ backgroundColor: "#ff5252", position: "sticky" }}>
       <Box
         id="nav"
         sx={{
@@ -54,38 +54,29 @@ function Navigation() {
         </Box>
         <Box display="flex" alignItems="center">
           <Typography mr="25px">
-            <Link href={"/products"} underline="hover" color="textPrimary">
+            <Link href={"/products"} underline="hover" color="white">
               Medicine
             </Link>
           </Typography>
           <Typography mr="25px">
-            <Link href={"/prescription"} underline="hover" color="textPrimary">
+            <Link href={`/prescription/${id}`} underline="hover" color="white">
               Prescription
             </Link>
           </Typography>
           <Typography mr="25px">
-            <Link href={"/contact"} underline="hover" color="textPrimary">
-              Contact
-            </Link>
-          </Typography>
-          <Typography mr="25px">
-            <Link href={`/carts/${id}`} underline="hover" color="textPrimary">
+            <Link href={`/carts/${id}`} underline="hover" color="white">
               Cart
             </Link>
           </Typography>
           <Typography>
-            <Link
-              href={`/transactions/${id}`}
-              underline="hover"
-              color="textPrimary"
-            >
+            <Link href={`/transactions/${id}`} underline="hover" color="white">
               Transactions
             </Link>
           </Typography>
 
           {!username ? (
             <Box pr="12px">
-              <Link href={"/login"} underline="none" color="textPrimary">
+              <Link href={"/login"} underline="none" color="white">
                 <Box display="flex" alignItems="center">
                   <Typography ml="25px" mr="5px">
                     Log in
@@ -156,7 +147,7 @@ function Navigation() {
           </MenuItem>
         </Menu>
       </Box>
-    </Paper>
+    </AppBar>
   );
 }
 

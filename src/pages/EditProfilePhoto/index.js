@@ -3,7 +3,7 @@ import axios from "../../utils/axios";
 import { Box, Typography, Paper, Button } from "@mui/material";
 import { useSelector } from "react-redux";
 
-function Prescription() {
+function EditProfilePhoto() {
   const userId = useSelector((state) => state.auth.id);
   const [image, setImage] = useState("");
   const [upload, setUpload] = useState("");
@@ -18,21 +18,10 @@ function Prescription() {
     try {
       const formData = new FormData();
 
-      const d = new Date();
-      const date = d.getDate();
-      const month = d.getMonth() + 1;
-      const year = d.getFullYear();
-      const time = d.getTime();
+      formData.append("userPhoto", upload);
 
-      formData.append("prescriptionPhoto", upload);
-      formData.append(
-        "invoice",
-        `INV/${userId}/custom/${year}${month}${date}/${time}`
-      );
-      formData.append("user_id", userId);
-
-      const res = await axios.post(`/transactions/upload/${userId}`, formData);
-      alert("Prescription photo uploaded");
+      const res = await axios.post(`/uploads/details/${userId}`, formData);
+      alert("Profile photo uploaded");
       console.log(res);
     } catch (error) {
       console.log(error);
@@ -53,7 +42,7 @@ function Prescription() {
         }}
       >
         <Box display="flex" justifyContent="center" marginTop="20px">
-          <Typography>Please upload prescription photo below.</Typography>
+          <Typography>Please upload profile photo below.</Typography>
         </Box>
         <Box display="flex" justifyContent="center">
           <Box
@@ -63,14 +52,14 @@ function Prescription() {
             padding="30px"
           >
             {!image ? null : (
-              <img src={image} alt="Prescription Photo" width={320} />
+              <img src={image} alt="Profile Photo" width={320} />
             )}
 
             <Box marginTop="10px" marginBottom="10px">
               <input type="file" onChange={onImageChange} />
             </Box>
             <Button
-              href="/products"
+              href="/profile"
               onClick={onUploadClick}
               variant="contained"
               color="success"
@@ -84,4 +73,4 @@ function Prescription() {
   );
 }
 
-export default Prescription;
+export default EditProfilePhoto;

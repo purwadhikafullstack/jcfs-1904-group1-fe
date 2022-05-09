@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Navigation from "./components/Navigation";
-import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Profile from "./pages/Profile";
@@ -14,7 +13,9 @@ import ProductDetails from "./pages/Products/ProductDetails";
 import Carts from "./pages/Carts";
 import Transactions from "./pages/Transactions";
 import TransactionDetails from "./pages/TransactionDetails";
+import TrnDetailsCustom from "./pages/TrnDetailsCustom";
 import TrnsHistory from "./pages/Admin/TrnsHistory";
+import EditProfilePhoto from "./pages/EditProfilePhoto";
 
 import { keepLoginAction } from "./store/actions/index";
 import "./index.css";
@@ -108,7 +109,7 @@ function App() {
           <Router>
             <Navigation />
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="" element={<Products />} />
               <Route path="login" element={<Login />} />
               <Route path="register" element={<Register />} />
               <Route path="profile" element={<Profile />} />
@@ -120,9 +121,18 @@ function App() {
               <Route path="/transactions/:userId" element={<Transactions />} />
               <Route path="/prescription/:userId" element={<Prescription />} />
               <Route
+                path="/profile/edit-photo/:userId"
+                element={<EditProfilePhoto />}
+              />
+              <Route
+                path="/transactions/details/custom/:transactionId"
+                element={<TrnDetailsCustom />}
+              />
+              <Route
                 path="/transactions/details/:transactionId"
                 element={<TransactionDetails />}
               />
+
               <Route
                 path="/products/category/:category"
                 element={<ProductsByCategory />}

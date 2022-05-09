@@ -62,7 +62,6 @@ function TransactionDetails() {
         `/transactions/details/${params.transactionId}`,
         formData
       );
-      console.log(params.id);
       alert("Payment photo upload success");
       window.location.reload();
       console.log({ res });
@@ -156,6 +155,22 @@ function TransactionDetails() {
     });
   };
 
+  let button;
+
+  if (status == "waiting payment") {
+    button = (
+      <div>
+        <Box marginTop="10px" marginBottom="10px">
+          <input type="file" onChange={onImageChange} />
+        </Box>
+        <Button onClick={onUploadClick} variant="contained" color="success">
+          Upload
+        </Button>
+      </div>
+    );
+  } else if (status == "sending") {
+  }
+
   return (
     <Box display="flex" justifyContent="space-around">
       <Paper
@@ -167,10 +182,44 @@ function TransactionDetails() {
           boxShadow: 3,
         }}
       >
-        <Box display={"flex"} justifyContent="center">
-          <Typography variant="h4" pt={"20px"}>
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          paddingTop="1px"
+        >
+          <Typography variant="h4" paddingX="20px">
             {invoice} Details
           </Typography>
+          {status == "reject" ? (
+            <Typography
+              variant="h5"
+              marginX="3px"
+              maxHeight="100%"
+              borderRadius="3px"
+              paddingX="20px"
+              sx={{
+                backgroundColor: "red",
+                color: "white",
+              }}
+            >
+              {status}
+            </Typography>
+          ) : (
+            <Typography
+              variant="h5"
+              marginX="3px"
+              maxHeight="100%"
+              borderRadius="3px"
+              paddingX="20px"
+              sx={{
+                backgroundColor: "green",
+                color: "white",
+              }}
+            >
+              {status}
+            </Typography>
+          )}
         </Box>
         <Box
           marginTop="20px"
@@ -234,20 +283,8 @@ function TransactionDetails() {
               <Box border="solid #d5d5d5" borderRadius="3px">
                 <img src={image} alt="Payment Photo" width={320} />
               </Box>
-              {status == "waiting payment" ? (
-                <div>
-                  <Box marginTop="10px" marginBottom="10px">
-                    <input type="file" onChange={onImageChange} />
-                  </Box>
-                  <Button
-                    onClick={onUploadClick}
-                    variant="contained"
-                    color="success"
-                  >
-                    Upload
-                  </Button>
-                </div>
-              ) : null}
+
+              {button}
             </Box>
           </Box>
         </Box>

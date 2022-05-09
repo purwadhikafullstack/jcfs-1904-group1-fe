@@ -44,7 +44,6 @@ function Carts() {
       alert(error);
     }
   };
-  console.log(carts);
 
   useEffect(() => {
     fetchCarts();
@@ -232,7 +231,9 @@ function Carts() {
         {carts.length ? (
           renderCarts()
         ) : (
-          <Typography>No products in cart!</Typography>
+          <Box display="flex" justifyContent="center">
+            <Typography>No products in cart!</Typography>
+          </Box>
         )}
       </Paper>
       {carts.length ? (

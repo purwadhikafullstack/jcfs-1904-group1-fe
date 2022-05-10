@@ -29,7 +29,6 @@ function Register() {
         email,
         password,
       };
-      console.log(newUser);
       await axios.post("/users", newUser);
       setFormState(initFormState);
       alert("Register success");
@@ -120,7 +119,9 @@ function Register() {
               justifyContent: "end",
             }}
           >
-            <Link to="/login">Login here</Link>
+            <Typography>
+              <Link to="/login">Login here</Link>
+            </Typography>
           </Container>
 
           <Button

@@ -14,8 +14,13 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutAction } from "../../../store/actions";
 
 function Dashboard() {
+  const { username, id } = useSelector((state) => {
+    return state.auth;
+  });
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -23,6 +28,10 @@ function Dashboard() {
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+  const dispatch = useDispatch();
+  const onLogoutClick = () => {
+    dispatch(logoutAction());
   };
   const drawerWidth = 240;
   return (
@@ -45,9 +54,6 @@ function Dashboard() {
             backgroundColor: "#ff5252",
           }}
         >
-          <Box border="1px solid black">
-            <Typography variant="h3">LOGO</Typography>
-          </Box>
           <Toolbar />
           <Box sx={{ overflow: "auto", marginTop: "-60px" }}>
             <List>
@@ -79,6 +85,14 @@ function Dashboard() {
                   <ListItemText primary="Orders" />
                 </ListItem>
               </Link>
+              <Link underline="none" color="textPrimary" href="/admin/carts">
+                <ListItem button key="Carts">
+                  <ListItemIcon>
+                    <InboxIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Carts" />
+                </ListItem>
+              </Link>
               <Link
                 underline="none"
                 color="textPrimary"
@@ -89,6 +103,14 @@ function Dashboard() {
                     <InboxIcon />
                   </ListItemIcon>
                   <ListItemText primary="Transactions History" />
+                </ListItem>
+              </Link>
+              <Link underline="none" color="textPrimary" href="/admin/logs">
+                <ListItem button key="Logs">
+                  <ListItemIcon>
+                    <InboxIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Logs" />
                 </ListItem>
               </Link>
             </List>
@@ -155,7 +177,7 @@ function Dashboard() {
           transformOrigin={{ horizontal: "right", vertical: "top" }}
           anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         >
-          <MenuItem>
+          <MenuItem onClick={onLogoutClick} component="a" href="/products">
             <ListItemIcon>
               <Logout fontSize="small" />
             </ListItemIcon>

@@ -1,7 +1,8 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import axios from "../../../utils/axios";
+
 import {
   Box,
   Typography,
@@ -9,17 +10,25 @@ import {
   TextField,
   MenuItem,
   Select,
-  FormControl,
-  OutlinedInput,
 } from "@mui/material";
+import { useSelector } from "react-redux";
 
 function ProductDetails() {
-  const [product, setProduct] = useState({ price: "" });
+  const { id } = useSelector((state) => state.auth);
+  const [product, setProduct] = useState({
+    priceStrip: "",
+    priceBox: "",
+    pricePcs: "",
+  });
+  const [newStock, setNewStock] = useState({ priceStrip: "" });
   const [categories, setCategories] = useState([]);
   const params = useParams();
   const [isEdit, setIsEdit] = useState(false);
   const [image, setImage] = useState("");
 
+  const handleChangeStock = (e) => {
+    setNewStock({ ...newStock, [e.target.name]: e.target.value });
+  };
   const handleChange = (e) => {
     setProduct({ ...product, [e.target.name]: e.target.value });
   };
@@ -41,28 +50,62 @@ function ProductDetails() {
   const onCancelClick = () => {
     setIsEdit(false);
   };
+  const onDeleteClick = () => {
+    if (window.confirm("Please confirm to delete product!")) {
+      putDelete();
+      window.location.reload();
+    }
+  };
+  const onUnDeleteClick = () => {
+    if (window.confirm("Please confirm to undelete product!")) {
+      putUnDelete();
+      window.location.reload();
+    }
+  };
+
+  const putDelete = async () => {
+    try {
+      const res = await axios.put(`/products/${params.id}/delete`);
+    } catch (error) {
+      console.log({ error });
+    }
+  };
+  const putUnDelete = async () => {
+    try {
+      const res = await axios.put(`/products/${params.id}/undelete`);
+      <Navigate to="/admin/products" replace />;
+    } catch (error) {
+      console.log({ error });
+    }
+  };
 
   const updateData = async () => {
     try {
       const formData = new FormData();
       formData.append("id", product.id);
+      formData.append("user_id", id);
       formData.append("productPhoto", image);
       formData.append("productName", product.productName);
-      formData.append("price", product.price);
+      formData.append("priceStrip", product.priceStrip);
       formData.append("dose", product.dose);
       formData.append("description", product.description);
       formData.append("category_id", product.category_id);
       formData.append("isLiquid", product.isLiquid);
       if (product.isLiquid === 1) {
-        formData.append("qtyBoxTotal", product.qtyBoxTotal);
-        formData.append("qtyBottleTotal", product.qtyStripTotal);
+        formData.append("qtyBottleTotal", newStock.qtyStripTotal);
+        formData.append("qtyBottleCurrent", product.qtyStripTotal);
       } else {
-        formData.append("qtyBoxTotal", product.qtyBoxTotal);
-        formData.append("qtyStripTotal", product.qtyStripTotal);
-        formData.append("qtyPcsTotal", product.qtyPcsTotal);
+        formData.append("priceBox", product.priceBox);
+        formData.append("pricePcs", product.pricePcs);
+        formData.append("qtyBoxTotal", newStock.qtyBoxTotal);
+        formData.append("qtyBoxCurrent", product.qtyBoxTotal);
+        formData.append("qtyStripTotal", newStock.qtyStripTotal);
+        formData.append("qtyStripCurrent", product.qtyStripTotal);
+        formData.append("qtyPcsTotal", newStock.qtyPcsTotal);
+        formData.append("qtyPcsCurrent", product.qtyPcsTotal);
       }
       const res = await axios.put(`/products/${params.id}`, formData);
-      console.log(params.id);
+
       alert("Update Data Success");
       window.location.reload();
       console.log({ res });
@@ -76,6 +119,7 @@ function ProductDetails() {
       const res = await axios.get(`/products/${params.category}/${params.id}`);
       const { data } = res;
       setProduct(data.result[0]);
+      setNewStock(data.result[0]);
     } catch (error) {
       console.log(alert(error.message));
     }
@@ -87,7 +131,7 @@ function ProductDetails() {
       const { data } = res;
       setCategories(data);
     } catch (error) {
-      console.log(alert(error.message));
+      alert(error.message);
     }
   };
 
@@ -97,7 +141,6 @@ function ProductDetails() {
   }, [isEdit]);
 
   const type = product.isLiquid ? "ml" : "mg";
-
   return (
     <Box sx={{ padding: "0 24px 0 24px", ml: "240px" }}>
       {!isEdit ? (
@@ -115,16 +158,48 @@ function ProductDetails() {
               {product.productName} {product.dose}
               {type}
             </Typography>
-            <Typography
-              variant="h5"
-              sx={{
-                mb: "12px",
-                borderBottom: "1px solid black",
-                paddingBottom: "12px",
-              }}
-            >
-              Rp{product.price.toLocaleString("id")}
-            </Typography>
+            {product.isLiquid ? (
+              <div>
+                <Typography
+                  variant="h5"
+                  sx={{
+                    m: "12px 0",
+                  }}
+                >
+                  Rp{product.priceStrip.toLocaleString("id")} / Bottle
+                </Typography>
+              </div>
+            ) : (
+              <div>
+                <Typography
+                  variant="h5"
+                  sx={{
+                    m: "12px 0",
+                  }}
+                >
+                  Rp{product.priceBox.toLocaleString("id")} / Box
+                </Typography>
+                <Typography
+                  variant="h5"
+                  sx={{
+                    mb: "12px",
+                  }}
+                >
+                  Rp{product.priceStrip.toLocaleString("id")} / Strip
+                </Typography>
+                <Typography
+                  variant="h5"
+                  sx={{
+                    mb: "12px",
+                    borderBottom: "1px solid black",
+                    paddingBottom: "12px",
+                  }}
+                >
+                  Rp{product.pricePcs.toLocaleString("id")} / Pcs
+                </Typography>
+              </div>
+            )}
+
             <Box>
               <Box paddingBottom="12px" borderBottom={1} mb="20px">
                 <Typography variant="h5" mb="4px">
@@ -145,11 +220,7 @@ function ProductDetails() {
               <Typography variant="h5">Stock</Typography>
             </Box>
             {product.isLiquid ? (
-              <Box display="flex" justifyContent="space-around" mt="12px">
-                <Box display="flex" justifyContent="space-between" width="72px">
-                  <Typography variant="h6">Box :</Typography>
-                  <Typography variant="h6">{product.qtyBoxTotal}</Typography>
-                </Box>
+              <Box mt="12px">
                 <Box display="flex" justifyContent="space-between" width="88px">
                   <Typography variant="h6">Bottle :</Typography>
                   <Typography variant="h6">{product.qtyStripTotal}</Typography>
@@ -161,7 +232,7 @@ function ProductDetails() {
                   <Typography variant="h6">Box :</Typography>
                   <Typography variant="h6">{product.qtyBoxTotal}</Typography>
                 </Box>
-                <Box display="flex" justifyContent="space-between" width="72px">
+                <Box display="flex" justifyContent="space-between" width="78px">
                   <Typography variant="h6">Strip :</Typography>
                   <Typography variant="h6">{product.qtyStripTotal}</Typography>
                 </Box>
@@ -172,7 +243,12 @@ function ProductDetails() {
               </Box>
             )}
 
-            <Box display="flex" justifyContent="center" mt="32px" mb="24px">
+            <Box
+              display="flex"
+              justifyContent="space-around"
+              mt="32px"
+              mb="24px"
+            >
               <Button
                 variant="contained"
                 size="small"
@@ -186,6 +262,35 @@ function ProductDetails() {
               >
                 Edit
               </Button>
+              {product.isDeleted ? (
+                <Button
+                  variant="contained"
+                  size="small"
+                  color="warning"
+                  onClick={onUnDeleteClick}
+                  sx={{
+                    width: "80px",
+                    color: "white",
+                    backgroundColor: "#ff5252",
+                  }}
+                >
+                  UnDelete
+                </Button>
+              ) : (
+                <Button
+                  variant="contained"
+                  size="small"
+                  color="warning"
+                  onClick={onDeleteClick}
+                  sx={{
+                    width: "80px",
+                    color: "white",
+                    backgroundColor: "#ff5252",
+                  }}
+                >
+                  Delete
+                </Button>
+              )}
             </Box>
           </Box>
         </Box>
@@ -216,12 +321,11 @@ function ProductDetails() {
             >
               <TextField
                 variant="outlined"
-                label={null}
                 name="productName"
                 value={product.productName}
                 onChange={handleChange}
                 size="small"
-                sx={{ width: "200px", mr: "24px" }}
+                sx={{ width: "200px", mr: "24px", mb: "12px" }}
               />
 
               <TextField
@@ -229,15 +333,50 @@ function ProductDetails() {
                 value={product.dose}
                 onChange={handleChange}
                 size="small"
-                sx={{ width: "64px" }}
-              />
-              <TextField
-                name="price"
-                value={product.price}
-                onChange={handleChange}
-                size="small"
                 sx={{ width: "200px" }}
               />
+
+              {product.isLiquid ? (
+                <TextField
+                  name="priceStrip"
+                  value={product.priceStrip}
+                  onChange={handleChange}
+                  size="small"
+                  sx={{ width: "200px" }}
+                  InputProps={{
+                    endAdornment: <Typography>/Bottle</Typography>,
+                  }}
+                />
+              ) : (
+                <div>
+                  <TextField
+                    name="priceBox"
+                    value={product.priceBox}
+                    onChange={handleChange}
+                    size="small"
+                    sx={{ width: "200px", mb: "12px", mr: "24px" }}
+                    InputProps={{ endAdornment: <Typography>/Box</Typography> }}
+                  />
+                  <TextField
+                    name="priceStrip"
+                    value={product.priceStrip}
+                    onChange={handleChange}
+                    size="small"
+                    sx={{ width: "200px" }}
+                    InputProps={{
+                      endAdornment: <Typography>/Strip</Typography>,
+                    }}
+                  />
+                  <TextField
+                    name="pricePcs"
+                    value={product.pricePcs}
+                    onChange={handleChange}
+                    size="small"
+                    sx={{ width: "200px" }}
+                    InputProps={{ endAdornment: <Typography>/Pcs</Typography> }}
+                  />
+                </div>
+              )}
             </Box>
             <Box>
               <Box paddingBottom="12px" borderBottom={1} mb="20px">
@@ -277,22 +416,7 @@ function ProductDetails() {
               <Typography variant="h5">Stock</Typography>
             </Box>
             {product.isLiquid ? (
-              <Box display="flex" justifyContent="space-around" mt="12px">
-                <Box
-                  display="flex"
-                  justifyContent="space-between"
-                  width="120px"
-                >
-                  <Typography variant="h6">Box :</Typography>
-                  <TextField
-                    name="qtyBoxTotal"
-                    value={product.qtyBoxTotal}
-                    onChange={handleChange}
-                    type="number"
-                    size="small"
-                    sx={{ width: "62px" }}
-                  />
-                </Box>
+              <Box mt="12px">
                 <Box
                   display="flex"
                   justifyContent="space-between"
@@ -301,8 +425,8 @@ function ProductDetails() {
                   <Typography variant="h6">Bottle :</Typography>
                   <TextField
                     name="qtyStripTotal"
-                    value={product.qtyStripTotal}
-                    onChange={handleChange}
+                    value={newStock.qtyStripTotal}
+                    onChange={handleChangeStock}
                     type="number"
                     size="small"
                     sx={{ width: "62px" }}
@@ -319,11 +443,10 @@ function ProductDetails() {
                   <Typography variant="h6">Box :</Typography>
                   <TextField
                     name="qtyBoxTotal"
-                    value={product.qtyBoxTotal}
-                    onChange={handleChange}
+                    value={newStock.qtyBoxTotal}
+                    onChange={handleChangeStock}
                     type="number"
                     size="small"
-                    sx={{ width: "62px" }}
                   />
                 </Box>
                 <Box
@@ -334,8 +457,8 @@ function ProductDetails() {
                   <Typography variant="h6">Strip :</Typography>
                   <TextField
                     name="qtyStripTotal"
-                    value={product.qtyStripTotal}
-                    onChange={handleChange}
+                    value={newStock.qtyStripTotal}
+                    onChange={handleChangeStock}
                     type="number"
                     size="small"
                     sx={{ width: "62px" }}
@@ -349,8 +472,8 @@ function ProductDetails() {
                   <Typography variant="h6">Pcs :</Typography>
                   <TextField
                     name="qtyPcsTotal"
-                    value={product.qtyPcsTotal}
-                    onChange={handleChange}
+                    value={newStock.qtyPcsTotal}
+                    onChange={handleChangeStock}
                     type="number"
                     size="small"
                     sx={{ width: "62px" }}

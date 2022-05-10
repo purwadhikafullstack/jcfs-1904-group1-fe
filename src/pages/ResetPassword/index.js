@@ -1,23 +1,30 @@
-import React, { useState } from "react";
+import React from "react";
 import axios from "../../utils/axios";
 import { TextField, Typography, Button, Container } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
+import { useState, useEffect } from "react";
+import { Navigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-function ForgotPassword() {
+function ResetPassword() {
+  const { username } = useSelector((state) => state.auth);
   const [formState, setFormState] = useState({
-    email: "",
+    newPassword: "",
+    confirmNewPassword: "",
   });
 
+  const params = useParams();
   const handleChange = (e) => {
     setFormState({ ...formState, [e.target.name]: e.target.value });
   };
 
+  const { token } = useParams();
   const onSubmitClick = async () => {
+    console.log(token);
     try {
-      const res = await axios.post("/users/forgot-password", {
-        email: formState.email,
+      const res = await axios.put(`/users/reset-password/${token}`, {
+        password: formState.newPassword,
+        token: params.token,
       });
-      alert("Reset password email has been sent");
     } catch (error) {
       console.log({ error });
     }
@@ -27,13 +34,23 @@ function ForgotPassword() {
     if (e.code === "Enter") onSubmitClick();
   };
 
+  const compareResult = () => {
+    // if null
+    if (formState.newPassword !== formState.confirmNewPassword) {
+      alert("Please insert the new passwords correctly.");
+    } else {
+      onSubmitClick();
+      alert("Password has been reset successfully.");
+      // <Navigate to="/login" replace />;
+    }
+  };
   return (
     <Container
       sx={{
         width: 500,
-        height: 300,
+        height: 400,
         backgroundColor: "white",
-        marginp: 10,
+        marginTop: 10,
         borderRadius: 6,
         boxShadow: 3,
       }}
@@ -62,10 +79,22 @@ function ForgotPassword() {
         }}
       >
         <TextField
-          placeholder="Enter your e-mail"
+          placeholder="Enter new password"
           variant="outlined"
-          name="email"
-          type="email"
+          name="newPassword"
+          type="password"
+          onChange={handleChange}
+          sx={{
+            p: 1,
+            m: 1,
+            width: "100%",
+          }}
+        />
+        <TextField
+          placeholder="Confirm your new password"
+          variant="outlined"
+          name="confirmNewPassword"
+          type="password"
           onChange={handleChange}
           onKeyPress={onInputPress}
           sx={{
@@ -93,13 +122,14 @@ function ForgotPassword() {
           <Button
             variant="contained"
             color="primary"
-            onClick={onSubmitClick}
+            onClick={compareResult}
+            href="/login"
             sx={{
               width: "100%",
               paddingInline: 17,
             }}
           >
-            Reset
+            submit
           </Button>
         </Container>
       </Container>
@@ -107,4 +137,4 @@ function ForgotPassword() {
   );
 }
 
-export default ForgotPassword;
+export default ResetPassword;

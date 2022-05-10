@@ -9,18 +9,17 @@ import Sort from "../../Products/components/Sort";
 import PaginationHandler from "../../Products/components/PaginationHandler";
 
 function ProductsAdmin() {
-  const [sortProperty, setSortProperty] = useState({ sortBy: "", order: "" });
   const [pagination, setPagination] = useState({
     page: 1,
     lastPage: 0,
     offSet: 0,
-    itemsPerPage: 8,
+    itemsPerPage: 10,
   });
   const [queryPagination, setQueryPagination] = useState({
     page: 1,
     lastPage: 0,
     offSet: 0,
-    itemsPerPage: 8,
+    itemsPerPage: 10,
   });
   const [searchProducts, setSearchProducts] = useState([]);
   const params = useParams();
@@ -28,10 +27,8 @@ function ProductsAdmin() {
   //Fetch Products
   const fetchProducts = async () => {
     try {
-      const res = await axios.get(`/products`, {
+      const res = await axios.get(`/products/admin`, {
         params: {
-          sortBy: sortProperty.sortBy,
-          order: sortProperty.order,
           offSet: queryPagination.offSet,
           limit: queryPagination.itemsPerPage,
         },
@@ -43,30 +40,14 @@ function ProductsAdmin() {
         lastPage: Math.ceil(data.total / queryPagination.itemsPerPage),
       });
     } catch (error) {
-      console.log(alert(error.message));
+      console.log(error.message);
     }
   };
 
   useEffect(() => {
     fetchProducts();
-  }, [sortProperty, queryPagination]);
+  }, [queryPagination]);
 
-  const sortProducts = (value) => {
-    switch (value) {
-      case "Asc":
-        setSortProperty({ sortBy: "productName", order: value });
-        break;
-      case "Desc":
-        setSortProperty({ sortBy: "productName", order: value });
-        break;
-      case "LowToHi":
-        setSortProperty({ sortBy: "price", order: "Asc" });
-        break;
-      case "HiToLow":
-        setSortProperty({ sortBy: "price", order: "Desc" });
-        break;
-    }
-  };
   //Get Data From Child Com
   const handleGetChildData = (data) => {
     setSearchProducts(data);
@@ -92,10 +73,9 @@ function ProductsAdmin() {
           <Button
             href="/admin/products/input"
             variant="contained"
-            size="small"
+            size="large"
             color="warning"
-            // color="warning"
-            sx={{ width: "120px", color: "white", backgroundColor: "#ff5252" }}
+            sx={{ width: "170px", color: "white", backgroundColor: "#ff5252" }}
           >
             Add Product
           </Button>
@@ -110,14 +90,14 @@ function ProductsAdmin() {
           }}
         >
           <Typography variant="h5">All Medicines</Typography>
-          <Sort sortProducts={sortProducts} />
         </Box>
         {/* productCard */}
         <Box
           sx={{
+            width: "90%",
+            margin: "0 auto",
             display: "flex",
             flexWrap: "wrap",
-            justifyContent: "flex-start",
           }}
         >
           {renderProducts()}

@@ -1,12 +1,18 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import axios from "../../../utils/axios";
-// import { Link } from "react-router-dom";
-import { Button, Box, Typography, Link } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Link,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@mui/material";
 
 function Filter() {
   const [categories, setCategories] = useState([]);
-
   const fetchCategories = async () => {
     try {
       const res = await axios.get(`/categories`);
@@ -16,35 +22,29 @@ function Filter() {
       console.log(alert(error.message));
     }
   };
-
   useEffect(() => {
     fetchCategories();
   }, []);
   const listCategory = () => {
     return categories.map((category) => (
-      <Box paddingLeft="12px" mt="8px" key={category.id}>
-        <Typography>
-          <Link
-            color="textPrimary"
-            underline="none"
-            href={`/products/category/${category.name}`}
-          >
-            {category.name}
-          </Link>
-        </Typography>
-      </Box>
+      <Link
+        key={category.id}
+        color="textPrimary"
+        underline="none"
+        href={`/products/category/${category.name}`}
+      >
+        <MenuItem value={category.name}>{category.name}</MenuItem>
+      </Link>
     ));
   };
 
   return (
-    <Box
-      sx={{
-        mt: "100px",
-        mr: "32px",
-      }}
-    >
-      <h2>Category</h2>
-      {listCategory()}
+    <Box>
+      <Typography variant="h5">Category</Typography>
+      <FormControl size="small" sx={{ m: "12px auto", minWidth: 160 }}>
+        <InputLabel id="demo-simple-select-label">Select Category</InputLabel>
+        <Select>{listCategory()}</Select>
+      </FormControl>
     </Box>
   );
 }

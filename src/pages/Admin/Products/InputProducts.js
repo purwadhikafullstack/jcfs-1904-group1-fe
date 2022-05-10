@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import axios from "../../../utils/axios";
 import {
   Box,
@@ -19,6 +20,7 @@ import {
 } from "@mui/material";
 
 function InputProducts() {
+  const { id } = useSelector((state) => state.auth);
   const [categories, setCategories] = useState([]);
   const [formState, setFormState] = useState({
     isLiquid: 1,
@@ -42,16 +44,18 @@ function InputProducts() {
     try {
       const formData = new FormData();
       formData.append("productPhoto", image);
+      formData.append("user_id", id);
       formData.append("productName", formState.productName);
-      formData.append("price", formState.price);
+      formData.append("priceStrip", formState.priceStrip);
       formData.append("dose", formState.dose);
       formData.append("description", formState.description);
       formData.append("category_id", formState.category_id);
       formData.append("isLiquid", formState.isLiquid);
       if (formState.isLiquid === 1) {
-        formData.append("qtyBox", formState.box);
         formData.append("qtyBottle", formState.bottle);
       } else {
+        formData.append("priceBox", formState.priceBox);
+        formData.append("pricePcs", formState.pricePcs);
         formData.append("qtyBox", formState.box);
         formData.append("qtyStrip", formState.strip);
         formData.append("qtyPcs", formState.pcs);
@@ -95,7 +99,7 @@ function InputProducts() {
         <Paper elevation={3} sx={{ mt: "42px", mb: "20px", width: "40%" }}>
           <Box sx={{ flexGrow: 1, padding: "24px 0 24px 58px" }}>
             <Grid container spacing={0}>
-              <Grid item xs={9} mb="24px">
+              <Grid item xs={12} mb="24px">
                 <TextField
                   name="productName"
                   label="Product Name"
@@ -104,24 +108,68 @@ function InputProducts() {
                   onChange={handleChange}
                 />
               </Grid>
-              <Grid item xs={4} mb="24px" mr="44px">
-                <TextField
-                  name="price"
-                  label="Price"
-                  variant="outlined"
-                  size="small"
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={3}>
-                <TextField
-                  name="dose"
-                  label="Dose"
-                  variant="outlined"
-                  size="small"
-                  onChange={handleChange}
-                />
-              </Grid>
+              {formState.isLiquid ? (
+                <Grid container>
+                  <Grid item xs={4} mb="24px" mr="44px">
+                    <TextField
+                      name="priceStrip"
+                      label="Price Bottle"
+                      variant="outlined"
+                      size="small"
+                      onChange={handleChange}
+                    />
+                  </Grid>
+                  <Grid item xs={4}>
+                    <TextField
+                      name="dose"
+                      label="Dose"
+                      variant="outlined"
+                      size="small"
+                      onChange={handleChange}
+                    />
+                  </Grid>
+                </Grid>
+              ) : (
+                <Grid container>
+                  <Grid item xs={4} mb="24px" mr="38px">
+                    <TextField
+                      name="priceBox"
+                      label="Price Box"
+                      variant="outlined"
+                      size="small"
+                      onChange={handleChange}
+                    />
+                  </Grid>
+                  <Grid item xs={4} mb="24px" mr="44px">
+                    <TextField
+                      name="priceStrip"
+                      label="Price Strip"
+                      variant="outlined"
+                      size="small"
+                      onChange={handleChange}
+                    />
+                  </Grid>
+                  <Grid item xs={4} mb="24px" mr="38px">
+                    <TextField
+                      name="pricePcs"
+                      label="Price Pcs"
+                      variant="outlined"
+                      size="small"
+                      onChange={handleChange}
+                    />
+                  </Grid>
+                  <Grid item xs={4}>
+                    <TextField
+                      name="dose"
+                      label="Dose"
+                      variant="outlined"
+                      size="small"
+                      onChange={handleChange}
+                    />
+                  </Grid>
+                </Grid>
+              )}
+
               <Grid item xs={9} mb="24px">
                 <TextField
                   name="description"
@@ -184,16 +232,7 @@ function InputProducts() {
               {/*conditional */}
               {formState.isLiquid ? (
                 <Grid container>
-                  <Grid item xs={3} mb="48px" mr="20px">
-                    <TextField
-                      name="box"
-                      label="Box"
-                      variant="outlined"
-                      size="small"
-                      onChange={handleChange}
-                    />
-                  </Grid>
-                  <Grid item xs={3} mr="20px">
+                  <Grid item xs={3} mr="20px" mb="48px">
                     <TextField
                       name="bottle"
                       label="Bottle"

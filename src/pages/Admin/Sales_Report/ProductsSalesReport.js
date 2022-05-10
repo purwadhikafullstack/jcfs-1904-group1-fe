@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import {
   Box,
   Typography,
-  Link,
   Select,
   FormControl,
   MenuItem,
@@ -19,13 +18,17 @@ import {
   Button,
 } from "@mui/material";
 import axios from "../../../utils/axios";
-import LineChart from "./components/LineChart";
+import ProductsSalesByCategory from "./components/ProductsSalesByCategory";
+import ProductsSalesByMonth from "./components/ProductsSalesByMonth";
 
-function ReportDetails() {
+function ProductsSalesReport() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [transactions, setTransactions] = useState([]);
-  const [revenue, setRevenue] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [productSalesCategory, setProductSalesCategory] = useState([]);
+  const [productSalesMonthly, setProductSalesMonthly] = useState([]);
+
   const [pagination, setPagination] = useState({
     offSet: 0,
     count: 0,
@@ -33,17 +36,14 @@ function ReportDetails() {
   const [queryPagination, setQueryPagination] = useState({
     offSet: 0,
   });
-  const [formState, setFormState] = useState({
+  const init = {
     initMonth: "",
     initYear: "",
     finalMonth: "",
     finalYear: "",
-  });
-  const [chartData, setChartData] = useState({
-    labels: "",
-    datasets: [],
-  });
-
+    productName: "",
+  };
+  const [formState, setFormState] = useState({ init });
   const handleChange = (e) => {
     setFormState({ ...formState, [e.target.name]: e.target.value });
   };
@@ -68,16 +68,19 @@ function ReportDetails() {
     setPage(0);
   };
   const onApplyClick = () => {
-    // fetchTransactions();
     setPage(0);
     setQueryPagination({ ...pagination, offSet: 0 });
   };
+  const onResetClick = () => {
+    window.location.reload();
+  };
 
-  const fetchTransactions = async () => {
+  const fetchProductsReport = async () => {
     try {
-      const res = await axios.get(`/transactions/revenue`, {
+      const res = await axios.get(`/transactions/products-report`, {
         params: {
           limit: rowsPerPage,
+          productName: formState.productName,
           initMonth: formState.initMonth,
           initYear: formState.initYear,
           finalMonth: formState.finalMonth,
@@ -85,48 +88,40 @@ function ReportDetails() {
           offSet: queryPagination.offSet,
         },
       });
-      const { data, dataChart, totalCount } = res.data;
+      const { data, totalCount, result, products, monthlyData } = res.data;
       setTransactions(data);
-      setRevenue(dataChart);
+      setProducts(products);
+      setProductSalesCategory(result);
+      setProductSalesMonthly(monthlyData);
       setPagination({ ...queryPagination, count: totalCount[0].total });
-
-      setChartData({
-        ...chartData,
-        labels: dataChart.map((data) => data.filter),
-        datasets: [
-          {
-            label: "Amount",
-            data: dataChart.map((data) => data.amount),
-            backgroundColor: ["#ff5252"],
-            borderColor: "#ff5252",
-            borderWidth: 2,
-            pointBorderColor: "black",
-          },
-        ],
-      });
     } catch (error) {
       console.log(error.message);
     }
   };
-
   useEffect(() => {
-    fetchTransactions();
+    fetchProductsReport();
   }, [rowsPerPage, queryPagination]);
 
   // CREATE TABLE
   const columns = [
     {
-      id: "Invoice",
-      label: "Invoice",
-      minWidth: 80,
-    },
-    { id: "Username", label: "Username", minWidth: 80 },
-    {
-      id: "Amount",
-      label: "Amount",
-      minWidth: 100,
+      id: "Product",
+      label: "Product",
+      minWidth: 60,
       align: "center",
-      format: (value) => value.toLocaleString("id"),
+    },
+    { id: "Username", label: "Username", minWidth: 40, align: "center" },
+    {
+      id: "Qty",
+      label: "Qty",
+      minWidth: 50,
+      align: "center",
+    },
+    {
+      id: "Variant",
+      label: "Variant",
+      minWidth: 50,
+      align: "center",
     },
     {
       id: "Date",
@@ -136,26 +131,52 @@ function ReportDetails() {
     },
   ];
 
-  function createData(Invoice, Username, Amount, Date, id) {
-    return { Invoice, Username, Amount, Date, id };
+  function createData(Product, Username, Qty, Variant, Date, id) {
+    return { Product, Username, Qty, Variant, Date, id };
   }
 
   const rows = transactions.map((transaction) => {
-    const { invoice, username, amount, date, id } = transaction;
-    const row = createData(invoice, username, amount, date, id);
+    const { productName, username, qty, variant, date, id } = transaction;
+    const row = createData(productName, username, qty, variant, date, id);
     return row;
   });
 
   return (
-    <Box ml="240px" display="flex" justifyContent="center">
-      <Paper
-        elevation={3}
-        sx={{ width: "80%", padding: "24px 0", borderRadius: "12px" }}
-      >
+    <Box m="48px 0 48px 240px" display="flex" justifyContent="center">
+      <Box flex="2">
         {/* FILTER */}
-        <Box marginInline="auto" width="75%">
-          <Box display="flex" alignItems="center" mt="12px">
-            <FormControl size="small" sx={{ m: "2px 0", minWidth: 90 }}>
+        <Box
+          sx={{
+            width: "66%",
+            marginInline: "auto",
+            backgroundColor: "white",
+            borderRadius: "5px",
+            boxShadow: "0 1px 12px #aeafaf",
+            border: "solid #ff5252",
+          }}
+        >
+          <FormControl size="small" sx={{ m: "10px 4px 0 4px", minWidth: 140 }}>
+            <InputLabel id="demo-simple-select-label">Product</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              name="productName"
+              value={formState.productName}
+              onChange={handleChange}
+              label="Product"
+            >
+              <MenuItem value="">All Products</MenuItem>
+              {products.map((product) => {
+                return (
+                  <MenuItem value={product.productName}>
+                    {product.productName}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
+          <Box display="flex" alignItems="center" m="12px 4px 0 4px" pb="10px">
+            <FormControl size="small" sx={{ mr: "4px", minWidth: 130 }}>
               <InputLabel id="demo-simple-select-label">Month</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
@@ -165,6 +186,7 @@ function ReportDetails() {
                 onChange={handleChange}
                 label="Month"
               >
+                <MenuItem value="">Default</MenuItem>
                 <MenuItem value="01">January</MenuItem>
                 <MenuItem value="02">February</MenuItem>
                 <MenuItem value="03">March</MenuItem>
@@ -179,7 +201,7 @@ function ReportDetails() {
                 <MenuItem value="12">December</MenuItem>
               </Select>
             </FormControl>
-            <FormControl size="small" sx={{ m: "2px 0", minWidth: 80 }}>
+            <FormControl size="small" sx={{ minWidth: 90 }}>
               <InputLabel id="demo-simple-select-label">Year</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
@@ -189,6 +211,7 @@ function ReportDetails() {
                 onChange={handleChange}
                 label="Year"
               >
+                <MenuItem value="">Default</MenuItem>
                 <MenuItem value="2021">2021</MenuItem>
                 <MenuItem value="2022">2022</MenuItem>
               </Select>
@@ -196,7 +219,7 @@ function ReportDetails() {
             <Typography fontSize="18px" marginInline="12px">
               -
             </Typography>
-            <FormControl size="small" sx={{ m: "2px 0", minWidth: 90 }}>
+            <FormControl size="small" sx={{ mr: "4px", minWidth: 130 }}>
               <InputLabel id="demo-simple-select-label">Month</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
@@ -206,6 +229,7 @@ function ReportDetails() {
                 onChange={handleChange}
                 label="Month"
               >
+                <MenuItem value="">Default</MenuItem>
                 <MenuItem value="01">January</MenuItem>
                 <MenuItem value="02">February</MenuItem>
                 <MenuItem value="03">March</MenuItem>
@@ -220,7 +244,7 @@ function ReportDetails() {
                 <MenuItem value="12">December</MenuItem>
               </Select>
             </FormControl>
-            <FormControl size="small" sx={{ m: "2px 0", minWidth: 80 }}>
+            <FormControl size="small" sx={{ minWidth: 90 }}>
               <InputLabel id="demo-simple-select-label">Year</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
@@ -230,65 +254,58 @@ function ReportDetails() {
                 onChange={handleChange}
                 label="Year"
               >
+                <MenuItem value="">Default</MenuItem>
                 <MenuItem value="2021">2021</MenuItem>
                 <MenuItem value="2022">2022</MenuItem>
               </Select>
             </FormControl>
-            <Box ml="24px">
-              <Button
-                variant="contained"
-                size="small"
-                color="warning"
-                onClick={onApplyClick}
-                sx={{
-                  width: "120px",
-                  color: "white",
-                  backgroundColor: "#ff5252",
-                }}
-              >
-                APPLY
-              </Button>
+            <Box mt="-32px">
+              <Box ml="24px">
+                <Button
+                  variant="contained"
+                  size="small"
+                  color="warning"
+                  onClick={onApplyClick}
+                  sx={{
+                    width: "120px",
+                    color: "white",
+                    backgroundColor: "#ff5252",
+                    mb: "8px",
+                  }}
+                >
+                  APPLY
+                </Button>
+              </Box>
+              <Box ml="24px">
+                <Button
+                  variant="contained"
+                  size="small"
+                  color="warning"
+                  onClick={onResetClick}
+                  sx={{
+                    width: "120px",
+                    color: "white",
+                    backgroundColor: "#ff5252",
+                  }}
+                >
+                  RESET
+                </Button>
+              </Box>
             </Box>
           </Box>
         </Box>
 
-        {/* CHART */}
-        <Box
-          sx={{
-            width: "70%",
-            border: "2px solid black",
-            borderRadius: "12px",
-            margin: "24px auto",
-            padding: "24px",
-          }}
-        >
-          <Box>
-            <Typography align="center" variant="h5">
-              Revenue Chart
-            </Typography>
-          </Box>
-          <LineChart chartData={chartData} />
-          <Box display="flex">
-            <Typography variant="h6" mr="4px">
-              Total Revenue :{" "}
-            </Typography>
-            <Typography variant="h6" fontWeight="bold" color="green">
-              Rp{" "}
-              {revenue
-                .map((data) => data.amount)
-                .reduce((a, b) => a + b, 0)
-                .toLocaleString("id")}
-            </Typography>
-          </Box>
-        </Box>
+        {/* TABLE PRODUCTS SALES */}
+        <ProductsSalesByMonth productSalesMonthly={productSalesMonthly} />
 
-        {/* TABLE */}
         <Paper
           elevation={3}
           sx={{
-            width: "75%",
+            width: "85%",
             overflow: "hidden",
+            marginTop: "48px",
             marginInline: "auto",
+            boxShadow: "0 1px 12px #aeafaf",
           }}
         >
           <Box sx={{ backgroundColor: "#d5d5d5" }}>
@@ -301,7 +318,7 @@ function ReportDetails() {
                 color: "maroon",
               }}
             >
-              Revenue Detail
+              Daily Products Sold
             </Typography>
           </Box>
           <TableContainer>
@@ -331,25 +348,11 @@ function ReportDetails() {
                     >
                       {columns.map((column) => {
                         const value = row[column.id];
-                        if (column.id === "Invoice") {
-                          return (
-                            <TableCell key={column.id} align={column.align}>
-                              <Link
-                                href={`/transactions/details/${row.id}`}
-                                underline="hover"
-                                color="inherit"
-                              >
-                                {value}
-                              </Link>
-                            </TableCell>
-                          );
-                        } else {
-                          return (
-                            <TableCell key={column.id} align={column.align}>
-                              {!column.format ? value : column.format(value)}
-                            </TableCell>
-                          );
-                        }
+                        return (
+                          <TableCell key={column.id} align={column.align}>
+                            {value}
+                          </TableCell>
+                        );
                       })}
                     </TableRow>
                   );
@@ -368,8 +371,12 @@ function ReportDetails() {
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
         </Paper>
-      </Paper>
+      </Box>
+      <Box flex="1">
+        <ProductsSalesByCategory productSalesCategory={productSalesCategory} />
+      </Box>
     </Box>
   );
 }
-export default ReportDetails;
+
+export default ProductsSalesReport;

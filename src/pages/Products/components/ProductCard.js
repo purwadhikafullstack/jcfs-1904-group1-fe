@@ -1,29 +1,30 @@
 import React from "react";
+import { Card, CardContent, CardMedia, Typography, Link } from "@mui/material";
 
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
-import Link from "@mui/material/Link";
 
 function ProductCard(props) {
-  const { id, productName, productPhoto, price, dose, name, isLiquid } =
+  const { id, productName, productPhoto, priceStrip, dose, name, isLiquid } =
     props.product;
   const type = isLiquid ? "ml" : "mg";
   return (
     <Link
       href={`/products/${name}/${id}`}
       underline="none"
-      sx={{ margin: "12px 0 32px 46px" }}
+      sx={{
+        margin: "24px",
+        boxShadow: "0 3px 8px #aeafaf",
+        // width: "15%",
+        flex: "0 0 15%",
+      }}
     >
-      <Card sx={{ maxWidth: 160, height: 240 }}>
+      <Card sx={{ height: "240px" }}>
         <CardActionArea>
           <CardMedia
             component="img"
-            height="160"
+            height="160px"
             image={productPhoto}
-            alt="green iguana"
+            alt="Product Photo"
           />
           <CardContent>
             <Typography
@@ -41,7 +42,7 @@ function ProductCard(props) {
               component="div"
               textAlign="center"
             >
-              Rp {price.toLocaleString("id")}
+              Rp {priceStrip.toLocaleString("id")}
             </Typography>
           </CardContent>
         </CardActionArea>

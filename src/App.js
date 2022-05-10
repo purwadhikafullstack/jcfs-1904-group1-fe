@@ -142,7 +142,7 @@ function App() {
                 element={<ProductDetails />}
               />
             </Routes>
-            <Footer />
+            <Footer sx={{ position: "sticky", bottom: 0 }} />
           </Router>
         </div>
       );

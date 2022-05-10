@@ -70,6 +70,16 @@ function TransactionDetails() {
     }
   };
 
+  const onCompleteClick = async () => {
+    try {
+      const data = { status: "complete", transaction };
+      const res = axios.put(`/orders/update/${transactionId}`, data);
+      alert("Order completed");
+    } catch (error) {
+      console.log({ error });
+    }
+  };
+
   const renderTransaction = () => {
     return transaction.map((transaction, index) => {
       return (
@@ -169,6 +179,13 @@ function TransactionDetails() {
       </div>
     );
   } else if (status == "sending") {
+    button = (
+      <div>
+        <Button onClick={onCompleteClick} variant="contained" color="success">
+          Complete
+        </Button>
+      </div>
+    );
   }
 
   return (

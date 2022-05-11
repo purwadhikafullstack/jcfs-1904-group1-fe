@@ -24,9 +24,11 @@ function ProductsByCategory() {
     offSet: 0,
     itemsPerPage: 10,
   });
+
   const params = useParams();
   const selectedCategory = params.category;
   console.log(selectedCategory);
+
   //Fetch Products by Category
   const fetchProducts = async () => {
     try {

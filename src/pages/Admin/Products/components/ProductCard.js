@@ -1,30 +1,47 @@
 import React from "react";
-import { Card, CardContent, CardMedia, Typography, Link } from "@mui/material";
 
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
+import Link from "@mui/material/Link";
 
 function ProductCard(props) {
-  const { id, productName, productPhoto, priceStrip, dose, name, isLiquid } =
-    props.product;
+  const {
+    id,
+    productName,
+    productPhoto,
+    priceStrip,
+    dose,
+    name,
+    isLiquid,
+    isDeleted,
+  } = props.product;
   const type = isLiquid ? "ml" : "mg";
   return (
     <Link
-      href={`/products/${name}/${id}`}
+      href={`/admin/products/${name}/${id}`}
       underline="none"
       sx={{
         margin: "24px",
         boxShadow: "0 3px 8px #aeafaf",
-        // width: "15%",
+
         flex: "0 0 15%",
       }}
     >
-      <Card sx={{ height: "240px" }}>
+      <Card
+        sx={{
+          height: "240",
+          backgroundColor: `${isDeleted ? "red" : "white"}`,
+        }}
+      >
         <CardActionArea>
           <CardMedia
             component="img"
-            height="160px"
+            height="160"
             image={productPhoto}
-            alt="Product Photo"
+            alt="green iguana"
           />
           <CardContent>
             <Typography

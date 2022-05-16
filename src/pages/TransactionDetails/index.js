@@ -59,7 +59,8 @@ function TransactionDetails() {
       window.location.reload();
       console.log({ res });
     } catch (error) {
-      console.log({ error });
+      // alert(error);
+      console.log(error);
     }
   };
 

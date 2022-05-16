@@ -1,13 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "../../utils/axios";
-import {
-  ImageList,
-  TextField,
-  Typography,
-  Button,
-  Box,
-  Paper,
-} from "@mui/material";
+import { Typography, Button, Box, Paper } from "@mui/material";
 
 import { useSelector } from "react-redux";
 import { useParams, Navigate, Link } from "react-router-dom";
@@ -66,10 +59,25 @@ function TransactionDetails() {
       window.location.reload();
       console.log({ res });
     } catch (error) {
+      // alert(error);
+      console.log(error);
+    }
+  };
+
+  const onCompleteClick = async () => {
+    try {
+      const data = { status: "complete", transaction };
+      const res = axios.put(`/orders/update/${transactionId}`, data);
+      alert("Order completed");
+      window.location.reload();
+    } catch (error) {
       console.log({ error });
     }
   };
 
+  if (!userId) {
+    return <Navigate to="/products" replace />;
+  }
   const renderTransaction = () => {
     return transaction.map((transaction, index) => {
       return (
@@ -169,6 +177,13 @@ function TransactionDetails() {
       </div>
     );
   } else if (status == "sending") {
+    button = (
+      <div>
+        <Button onClick={onCompleteClick} variant="contained" color="success">
+          Complete
+        </Button>
+      </div>
+    );
   }
 
   return (

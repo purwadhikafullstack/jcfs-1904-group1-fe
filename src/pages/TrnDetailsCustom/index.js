@@ -17,7 +17,7 @@ function TrnDetailsCustom() {
   );
   const [state, setState] = useState("");
   const props = {
-    width: 500,
+    width: 250,
     zoomPosition: "original",
     img: image,
   };

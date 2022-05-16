@@ -121,22 +121,6 @@ function TrnsHistory() {
           }}
         >
           <Box display="flex" justifyContent="center" border="solid">
-            <Button name="waiting payment" flex="1" onClick={buttonWPHandler}>
-              waiting payment
-            </Button>
-            <Button
-              name="waiting confirmation"
-              flex="1"
-              onClick={buttonWPHandler}
-            >
-              waiting confirmation
-            </Button>
-            <Button name="on process" flex="1" onClick={buttonWPHandler}>
-              on process
-            </Button>
-            <Button name="sending" flex="1" onClick={buttonWPHandler}>
-              sending
-            </Button>
             <Button name="complete" flex="1" onClick={buttonWPHandler}>
               complete
             </Button>

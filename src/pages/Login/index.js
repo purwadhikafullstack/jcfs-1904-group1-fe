@@ -57,6 +57,7 @@ function Login() {
         marginTop: 10,
         borderRadius: 6,
         boxShadow: 3,
+        minHeight: "50vh",
       }}
     >
       <Typography

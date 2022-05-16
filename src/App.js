@@ -142,7 +142,7 @@ function App() {
                 element={<ProductDetails />}
               />
             </Routes>
-            <Footer />
+            <Footer className="footer" />
           </Router>
         </div>
       );

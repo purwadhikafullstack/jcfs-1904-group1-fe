@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "../../utils/axios";
 import { Box, Typography, Paper, Button } from "@mui/material";
 import { useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
 
 function Prescription() {
   const userId = useSelector((state) => state.auth.id);
@@ -38,11 +39,20 @@ function Prescription() {
       console.log(error);
     }
   };
+
+  if (!userId) {
+    return <Navigate to="/products" replace />;
+  }
+
   return (
-    <Box display="flex" justifyContent="space-around">
+    <Box
+      display="flex"
+      justifyContent="space-around"
+      minHeight="60vh"
+      alignItems="center"
+    >
       <Paper
         display="flex"
-        border="solid"
         justifyContent="center"
         sx={{
           width: "40%",

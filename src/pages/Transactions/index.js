@@ -111,7 +111,7 @@ function Transactions() {
   }, [rowsPerPage, queryPagination, state]);
 
   return (
-    <Box display="flex" justifyContent="space-around">
+    <Box display="flex" justifyContent="space-around" minHeight="60vh">
       <Paper
         sx={{
           width: "70%",

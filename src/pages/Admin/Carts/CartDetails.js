@@ -103,7 +103,7 @@ function CartDetails() {
               <Box>
                 <Button disabled={cart.qty == 1}>
                   <IndeterminateCheckBoxIcon
-                    color="success"
+                    color={cart.qty == 1 ? "disabled" : "success"}
                     onClick={async () => {
                       try {
                         const res = await axios.put(`/carts/decQty`, {

@@ -13,7 +13,7 @@ import AddBoxIcon from "@mui/icons-material/AddBox";
 import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
 
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, Navigate } from "react-router-dom";
 
 function Carts() {
   const userId = useSelector((state) => state.auth.id);
@@ -66,12 +66,15 @@ function Carts() {
 
       await axios.post("/carts/checkout", newTransaction);
       alert("Checkout successful");
+      window.location.reload();
     } catch (error) {
       alert("Checkout failed");
       console.log(error);
     }
   };
-
+  if (!userId) {
+    return <Navigate to="/products" replace />;
+  }
   const renderCarts = () => {
     return carts.map((cart, index) => {
       return (
@@ -111,9 +114,9 @@ function Carts() {
               justifyContent="center"
             >
               <Box>
-                <Button>
+                <Button disabled={cart.qty == 1}>
                   <IndeterminateCheckBoxIcon
-                    color="success"
+                    color={cart.qty == 1 ? "disabled" : "success"}
                     onClick={async () => {
                       try {
                         const res = await axios.put(`/carts/decQty`, {
@@ -190,7 +193,7 @@ function Carts() {
   };
 
   return (
-    <Box display="flex" justifyContent="space-around">
+    <Box display="flex" justifyContent="space-around" minHeight="60vh">
       <Paper
         sx={{
           width: "70%",
@@ -231,8 +234,13 @@ function Carts() {
         {carts.length ? (
           renderCarts()
         ) : (
-          <Box display="flex" justifyContent="center">
-            <Typography>No products in cart!</Typography>
+          <Box
+            height="70%"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Typography variant="h4">No products in cart!</Typography>
           </Box>
         )}
       </Paper>
@@ -246,11 +254,11 @@ function Carts() {
             boxShadow: 3,
           }}
         >
-          <Box bordisplay="flex" justifyContent="center">
+          <Box px="10px">
             <Box
+              alignContent="center"
               display="flex"
               justifyContent="space-between"
-              alignContent="center"
             >
               <Box>
                 <Typography mr="12px">Sub Total : </Typography>
@@ -275,7 +283,7 @@ function Carts() {
             </Box>
           </Box>
           <Box display="flex" justifyContent="end">
-            <Box border="solid">
+            <Box px="10px">
               <Button variant="contained" onClick={onCheckoutClick}>
                 Checkout
               </Button>

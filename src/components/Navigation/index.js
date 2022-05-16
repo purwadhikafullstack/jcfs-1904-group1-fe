@@ -58,29 +58,39 @@ function Navigation() {
               Medicine
             </Link>
           </Typography>
-          <Typography mr="25px">
-            <Link href={`/prescription/${id}`} underline="hover" color="white">
-              Prescription
-            </Link>
-          </Typography>
-          <Typography mr="25px">
-            <Link href={`/carts/${id}`} underline="hover" color="white">
-              Cart
-            </Link>
-          </Typography>
-          <Typography>
-            <Link href={`/transactions/${id}`} underline="hover" color="white">
-              Transactions
-            </Link>
-          </Typography>
+          {!username ? null : (
+            <Box display="flex">
+              <Typography mr="25px">
+                <Link
+                  href={`/prescription/${id}`}
+                  underline="hover"
+                  color="white"
+                >
+                  Prescription
+                </Link>
+              </Typography>
+              <Typography mr="25px">
+                <Link href={`/carts/${id}`} underline="hover" color="white">
+                  Cart
+                </Link>
+              </Typography>
+              <Typography>
+                <Link
+                  href={`/transactions/${id}`}
+                  underline="hover"
+                  color="white"
+                >
+                  Transactions
+                </Link>
+              </Typography>
+            </Box>
+          )}
 
           {!username ? (
             <Box pr="12px">
               <Link href={"/login"} underline="none" color="white">
                 <Box display="flex" alignItems="center">
-                  <Typography ml="25px" mr="5px">
-                    Log in
-                  </Typography>
+                  <Typography mr="5px">Log in</Typography>
                   <LoginIcon fontSize="small" />
                 </Box>
               </Link>

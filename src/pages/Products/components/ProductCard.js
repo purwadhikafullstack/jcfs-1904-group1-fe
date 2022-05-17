@@ -14,7 +14,6 @@ function ProductCard(props) {
       sx={{
         margin: "24px",
         boxShadow: "0 3px 8px #aeafaf",
-        // width: "15%",
         flex: "0 0 15%",
       }}
     >

@@ -10,7 +10,7 @@ import "./style.css";
 
 function Footer() {
   return (
-    <Box pt="86px" width="100%">
+    <Box>
       <Box
         sx={{
           backgroundColor: "#d5d5d5",

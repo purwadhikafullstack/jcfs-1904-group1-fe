@@ -73,7 +73,7 @@ function Carts() {
     }
   };
   if (!userId) {
-    return <Navigate to="/products" replace />;
+    return <Navigate to="/" replace />;
   }
   const renderCarts = () => {
     return carts.map((cart, index) => {

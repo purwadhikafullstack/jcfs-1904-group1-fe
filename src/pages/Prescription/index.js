@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "../../utils/axios";
 import { Box, Typography, Paper, Button } from "@mui/material";
 import { useSelector } from "react-redux";
@@ -41,7 +41,7 @@ function Prescription() {
   };
 
   if (!userId) {
-    return <Navigate to="/products" replace />;
+    return <Navigate to="/" replace />;
   }
 
   return (

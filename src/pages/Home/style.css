@@ -1,0 +1,11 @@
+.category {
+  transition: margin-top 250ms ease;
+}
+
+.category:hover {
+  margin-top: -12px;
+  cursor: pointer;
+}
+.text {
+  background-color: rgba(12, 12, 12, 0.288);
+}

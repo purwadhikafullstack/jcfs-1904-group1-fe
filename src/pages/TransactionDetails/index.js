@@ -78,6 +78,16 @@ function TransactionDetails() {
   if (!userId) {
     return <Navigate to="/" replace />;
   }
+  const onCompleteClick = async () => {
+    try {
+      const data = { status: "complete", transaction };
+      const res = axios.put(`/orders/update/${transactionId}`, data);
+      alert("Order completed");
+    } catch (error) {
+      console.log({ error });
+    }
+  };
+
   const renderTransaction = () => {
     return transaction.map((transaction, index) => {
       return (

@@ -2,15 +2,13 @@ import React from "react";
 import ProductCard from "../Products/components/ProductCard";
 import { useState, useEffect } from "react";
 import axios from "../../utils/axios.js";
-import { Box, Paper, Typography, Link, Button } from "@mui/material";
+import { Box, Typography, Link } from "@mui/material";
 import CoronavirusOutlinedIcon from "@mui/icons-material/CoronavirusOutlined";
 import MonitorHeartOutlinedIcon from "@mui/icons-material/MonitorHeartOutlined";
 import ColorizeIcon from "@mui/icons-material/Colorize";
 import HeartBrokenOutlinedIcon from "@mui/icons-material/HeartBrokenOutlined";
 import SickOutlinedIcon from "@mui/icons-material/SickOutlined";
 import "./style.css";
-import image from "./7882.jpg";
-import { Brightness1 } from "@mui/icons-material";
 
 function Home() {
   const [bestSeller, setBestSeller] = useState([]);

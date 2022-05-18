@@ -18,7 +18,6 @@ function ResetPassword() {
 
   const { token } = useParams();
   const onSubmitClick = async () => {
-    console.log(token);
     try {
       const res = await axios.put(`/users/reset-password/${token}`, {
         password: formState.newPassword,

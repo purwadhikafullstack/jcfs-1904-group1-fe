@@ -16,9 +16,9 @@ import TransactionDetails from "./pages/TransactionDetails";
 import TrnDetailsCustom from "./pages/TrnDetailsCustom";
 import TrnsHistory from "./pages/Admin/TrnsHistory";
 import EditProfilePhoto from "./pages/EditProfilePhoto";
-
 import { keepLoginAction } from "./store/actions/index";
 import "./index.css";
+import Home from "./pages/Home";
 import Dashboard from "./pages/Admin/Dashboard";
 import InputProducts from "./pages/Admin/Products/InputProducts";
 import ProductsAdmin from "./pages/Admin/Products";
@@ -109,7 +109,7 @@ function App() {
           <Router>
             <Navigation />
             <Routes>
-              <Route path="" element={<Products />} />
+              <Route path="/" element={<Home />} />
               <Route path="login" element={<Login />} />
               <Route path="register" element={<Register />} />
               <Route path="profile" element={<Profile />} />

@@ -1,19 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "../../../utils/axios";
-import {
-  ImageList,
-  TextField,
-  Typography,
-  Button,
-  Box,
-  Paper,
-} from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import AddBoxIcon from "@mui/icons-material/AddBox";
-import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
-
-import { useSelector } from "react-redux";
-import { useParams, Navigate, Link } from "react-router-dom";
+import { Typography, Button, Box, Paper } from "@mui/material";
+import { useParams } from "react-router-dom";
 
 function DetailTransaction() {
   const params = useParams();
@@ -51,6 +39,7 @@ function DetailTransaction() {
         status: "on process",
       });
       alert("Accept Order success, order is now on process");
+      window.location.reload();
     } catch (error) {
       console.log({ error });
     }
@@ -62,6 +51,7 @@ function DetailTransaction() {
         status: "reject",
       });
       alert("Reject Order success");
+      window.location.reload();
     } catch (error) {
       console.log({ error });
     }
@@ -74,6 +64,7 @@ function DetailTransaction() {
         paymentPhoto: null,
       });
       alert("Reset Order success, user must now reupload payment photo");
+      window.location.reload();
     } catch (error) {
       console.log({ error });
     }
@@ -84,6 +75,7 @@ function DetailTransaction() {
       const data = { status: "sending", transaction };
       const res = axios.put(`/orders/update/${transactionId}`, data);
       alert("Sending Order success");
+      window.location.reload();
     } catch (error) {
       console.log({ error });
     }

@@ -137,12 +137,7 @@ function Orders() {
             <Button name="sending" flex="1" onClick={buttonWPHandler}>
               sending
             </Button>
-            <Button name="complete" flex="1" onClick={buttonWPHandler}>
-              complete
-            </Button>
-            <Button name="reject" flex="1" onClick={buttonWPHandler}>
-              reject
-            </Button>
+
             <Button name="custom" flex="1" onClick={buttonWPHandler}>
               custom
             </Button>

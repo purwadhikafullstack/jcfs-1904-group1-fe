@@ -1,12 +1,11 @@
 import React from "react";
 import axios from "../../utils/axios";
 import { TextField, Typography, Button, Container } from "@mui/material";
-import { useState, useEffect } from "react";
-import { Navigate, useParams } from "react-router-dom";
+import { useState } from "react";
+import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 function ResetPassword() {
-  const { username } = useSelector((state) => state.auth);
   const [formState, setFormState] = useState({
     newPassword: "",
     confirmNewPassword: "",
@@ -35,13 +34,11 @@ function ResetPassword() {
   };
 
   const compareResult = () => {
-    // if null
     if (formState.newPassword !== formState.confirmNewPassword) {
       alert("Please insert the new passwords correctly.");
     } else {
       onSubmitClick();
       alert("Password has been reset successfully.");
-      // <Navigate to="/login" replace />;
     }
   };
   return (
@@ -53,6 +50,7 @@ function ResetPassword() {
         marginTop: 10,
         borderRadius: 6,
         boxShadow: 3,
+        minHeight: "50vh",
       }}
     >
       <Typography

@@ -1,14 +1,16 @@
 import React from "react";
-import { Button, Box, Link, Typography, BottomNavigation } from "@mui/material";
+import { Box, Link, Typography } from "@mui/material";
 import CameraRoundedIcon from "@mui/icons-material/CameraRounded";
 import ControlCameraRoundedIcon from "@mui/icons-material/ControlCameraRounded";
 import FacebookRoundedIcon from "@mui/icons-material/FacebookRounded";
+import TwitterIcon from "@mui/icons-material/Twitter";
+import InstagramIcon from "@mui/icons-material/Instagram";
 import Logo from "../logo1.png";
 import "./style.css";
 
 function Footer() {
   return (
-    <Box pt="86px" width="100%">
+    <Box>
       <Box
         sx={{
           backgroundColor: "#d5d5d5",
@@ -82,25 +84,25 @@ function Footer() {
                 <Typography>Follow Us On</Typography>
               </Box>
               <Link
-                href="https://www.facebook.com/michaelsiahaan180699/"
-                title="Ikuti Kami di Facebook"
+                href="https://www.facebook.com/purwadhikadigitalschool/"
+                title="Follow us on Facebook"
                 sx={{ color: "white" }}
               >
                 <FacebookRoundedIcon />
               </Link>
               <Link
-                href="/"
-                title="Ikuti Kami di Twitter"
+                href="https://twitter.com/purwadhikaclass?lang=en"
+                title="Follow us on Twitter"
                 sx={{ color: "white" }}
               >
-                <ControlCameraRoundedIcon />
+                <TwitterIcon />
               </Link>
               <Link
-                href="/"
-                title="Ikuti Kami di Instagram"
+                href="https://www.instagram.com/purwadhikaschool/?hl=id"
+                title="Follow us on Instagram"
                 sx={{ color: "white" }}
               >
-                <CameraRoundedIcon />
+                <InstagramIcon />
               </Link>
             </Box>
           </Box>

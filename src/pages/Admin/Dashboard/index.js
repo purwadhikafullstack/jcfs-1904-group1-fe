@@ -14,6 +14,11 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
+import InventoryIcon from "@mui/icons-material/Inventory";
+import AssessmentIcon from "@mui/icons-material/Assessment";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
+import BookIcon from "@mui/icons-material/Book";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutAction } from "../../../store/actions";
 
@@ -60,7 +65,7 @@ function Dashboard() {
               <Link underline="none" color="textPrimary" href="/admin/products">
                 <ListItem button key="Products">
                   <ListItemIcon>
-                    <InboxIcon />
+                    <InventoryIcon />
                   </ListItemIcon>
                   <ListItemText primary="Products" />
                 </ListItem>
@@ -72,7 +77,7 @@ function Dashboard() {
               >
                 <ListItem button key="Sales Report">
                   <ListItemIcon>
-                    <InboxIcon />
+                    <AssessmentIcon />
                   </ListItemIcon>
                   <ListItemText primary="Sales Report" />
                 </ListItem>
@@ -88,7 +93,7 @@ function Dashboard() {
               <Link underline="none" color="textPrimary" href="/admin/carts">
                 <ListItem button key="Carts">
                   <ListItemIcon>
-                    <InboxIcon />
+                    <ShoppingCartIcon />
                   </ListItemIcon>
                   <ListItemText primary="Carts" />
                 </ListItem>
@@ -100,7 +105,7 @@ function Dashboard() {
               >
                 <ListItem button key="Transactions History">
                   <ListItemIcon>
-                    <InboxIcon />
+                    <FormatListNumberedIcon />
                   </ListItemIcon>
                   <ListItemText primary="Transactions History" />
                 </ListItem>
@@ -108,7 +113,7 @@ function Dashboard() {
               <Link underline="none" color="textPrimary" href="/admin/logs">
                 <ListItem button key="Logs">
                   <ListItemIcon>
-                    <InboxIcon />
+                    <BookIcon />
                   </ListItemIcon>
                   <ListItemText primary="Logs" />
                 </ListItem>

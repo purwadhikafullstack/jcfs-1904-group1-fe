@@ -33,9 +33,10 @@ function ForgotPassword() {
         width: 500,
         height: 300,
         backgroundColor: "white",
-        marginp: 10,
+        marginTop: 10,
         borderRadius: 6,
         boxShadow: 3,
+        minHeight: "50vh",
       }}
     >
       <Typography

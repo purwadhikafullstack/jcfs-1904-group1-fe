@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Box, Paper, Link, AppBar } from "@mui/material";
+import axios from "../../utils/axios";
 import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -19,6 +20,21 @@ function Navigation() {
   const { username, id } = useSelector((state) => {
     return state.auth;
   });
+  const [image, setImage] = useState("");
+
+  const fetchImage = async () => {
+    try {
+      const res = await axios.get(`/users/user/${id}`);
+
+      setImage(res.data.result[0][0].userPhoto);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchImage();
+  }, [username]);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -105,7 +121,9 @@ function Navigation() {
                 aria-haspopup="true"
                 aria-expanded={open ? "true" : undefined}
               >
-                <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+                <Avatar sx={{ width: 32, height: 32 }}>
+                  <img src={image} width="30px" />
+                </Avatar>
               </IconButton>
             </Tooltip>
           )}

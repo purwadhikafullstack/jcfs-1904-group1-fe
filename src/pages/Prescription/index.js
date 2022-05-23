@@ -50,6 +50,7 @@ function Prescription() {
       justifyContent="space-around"
       minHeight="60vh"
       alignItems="center"
+      marginBottom="60px"
     >
       <Paper
         display="flex"

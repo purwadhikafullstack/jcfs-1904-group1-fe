@@ -309,7 +309,7 @@ function Carts() {
       display="flex"
       justifyContent="space-around"
       minHeight="60vh"
-      mb="24px"
+      marginBottom="60px"
     >
       <Paper
         sx={{

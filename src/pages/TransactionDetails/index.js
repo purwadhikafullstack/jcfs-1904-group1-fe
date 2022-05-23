@@ -80,6 +80,7 @@ function TransactionDetails() {
   if (!userId) {
     return <Navigate to="/" replace />;
   }
+
   const renderTransaction = () => {
     return transaction.map((transaction, index) => {
       return (

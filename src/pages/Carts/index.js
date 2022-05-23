@@ -1,23 +1,24 @@
 import React, { useEffect, useState } from "react";
 import axios from "../../utils/axios";
 import {
-  ImageList,
   TextField,
   Typography,
   Button,
   Box,
   Paper,
+  MenuItem,
+  FormControl,
+  Select,
+  InputLabel,
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
 
-import { useDispatch, useSelector } from "react-redux";
-import { useParams, Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
 
 function Carts() {
   const userId = useSelector((state) => state.auth.id);
-  const [product, setProduct] = useState({ priceStrip: "", name: "" });
   const [carts, setCarts] = useState([]);
   const [priceState, setPriceState] = useState({
     tax: "",
@@ -26,7 +27,59 @@ function Carts() {
     totalAfterTax: "",
   });
 
+  const [provinces, setProvinces] = useState([]);
+  const [cities, setCities] = useState([]);
+  const [costs, setCosts] = useState([]);
+  const [service, setService] = useState({
+    courier: "",
+    service: "",
+    description: "",
+    cost: "",
+    etd: "",
+  });
+  const [selectedAddress, setSelectedAddress] = useState({
+    province: "",
+    city: "",
+  });
   const [state, setState] = useState("");
+  const [address, setAddress] = useState("");
+  const [selectedProvince, setSelectedProvince] = useState("");
+  const [selectedCity, setSelectedCity] = useState("");
+  const [selectedCourier, setSelectedCourier] = useState("");
+
+  const handleChange = (e) => {
+    setSelectedProvince(e.target.value);
+    const selectedProv = provinces.find(
+      (prov) => prov.province_id === e.target.value
+    );
+    setSelectedAddress({ ...selectedAddress, province: selectedProv.province });
+  };
+  const handleChangeCity = (e) => {
+    setSelectedCity(e.target.value);
+    const selectedCit = cities.find((city) => city.city_id === e.target.value);
+    setSelectedAddress({ ...selectedAddress, city: selectedCit.city_name });
+  };
+  const handleChangeAddress = (e) => {
+    setAddress(e.target.value);
+  };
+  const handleChangeCourier = (e) => {
+    setSelectedCourier(e.target.value);
+  };
+  const handleChangeService = (e) => {
+    const selectedService = costs.find(
+      (cost) => cost.service === e.target.value
+    );
+    if (selectedService) {
+      setService({
+        ...service,
+        courier: selectedCourier,
+        service: selectedService.service,
+        description: selectedService.description,
+        cost: selectedService.cost[0].value,
+        etd: selectedService.cost[0].etd,
+      });
+    }
+  };
 
   const fetchCarts = async () => {
     try {
@@ -45,31 +98,88 @@ function Carts() {
     }
   };
 
+  const getProvince = async () => {
+    try {
+      const response = await axios.get(`/rajaongkir/province`);
+      const { data } = response;
+      setProvinces(data.rajaongkir.results);
+    } catch (error) {
+      alert(error);
+    }
+  };
+  useEffect(() => {
+    const getCity = async () => {
+      try {
+        const response = await axios.get(
+          `/rajaongkir/city/${selectedProvince}`
+        );
+        const { data } = response;
+        setCities(data.rajaongkir.results);
+      } catch (error) {
+        alert(error);
+      }
+    };
+    if (selectedProvince) {
+      getCity();
+    }
+  }, [selectedProvince]);
+
+  useEffect(() => {
+    const getCost = async () => {
+      try {
+        const response = await axios.get(
+          `/rajaongkir/cost/153/${selectedCity}/1000/${selectedCourier}`
+        );
+        const { data } = response;
+        setCosts(data.rajaongkir.results[0].costs);
+      } catch (error) {
+        alert(error);
+      }
+    };
+    if (selectedCourier) {
+      getCost();
+    }
+  }, [selectedCourier]);
+
   useEffect(() => {
     fetchCarts();
+    getProvince();
   }, [state]);
 
   const onCheckoutClick = async () => {
-    try {
-      const d = new Date();
-      const date = d.getDate();
-      const month = d.getMonth() + 1;
-      const year = d.getFullYear();
-      const time = d.getTime();
+    if (
+      address === "" ||
+      selectedAddress.province === "" ||
+      selectedAddress.city === ""
+    ) {
+      alert("Please complete shipping details");
+    } else {
+      try {
+        const d = new Date();
+        const date = d.getDate();
+        const month = d.getMonth() + 1;
+        const year = d.getFullYear();
+        const time = d.getTime();
+        const details =
+          address +
+          `. ${selectedAddress.city}` +
+          `, ${selectedAddress.province}`;
 
-      const newTransaction = {
-        invoice: `INV/${userId}/${year}${month}${date}/${time}`,
-        user_id: userId,
-        amount: priceState.totalAfterTax,
-        carts,
-      };
+        const newTransaction = {
+          invoice: `INV/${userId}/${year}${month}${date}/${time}`,
+          user_id: userId,
+          amount: priceState.totalAfterTax + service.cost,
+          address: details,
+          carts,
+        };
 
-      await axios.post("/carts/checkout", newTransaction);
-      alert("Checkout successful");
-      window.location.reload();
-    } catch (error) {
-      alert("Checkout failed");
-      console.log(error);
+        await axios.post("/carts/checkout", newTransaction);
+        alert("Checkout successful");
+        window.location.reload();
+      } catch (error) {
+        alert("Checkout failed");
+        console.log(error);
+      }
     }
   };
   if (!userId) {
@@ -193,7 +303,12 @@ function Carts() {
   };
 
   return (
-    <Box display="flex" justifyContent="space-around" minHeight="60vh">
+    <Box
+      display="flex"
+      justifyContent="space-around"
+      minHeight="60vh"
+      marginBottom="60px"
+    >
       <Paper
         sx={{
           width: "70%",
@@ -254,7 +369,113 @@ function Carts() {
             boxShadow: 3,
           }}
         >
-          <Box px="10px">
+          {/* SELECT ADDRESS */}
+          <Box p="12px" borderBottom="10px solid #f3f4f5">
+            <Typography textAlign="center" variant="h5">
+              Shipping Details
+            </Typography>
+            <Box>
+              <Typography variant="h6">Province</Typography>
+              <FormControl fullWidth size="small" sx={{ m: "12px 0" }}>
+                <InputLabel>Select Province</InputLabel>
+                <Select
+                  value={selectedProvince}
+                  onChange={handleChange}
+                  label="Select Province"
+                >
+                  {provinces.map((province) => (
+                    <MenuItem
+                      key={province.province_id}
+                      value={province.province_id}
+                    >
+                      {province.province}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Box>
+            <Box>
+              <Typography variant="h6">City</Typography>
+              <FormControl fullWidth size="small" sx={{ m: "12px 0" }}>
+                <InputLabel>Select City</InputLabel>
+                <Select
+                  value={selectedCity}
+                  onChange={handleChangeCity}
+                  label="Select City"
+                >
+                  {cities.map((city) => (
+                    <MenuItem key={city.city_id} value={city.city_id}>
+                      {city.city_name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Box>
+            <Box>
+              <Typography variant="h6">Address Details</Typography>
+              <TextField
+                required
+                sx={{ m: "12px 0" }}
+                name="address"
+                label="Address Details"
+                fullWidth
+                size="small"
+                variant="outlined"
+                onChange={handleChangeAddress}
+              />
+            </Box>
+            <Box>
+              <Typography variant="h6">Couriers</Typography>
+              <FormControl fullWidth size="small" sx={{ m: "12px 0" }}>
+                <InputLabel>Select Couriers</InputLabel>
+                <Select
+                  value={selectedCourier}
+                  onChange={handleChangeCourier}
+                  label="Select Courier"
+                >
+                  <MenuItem key={1} value="jne">
+                    JNE
+                  </MenuItem>
+                  <MenuItem key={2} value="pos">
+                    POS-Indonesia
+                  </MenuItem>
+                  <MenuItem key={3} value="tiki">
+                    TIKI
+                  </MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
+            <Box>
+              <Typography variant="h6">Service</Typography>
+              <FormControl fullWidth size="small" sx={{ m: "12px 0" }}>
+                <InputLabel>Select Service</InputLabel>
+                <Select
+                  value={service.service}
+                  onChange={handleChangeService}
+                  label="Select Service"
+                >
+                  {costs.map((cost) => {
+                    if (selectedCourier === "pos") {
+                      return (
+                        <MenuItem key={cost.service} value={cost.service}>
+                          {cost.service} | Rp.{cost.cost[0].value} |{" "}
+                          {cost.cost[0].etd}
+                        </MenuItem>
+                      );
+                    } else {
+                      return (
+                        <MenuItem key={cost.service} value={cost.service}>
+                          {cost.service} | Rp.{cost.cost[0].value} |{" "}
+                          {cost.cost[0].etd} HARI
+                        </MenuItem>
+                      );
+                    }
+                  })}
+                </Select>
+              </FormControl>
+            </Box>
+          </Box>
+          <Box p="10px">
             <Box
               alignContent="center"
               display="flex"
@@ -265,6 +486,7 @@ function Carts() {
                 <Typography mr="12px">
                   PPn {priceState.ppnObat * 100}%:
                 </Typography>
+                <Typography mr="12px">Ongkir : </Typography>
                 <Typography mr="12px">Total : </Typography>
               </Box>
               <Box>
@@ -276,8 +498,12 @@ function Carts() {
                   Rp {priceState.tax.toLocaleString("id")}
                 </Typography>
 
+                <Typography>Rp {service.cost.toLocaleString("id")}</Typography>
                 <Typography>
-                  Rp {priceState.totalAfterTax.toLocaleString("id")}
+                  Rp{" "}
+                  {(priceState.totalAfterTax + service.cost).toLocaleString(
+                    "id"
+                  )}
                 </Typography>
               </Box>
             </Box>

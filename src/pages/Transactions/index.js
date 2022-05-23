@@ -9,17 +9,21 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TablePagination,
   Button,
   Link,
 } from "@mui/material";
 import { useSelector } from "react-redux";
+import SearchBar from "./components/SearchBar";
 
 function Transactions() {
   const userId = useSelector((state) => state.auth.id);
   const [page, setPage] = useState(0);
   const [state, setState] = useState({ status: "waiting payment" });
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [transactions, setTransactions] = useState([]);
+  const [isClicked, setIsClicked] = useState("");
+
   const [pagination, setPagination] = useState({
     offSet: 0,
     count: 0,
@@ -48,8 +52,15 @@ function Transactions() {
     setPage(0);
   };
 
+  const handleGetChildData = (data, isClicked) => {
+    setTransactions(data);
+    setIsClicked(isClicked);
+    console.log(isClicked);
+  };
+
   const buttonWPHandler = (e) => {
     setState({ ...state, status: e.target.name });
+    setIsClicked(false);
   };
 
   // table
@@ -84,17 +95,20 @@ function Transactions() {
     const row = createData(invoice, status, amount, date, id, isByPrescription);
     return row;
   });
+
   const fetchTransactions = async () => {
     try {
       const res = await axios.get(`/transactions/${userId}`, {
         params: {
           status: state.status,
+          limit: rowsPerPage,
+          offset: queryPagination.offSet,
         },
       });
-      // const { totalCount } = res.data;
 
+      const { total } = res.data;
       setTransactions(res.data.dataDate);
-      setPagination({ ...queryPagination });
+      setPagination({ ...queryPagination, count: total });
     } catch (error) {
       alert(error);
     }
@@ -104,16 +118,27 @@ function Transactions() {
   }, [rowsPerPage, queryPagination, state]);
 
   return (
-    <Box display="flex" justifyContent="space-around" minHeight="60vh">
+    <Box
+      display="flex"
+      justifyContent="space-around"
+      marginBottom="60px"
+      minHeight="60vh"
+    >
       <Paper
         sx={{
           width: "70%",
+          height: "100%",
           backgroundColor: "white",
           marginTop: 10,
           borderRadius: 3,
           boxShadow: 3,
         }}
       >
+        <SearchBar
+          userId={userId}
+          handleGetChildData={handleGetChildData}
+          status={state.status}
+        />
         <Box display="flex" justifyContent="center" border="solid">
           <Button name="waiting payment" flex="1" onClick={buttonWPHandler}>
             waiting payment
@@ -199,6 +224,18 @@ function Transactions() {
             </TableBody>
           </Table>
         </TableContainer>
+        {isClicked ? null : (
+          <TablePagination
+            sx={{ backgroundColor: "#d5d5d5" }}
+            rowsPerPageOptions={[10, 20]}
+            component="div"
+            count={pagination.count}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        )}
       </Paper>
     </Box>
   );

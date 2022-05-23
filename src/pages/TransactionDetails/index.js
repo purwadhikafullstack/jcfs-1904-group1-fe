@@ -11,6 +11,7 @@ function TransactionDetails() {
   const transactionId = params.transactionId;
   const [product, setProduct] = useState({ priceStrip: "", name: "" });
   const [transaction, setTransaction] = useState([]);
+  const [address, setAddress] = useState("");
   const [invoice, setInvoice] = useState("");
   const [amount, setAmount] = useState("0");
   const [image, setImage] = useState(
@@ -25,6 +26,7 @@ function TransactionDetails() {
       const res = await axios.get(`/transactions/details/${transactionId}`);
       console.log(res.data);
       setTransaction(res.data[0]);
+      setAddress(res.data[0][0].address);
       setInvoice(res.data[0][0].invoice);
       setAmount(res.data[0][0].amount);
       if (res.data[0][0].paymentPhoto) {
@@ -35,7 +37,7 @@ function TransactionDetails() {
       alert(error);
     }
   };
-
+  console.log(transaction);
   useEffect(() => {
     fetchTransaction();
   }, [state, image]);
@@ -64,6 +66,9 @@ function TransactionDetails() {
     }
   };
 
+  if (!userId) {
+    return <Navigate to="/" replace />;
+  }
   const onCompleteClick = async () => {
     try {
       const data = { status: "complete", transaction };
@@ -78,15 +83,6 @@ function TransactionDetails() {
   if (!userId) {
     return <Navigate to="/" replace />;
   }
-  const onCompleteClick = async () => {
-    try {
-      const data = { status: "complete", transaction };
-      const res = axios.put(`/orders/update/${transactionId}`, data);
-      alert("Order completed");
-    } catch (error) {
-      console.log({ error });
-    }
-  };
 
   const renderTransaction = () => {
     return transaction.map((transaction, index) => {
@@ -283,15 +279,16 @@ function TransactionDetails() {
             width="65%"
             paddingY="3px"
           >
+            <Typography variant="h5">Shipping Address</Typography>
+            <Typography variant="subtitle1">{address}</Typography>
             <Typography variant="h5">
               Total: Rp{amount.toLocaleString("id")}
             </Typography>
-            <Typography>
-              Transfer via Bank Mandiri ke rekening:
+            <Typography fontWeight="bold">
+              Please pay via bank transfer (Mandiri):
               <Typography variant="h4" color="red">
                 803 8098 1239 1293
               </Typography>
-              atas nama:
               <Typography variant="h4" fontWeight="bold">
                 Rezeky Chan
               </Typography>

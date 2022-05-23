@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Paper, Link, Drawer } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
+import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -143,7 +144,9 @@ function Dashboard() {
               aria-haspopup="true"
               aria-expanded={open ? "true" : undefined}
             >
-              <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+              <Avatar sx={{ width: 32, height: 32 }}>
+                <SupervisorAccountIcon />
+              </Avatar>
             </IconButton>
           </Tooltip>
         </Box>

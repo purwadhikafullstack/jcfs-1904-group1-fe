@@ -47,9 +47,8 @@ function DetailTransaction() {
 
   const RejectButton = () => {
     try {
-      const res = axios.put(`/orders/update/${transactionId}`, {
-        status: "reject",
-      });
+      const data = { status: "reject", transaction };
+      const res = axios.put(`/orders/update/${transactionId}`, data);
       alert("Reject Order success");
       window.location.reload();
     } catch (error) {

@@ -167,7 +167,7 @@ function Navigation() {
             <Avatar /> Profile
           </MenuItem>
           <Divider />
-          <MenuItem onClick={onLogoutClick} component="a" href="/products">
+          <MenuItem onClick={onLogoutClick} component="a" href="/">
             <ListItemIcon>
               <Logout fontSize="small" />
             </ListItemIcon>

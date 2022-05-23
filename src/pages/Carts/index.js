@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "../../utils/axios";
 import {
-  ImageList,
   TextField,
   Typography,
   Button,
@@ -20,7 +19,6 @@ import { Navigate } from "react-router-dom";
 
 function Carts() {
   const userId = useSelector((state) => state.auth.id);
-  const [product, setProduct] = useState({ priceStrip: "", name: "" });
   const [carts, setCarts] = useState([]);
   const [priceState, setPriceState] = useState({
     tax: "",

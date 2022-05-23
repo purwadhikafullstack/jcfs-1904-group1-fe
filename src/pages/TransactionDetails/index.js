@@ -66,6 +66,9 @@ function TransactionDetails() {
     }
   };
 
+  if (!userId) {
+    return <Navigate to="/" replace />;
+  }
   const onCompleteClick = async () => {
     try {
       const data = { status: "complete", transaction };

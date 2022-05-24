@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import axios from "../../../utils/axios";
+import axios from "../../../../utils/axios";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import { InputBase, Button, Box, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
@@ -16,7 +16,7 @@ function SearchBar(props) {
 
   const onSearch = async () => {
     try {
-      const res = await axios.get(`/transactions/${userId}/search`, {
+      const res = await axios.get(`/orders/search`, {
         params: { search: formState.search, status: status },
       });
       const { data } = res;

@@ -55,7 +55,6 @@ function Transactions() {
   const handleGetChildData = (data, isClicked) => {
     setTransactions(data);
     setIsClicked(isClicked);
-    console.log(isClicked);
   };
 
   const buttonWPHandler = (e) => {

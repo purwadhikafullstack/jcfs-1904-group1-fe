@@ -10,7 +10,7 @@ import "./style.css";
 
 function Footer() {
   return (
-    <Box>
+    <Box marginTop="7em">
       <Box
         sx={{
           backgroundColor: "#d5d5d5",

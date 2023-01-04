@@ -28,11 +28,12 @@ function EditProfilePhoto() {
     }
   };
   return (
-    <Box display="flex" justifyContent="space-around">
-      <Paper
+    <Box display="flex" justifyContent="space-around" minHeight="60vh">
+      <Box
         display="flex"
-        border="solid"
+        flexDirection="column"
         justifyContent="center"
+        alignItems="center"
         sx={{
           width: "40%",
           backgroundColor: "white",
@@ -68,7 +69,7 @@ function EditProfilePhoto() {
             </Button>
           </Box>
         </Box>
-      </Paper>
+      </Box>
     </Box>
   );
 }

@@ -14,6 +14,7 @@ import { TextField, Typography } from "@mui/material";
 function Profile() {
   const userId = useSelector((state) => state.auth.id);
   const username = useSelector((state) => state.auth.username);
+  const token = useSelector((state) => state.auth.token);
 
   const [image, setImage] = useState("");
   const [upload, setUpload] = useState("");
@@ -47,7 +48,6 @@ function Profile() {
   const handleGenderChange = (e) => {
     setFormState({ ...formState, [e.target.name]: e.target.value });
   };
-  console.log(userId);
   const onSaveClick = async () => {
     try {
       const updatedData = {
@@ -73,7 +73,7 @@ function Profile() {
         alignItems="center"
         sx={{
           width: 900,
-          height: 800,
+          height: 900,
           backgroundColor: "white",
           marginTop: 10,
           borderRadius: 4,
@@ -81,6 +81,7 @@ function Profile() {
         }}
       >
         <Box display="flex" flexDirection="column" alignItems="center">
+          <Typography>Profile Photo</Typography>
           <img src={formState.userPhoto} style={{ width: "320px" }} />
           <Box pt="5px">
             <Button href={`/profile/edit-photo/${userId}`} variant="contained">
@@ -129,7 +130,6 @@ function Profile() {
                 }}
               ></Typography>
             </Container>
-
             <Container
               sx={{
                 display: "flex",
@@ -147,7 +147,7 @@ function Profile() {
               ></Typography>
             </Container>
             <Container>
-              <Typography variant="h7">Full Name</Typography>
+              <Typography variant="body1">Full Name</Typography>
             </Container>
             <TextField
               value={formState.fullName}
@@ -162,13 +162,27 @@ function Profile() {
               }}
             />
             <Container>
-              <Typography variant="h7">e-mail</Typography>
+              <Typography variant="body1">Username</Typography>
+            </Container>
+            <TextField
+              value={formState.username}
+              placeholder="username"
+              disabled
+              name="username"
+              sx={{
+                p: 1,
+                m: 1,
+                width: "100%",
+              }}
+            />
+            <Container>
+              <Typography variant="body1">E-mail</Typography>
             </Container>
             <TextField
               value={formState.email}
               onChange={handleChange}
               placeholder="Email"
-              disabled="1"
+              disabled
               type="email"
               name="email"
               sx={{
@@ -178,9 +192,8 @@ function Profile() {
               }}
             />
             <Container>
-              <Typography variant="h7">Age</Typography>
+              <Typography variant="body1">Age</Typography>
             </Container>
-
             <TextField
               value={formState.age}
               onChange={handleChange}
@@ -193,7 +206,7 @@ function Profile() {
               }}
             />
             <Container>
-              <Typography variant="h7">Gender</Typography>
+              <Typography variant="body1">Gender</Typography>
             </Container>
             <RadioGroup
               row
@@ -210,7 +223,7 @@ function Profile() {
               <FormControlLabel value="male" control={<Radio />} label="Male" />
             </RadioGroup>
             <Container>
-              <Typography variant="h7">Address</Typography>
+              <Typography variant="body1">Address</Typography>
             </Container>
             <TextField
               value={formState.address}
@@ -223,32 +236,49 @@ function Profile() {
                 width: "100%",
               }}
             />
-            <Link to={"/reset-password"}></Link>
-            {/* <Container>
-       <Typography variant="h7">Password</Typography>
-     </Container>
-     <TextField
-       placeholder="password"
-       type="password"
-       onChange={handleChange}
-       sx={{
-         p: 1,
-         m: 1,
-         width: "100%",
-       }}
-     /> */}
-
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={onSaveClick}
-              sx={{
-                width: "90%",
-                paddingInline: 17,
-              }}
+            <Box
+              width="100%"
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
             >
-              Save
-            </Button>
+              <Box
+                width="100%"
+                marginBottom="20px"
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+              >
+                <Button
+                  variant="contained"
+                  color="primary"
+                  marginBottom="20px"
+                  sx={{
+                    width: "90%",
+                  }}
+                  href={`/reset-password/${token}`}
+                >
+                  edit password
+                </Button>
+              </Box>
+              <Box
+                width="100%"
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+              >
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={onSaveClick}
+                  sx={{
+                    width: "90%",
+                  }}
+                >
+                  Save
+                </Button>
+              </Box>
+            </Box>
           </Container>
         </Box>
       </Box>

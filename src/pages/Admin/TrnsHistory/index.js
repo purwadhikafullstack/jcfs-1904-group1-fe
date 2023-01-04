@@ -3,11 +3,6 @@ import { useParams } from "react-router-dom";
 import axios from "../../../utils/axios";
 import {
   Box,
-  Typography,
-  Select,
-  FormControl,
-  MenuItem,
-  InputLabel,
   Paper,
   Table,
   TableBody,
@@ -20,12 +15,13 @@ import {
   Link,
 } from "@mui/material";
 import { useSelector } from "react-redux";
+import SearchBar from "../Orders/components/SearchBar";
 
 function TrnsHistory() {
-  const userId = useSelector((state) => state.auth.id);
   const [page, setPage] = useState(0);
   const [state, setState] = useState({ status: "complete" });
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [isClicked, setIsClicked] = useState("");
   const [transactions, setTransactions] = useState([]);
   const [pagination, setPagination] = useState({
     offSet: 0,
@@ -54,9 +50,14 @@ function TrnsHistory() {
     setRowsPerPage(event.target.value);
     setPage(0);
   };
+  const handleGetChildData = (data, isClicked) => {
+    setTransactions(data);
+    setIsClicked(isClicked);
+  };
 
   const buttonWPHandler = (e) => {
     setState({ ...state, status: e.target.name });
+    setIsClicked(false);
   };
 
   // table
@@ -66,6 +67,7 @@ function TrnsHistory() {
       label: "Invoice",
       minWidth: 80,
     },
+    { id: "Username", label: "Username", minWidth: 80 },
     { id: "Status", label: "Status", minWidth: 80 },
     {
       id: "Amount",
@@ -82,13 +84,13 @@ function TrnsHistory() {
     },
   ];
 
-  function createData(Invoice, Status, Amount, Date, id) {
-    return { Invoice, Status, Amount, Date, id };
+  function createData(Invoice, Username, Status, Amount, Date, id) {
+    return { Invoice, Username, Status, Amount, Date, id };
   }
 
   const rows = transactions.map((transaction) => {
-    const { invoice, status, amount, date, id } = transaction;
-    const row = createData(invoice, status, amount, date, id);
+    const { invoice, username, status, amount, date, id } = transaction;
+    const row = createData(invoice, username, status, amount, date, id);
     return row;
   });
   const fetchTransactions = async () => {
@@ -96,11 +98,13 @@ function TrnsHistory() {
       const res = await axios.get(`/transactions`, {
         params: {
           status: state.status,
+          limit: rowsPerPage,
+          offset: queryPagination.offSet,
         },
       });
-
+      const { total } = res.data;
       setTransactions(res.data.dataDate);
-      setPagination({ ...queryPagination });
+      setPagination({ ...queryPagination, count: total });
     } catch (error) {
       alert(error);
     }
@@ -120,6 +124,10 @@ function TrnsHistory() {
             boxShadow: 3,
           }}
         >
+          <SearchBar
+            handleGetChildData={handleGetChildData}
+            status={state.status}
+          />
           <Box display="flex" justifyContent="center" border="solid">
             <Button name="complete" flex="1" onClick={buttonWPHandler}>
               complete
@@ -181,6 +189,18 @@ function TrnsHistory() {
               </TableBody>
             </Table>
           </TableContainer>
+          {isClicked ? null : (
+            <TablePagination
+              sx={{ backgroundColor: "#d5d5d5" }}
+              rowsPerPageOptions={[10, 20]}
+              component="div"
+              count={pagination.count}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          )}
         </Paper>
       </Box>
     </Box>
